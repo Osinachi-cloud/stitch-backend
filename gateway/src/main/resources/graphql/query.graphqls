@@ -1,0 +1,72 @@
+scalar BigDecimal
+
+
+type Query {
+    customer(customerId: ID): CustomerDto
+    getCountries: [CountryDto]
+    getExchangeRates: [CurrencyDto]
+    verifyInternetUserEmail(emailVerificationRequest: InternetEmailVerificationRequest):VTPassDataEmailVerificationResponse
+    getWallets: [WalletDto]
+    verifyResetPinCode(code: String): Response
+}
+
+type VTPassDataEmailVerificationResponse {
+    customerName: String
+    accounts: [Account]
+
+}
+
+type Account {
+    accountId: String
+    accountName: String
+}
+
+input InternetEmailVerificationRequest {
+    emailAddress: String
+    serviceId: String
+}
+
+
+type CountryDto {
+    name: String
+    countryCode: String
+    currencyCode: String
+}
+
+type CurrencyDto {
+    currencyCode: String
+    currencyRate: BigDecimal
+}
+
+type Token {
+    accessToken: String
+    refreshToken: String
+}
+
+
+type CustomerDto {
+    customerId: ID
+    firstName: String
+    lastName: String
+    emailAddress: String
+    phoneNumber: String
+    tier: String
+    country: String
+    hasPin: Boolean
+    enablePush: Boolean
+
+}
+
+type WalletDto {
+    walletId: String
+    name: String
+    currency: String
+    balance: Float
+    status: String
+    isDefault: Boolean
+
+}
+
+
+
+

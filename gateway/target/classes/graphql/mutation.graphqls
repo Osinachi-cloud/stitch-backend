@@ -1,0 +1,131 @@
+
+
+type Mutation{
+    createCustomer(customerRequest: CustomerRequest): CustomerDto
+    verifyEmail(emailAddress: String): VerificationResponse
+    validateEmailCode(verificationRequest: EmailVerificationRequest): VerificationResponse
+    login(loginRequest: LoginRequest): LoginResponse
+    requestToken(refreshToken: String): Token
+    requestPasswordReset(emailAddress: String): Response
+    validateResetCode(resetCodeValidationRequest: ResetCodeValidationRequest): Response
+    resetPassword(passwordResetRequest: PasswordResetRequest): Response
+    createPin(pin: String): Response
+    resetPinInitiateEmail(phoneNumber: String): Response
+    resetPin(pin: String): Response
+    allowSaveCard(savedCard: Boolean): Response
+}
+
+#input TransactionRequest {
+#    currency: String!
+#    amount: BigDecimal!
+#    walletId: String!
+#    transactionType: String
+#    description: String
+#    pin: String!
+#    cardId: String
+#}
+
+#input TransactionVerificationRequest {
+#    transactionId: String!
+#    currency: String!
+#    amount: BigDecimal!
+#    txRef: String!
+#    walletId: String!
+#    transactionType: String
+#    description: String
+#    saveCard: Boolean
+#}
+
+#type WalletTransactionRequestDto {
+#    transactionId: String
+#    walletId: String
+#    currency: String
+#    amount: BigDecimal
+#    status: String
+#    paymentId: String
+#    clientSecret: String
+#}
+
+type Response {
+    code: Int
+    message: String
+}
+
+input ResetCodeValidationRequest {
+    emailAddress: String!
+    resetCode: String!
+}
+
+input PasswordResetRequest {
+    emailAddress: String!
+    resetCode: String!
+    newPassword: String!
+    confirmPassword: String!
+}
+
+
+input CustomerRequest {
+    firstName: String!
+    lastName: String!
+    emailAddress: String!
+    phoneNumber: String!
+    country: String!
+    password: String!
+    device: DeviceDto
+}
+
+input DeviceDto {
+    deviceId: String
+    name: String
+    model: String
+    os: String
+}
+
+
+type LoginResponse {
+    customerId: ID
+    firstName: String
+    lastName: String
+    emailAddress: String
+    phoneNumber: String
+    hasPin: Boolean
+    saveCard: Boolean
+    enablePush: Boolean
+    tier: String
+    country: String
+    accessToken: String
+    refreshToken: String
+    wallets: [WalletDto]
+}
+
+input LoginRequest {
+    emailAddress: String
+    password: String
+}
+
+input EmailVerificationRequest {
+    verificationCode: String!
+    emailAddress: String!
+}
+
+type VerificationResponse {
+    code: Int
+    message: String
+}
+
+#type CustomerDto {
+#    customerId: ID
+#    firstName: String
+#    lastName: String
+#    emailAddress: String
+#    phoneNumber: String
+#    tier: String
+#    country: String
+#    hasPin: Boolean
+#    enablePush: Boolean
+#
+#}
+
+
+
+

@@ -1,0 +1,42 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/stitch
+    username: postgres
+    password: 1234
+    driverClassName: org.postgresql.Driver
+  jpa:
+    properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+    show.sql: true
+    generate-ddl: true
+    hibernate.ddl-auto: none
+
+server:
+  port: 8085
+
+
+security:
+  token:
+    access:
+      secret-key: 2023BillantedChangeAccessKey
+      expiry-length: 1800000 # millisecs (30mins)
+    refresh:
+      secret-key: 2023BillantedChangeRefreshKey
+      expiry-length: 43200000 #millisecs (12hrs)
+
+
+
+graphql:
+  altair:
+    enabled: true
+    mapping: /altair
+    subscriptions:
+      timeout: 30
+      reconnect: false
+    static:
+      base-path: /
+    page-title: GraphQL
+    options:
+      endpoint-url: /graphql
+      subscriptions-endpoint: /subscriptions
+      initial-settings:
+        theme: dracula
