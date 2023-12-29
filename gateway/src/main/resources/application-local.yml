@@ -10,8 +10,15 @@ spring:
     generate-ddl: true
     hibernate.ddl-auto: none
 
+
+  main:
+    allow-bean-definition-overriding: false
+
+
 server:
   port: 8085
+
+
 
 
 security:
@@ -40,3 +47,5 @@ graphql:
       subscriptions-endpoint: /subscriptions
       initial-settings:
         theme: dracula
+
+
