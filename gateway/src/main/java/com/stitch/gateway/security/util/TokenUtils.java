@@ -30,13 +30,21 @@ public class TokenUtils {
 
     public String generateAccessToken(CustomerDto user) {
 
+        log.info("Inside generate token method 1");
+
         Claims claims = Jwts.claims()
                 .setSubject(user.getCustomerId());
         claims.put("email", String.valueOf(user.getEmailAddress()));
         claims.put("role", "CUSTOMER");
 
+        log.info("Inside generate token method 2");
+
+
         Date now = new Date();
         Date accessTokenExpiration = new Date(now.getTime() + accessTokenExpiryInMilliseconds);
+
+        log.info("Inside generate token method 3");
+
 
         return Jwts.builder()
                 .setClaims(claims)

@@ -50,5 +50,9 @@ public class Customer extends User {
     @JoinTable(name = "customer_identity_document", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "identity_document_id"))
     private IdentityDocument identityDocument;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "body_measurement_id", referencedColumnName = "id")
+    private BodyMeasurement bodyMeasurement;
+
 
 }

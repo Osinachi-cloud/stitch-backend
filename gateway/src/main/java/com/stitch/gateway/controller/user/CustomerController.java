@@ -94,7 +94,6 @@ public class CustomerController {
         return walletService.getAllWallets(loginResponse.getCustomerId());
     }
 
-
     @Unsecured
     @MutationMapping(value = "requestToken")
     public Token requestToken(@Argument("refreshToken") String refreshToken) {

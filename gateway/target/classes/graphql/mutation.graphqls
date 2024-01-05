@@ -13,6 +13,44 @@ type Mutation{
     resetPinInitiateEmail(phoneNumber: String): Response
     resetPin(pin: String): Response
     allowSaveCard(savedCard: Boolean): Response
+    createBodyMeasurement(bodyMeasurementRequest: BodyMeasurementRequest) : BodyMeasurementDto
+    updateBodyMeasurement(bodyMeasurementRequest: BodyMeasurementRequest): BodyMeasurementDto
+
+}
+
+type BodyMeasurementDto {
+
+    neck:Int
+    shoulder:Int
+    chest:Int
+    tummy:Int
+    hipWidth:Int
+    neckToHipLength:Int
+    shortSleeveAtBiceps:Int
+    midSleeveAtElbow:Int
+    longSleeveAtWrist:Int
+    waist:Int
+    thigh:Int
+    knee:Int
+    ankle:Int
+    trouserLength:Int
+}
+
+input BodyMeasurementRequest {
+    neck:Int
+    shoulder:Int
+    chest:Int
+    tummy:Int
+    hipWidth:Int
+    neckToHipLength:Int
+    shortSleeveAtBiceps:Int
+    midSleeveAtElbow:Int
+    longSleeveAtWrist:Int
+    waist:Int
+    thigh:Int
+    knee:Int
+    ankle:Int
+    trouserLength:Int
 }
 
 #input TransactionRequest {

@@ -37,11 +37,27 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public LoginResponse authenticate(LoginRequest loginRequest) {
 
+        log.info("first point");
+
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmailAddress(), loginRequest.getPassword()));
+
+            log.info("second point");
+
+
             CustomerDto user = getUser(authentication);
+
+            log.info("third point :  {}", user);
+
             Token token = tokenUtils.generateAccessAndRefreshToken(user);
+
+            log.info("fourth point :  {}", token);
+
             LoginResponse loginResponse = new LoginResponse(user, token);
+
+            log.info("fifth point :  {}", loginResponse);
+
+
             onSuccessfulAuthentication(user);
             return loginResponse;
         } catch (BadCredentialsException e) {
