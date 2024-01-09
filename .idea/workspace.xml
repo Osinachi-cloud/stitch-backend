@@ -5,31 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="08636b1d-24fc-4130-803a-464da45dbbe3" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/controller/user/CustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/controller/user/CustomerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/security/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/security/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/security/service/AuthenticationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/security/service/AuthenticationServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/security/util/TokenUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/security/util/TokenUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/graphql/mutation.graphqls" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/resources/graphql/mutation.graphqls" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/application-local.yml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/resources/application-local.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/target/classes/application-local.yml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/target/classes/application-local.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/controller/user/CustomerController.class" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/controller/user/CustomerController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/security/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/security/config/SecurityConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/security/service/AuthenticationServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/security/service/AuthenticationServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/security/util/TokenUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/security/util/TokenUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/target/classes/graphql/mutation.graphqls" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/target/classes/graphql/mutation.graphqls" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/target/gateway-1.0-SNAPSHOT.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/target/maven-archiver/pom.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/model/entity/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/model/entity/Customer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wallet/target/maven-archiver/pom.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wallet/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wallet/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wallet/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wallet/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wallet/target/wallet-1.0-SNAPSHOT.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/service/impl/BodyMeasurementServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/service/impl/BodyMeasurementServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,17 +37,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/user/Desktop/my-builds/stitch/stitch-backend/gateway/src/main/resources&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.32960895&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "body__measurement",
+    "last_opened_file_path": "/Users/user/Desktop/my-builds/stitch/stitch-backend/gateway/src/main/resources",
+    "project.structure.last.edited": "SDKs",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.32960895"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/gateway/src/main/resources" />
@@ -82,6 +64,12 @@
     <configuration name="stitch-backend" type="Application" factoryName="Application">
       <option name="ALTERNATIVE_JRE_PATH" value="corretto-17 (3)" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <envs>
+        <env name="allowed_credential" value="" />
+        <env name="allowed_origin" value="*" />
+        <env name="allowed_header" value="" />
+        <env name="allowed_method" value="" />
+      </envs>
       <option name="MAIN_CLASS_NAME" value="com.stitch.gateway.StitchGatewayApplication" />
       <module name="gateway" />
       <option name="VM_PARAMETERS" value="-Dspring.profiles.active=local " />

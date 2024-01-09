@@ -26,7 +26,6 @@ public class BodyMeasurementServiceImpl implements BodyMeasurementService {
         this.customerRepository = customerRepository;
     }
 
-
     @Override
     public BodyMeasurementDto createBodyMeasurement(BodyMeasurementRequest bodyMeasurementRequest, String customerEmailAddress){
          Optional<Customer> existingCustomer = customerRepository.findByEmailAddress(customerEmailAddress);

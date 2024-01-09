@@ -23,11 +23,13 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 
 @Slf4j
 @Controller
+@CrossOrigin(origins = "http://localhost:4200/login")
 public class CustomerController {
 
     private final CustomerService customerService;
