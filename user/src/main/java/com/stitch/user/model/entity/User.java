@@ -22,7 +22,7 @@ public abstract class User extends BaseEntity {
     @Column(name = "middle_name")
     protected String middleName;
 
-    @Column(name = "email_address", unique = true, nullable = false)
+    @Column(name = "email_address", unique = true)
     protected String emailAddress;
 
     @Column(name = "phone_number", unique = true, nullable = false)

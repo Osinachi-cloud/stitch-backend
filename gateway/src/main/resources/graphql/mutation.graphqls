@@ -2,6 +2,8 @@
 
 type Mutation{
     createCustomer(customerRequest: CustomerRequest): CustomerDto
+    updateCustomer(customerRequest: CustomerUpdateRequest, emailAddress: String): CustomerDto
+    updateCustomerProfileImage(profileImage: String, emailAddress: String): Response
     verifyEmail(emailAddress: String): VerificationResponse
     validateEmailCode(verificationRequest: EmailVerificationRequest): VerificationResponse
     login(loginRequest: LoginRequest): LoginResponse
@@ -112,6 +114,13 @@ input CustomerRequest {
     device: DeviceDto
 }
 
+input CustomerUpdateRequest {
+    firstName: String
+    lastName: String
+    country: String
+    profileImage: String
+}
+
 input DeviceDto {
     deviceId: String
     name: String
@@ -134,6 +143,7 @@ type LoginResponse {
     accessToken: String
     refreshToken: String
     wallets: [WalletDto]
+    profileImage: String
 }
 
 input LoginRequest {

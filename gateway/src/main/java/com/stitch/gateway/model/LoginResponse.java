@@ -24,6 +24,7 @@ public class LoginResponse {
     private boolean enablePush;
     private String accessToken;
     private String refreshToken;
+    private String profileImage;
     private List<WalletDto> wallets;
 
     public LoginResponse(CustomerDto customer, Token token) {
@@ -39,5 +40,6 @@ public class LoginResponse {
         this.enablePush = customer.isEnablePush();
         this.accessToken = token.getAccessToken();
         this.refreshToken = token.getRefreshToken();
+        this.profileImage = customer.getProfileImage();
     }
 }

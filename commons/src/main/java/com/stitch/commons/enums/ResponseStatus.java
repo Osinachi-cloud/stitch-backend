@@ -12,6 +12,9 @@ public enum ResponseStatus {
     EXPIRED_VERIFICATION_CODE(6, "The verification code has expired", HttpStatus.BAD_REQUEST),
     PHONE_NUMBER_EXISTS(10, "A user with that phone number already exists", HttpStatus.BAD_REQUEST),
     EMAIL_ADDRESS_EXISTS(11, "A user with that email address already exists", HttpStatus.BAD_REQUEST),
+
+    USERNAME_EXISTS(26, "A user with that username already exists", HttpStatus.BAD_REQUEST),
+
     INVALID_USER_ID(12, "The user Id is invalid", HttpStatus.BAD_REQUEST),
     USER_NOT_FOUND(13,"The user could not be found", HttpStatus.NOT_FOUND),
     INVALID_EMAIL_ADDRESS(14,"The email address is invalid", HttpStatus.BAD_REQUEST),

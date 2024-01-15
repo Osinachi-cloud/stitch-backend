@@ -3,11 +3,28 @@ scalar BigDecimal
 
 type Query {
     customer(customerId: ID): CustomerDto
+    customerDetails(emailAddress: String): CustomerDto
     getCountries: [CountryDto]
     getExchangeRates: [CurrencyDto]
     verifyInternetUserEmail(emailVerificationRequest: InternetEmailVerificationRequest):VTPassDataEmailVerificationResponse
     getWallets: [WalletDto]
     verifyResetPinCode(code: String): Response
+    fetchCustomerOrdersBy(productName: String, status: String, orderId: String, productCategory: String, vendorId: String, page: Int, size: Int): OrderPagination
+
+}
+
+type OrderPagination {
+    page: Int
+    size: Int
+    total: Int
+    data: [Order!]
+}
+
+type Order {
+    orderId: String
+    vendorId : String
+    amount: Int
+
 }
 
 type VTPassDataEmailVerificationResponse {
@@ -54,6 +71,7 @@ type CustomerDto {
     country: String
     hasPin: Boolean
     enablePush: Boolean
+    profileImage:String
 
 }
 

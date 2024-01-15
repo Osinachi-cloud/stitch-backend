@@ -13,6 +13,12 @@ import jakarta.persistence.*;
 public class Customer extends User {
 
 
+    @Column(name = "username", unique = true)
+    private String username;
+
+    @Column(name = "profile_image")
+    private String profileImage;
+
     @Column(name = "customer_id", unique = true, nullable = false)
     private String customerId;
 

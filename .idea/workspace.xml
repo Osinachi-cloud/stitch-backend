@@ -5,13 +5,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="08636b1d-24fc-4130-803a-464da45dbbe3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Order/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commons/src/main/java/com/stitch/commons/enums/ResponseStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/commons/src/main/java/com/stitch/commons/enums/ResponseStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/config/cors/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/config/cors/WebConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/controller/order/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/controller/order/OrderController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/controller/user/CustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/controller/user/CustomerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/application-local.yml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/resources/application-local.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/target/classes/application-local.yml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/target/classes/application-local.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/model/LoginResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/model/LoginResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/security/service/AuthenticationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/security/service/AuthenticationServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/graphql/mutation.graphqls" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/resources/graphql/mutation.graphqls" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/graphql/query.graphqls" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/resources/graphql/query.graphqls" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/config/cors/WebConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/config/cors/WebConfig.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/controller/user/CustomerController.class" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/controller/user/CustomerController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/service/impl/BodyMeasurementServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/service/impl/BodyMeasurementServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/model/LoginResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/model/LoginResponse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/security/service/AuthenticationServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/security/service/AuthenticationServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/target/classes/graphql/mutation.graphqls" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/target/classes/graphql/mutation.graphqls" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/target/classes/graphql/query.graphqls" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/target/classes/graphql/query.graphqls" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/model/dto/CustomerDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/model/dto/CustomerDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/model/dto/CustomerRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/model/dto/CustomerRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/model/entity/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/model/entity/Customer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/model/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/model/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/repository/CustomerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/repository/CustomerRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/service/CustomerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/service/CustomerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/service/impl/CustomerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/service/impl/CustomerServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +42,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
+        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
@@ -42,6 +63,8 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "body__measurement",
+    "jdk.selected.JAVA_MODULE": "corretto-17 (3)",
+    "last_directory_selection": "/Users/user/Desktop/my-builds/stitch/stitch-backend/Order/src/main/java/com/stitch/service",
     "last_opened_file_path": "/Users/user/Desktop/my-builds/stitch/stitch-backend/gateway/src/main/resources",
     "project.structure.last.edited": "SDKs",
     "project.structure.proportion": "0.15",
@@ -49,6 +72,9 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.stitch.user.model.dto" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/gateway/src/main/resources" />
       <recent name="$PROJECT_DIR$" />

@@ -22,6 +22,8 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -62,6 +64,28 @@ public class CustomerController {
             log.error("Error creating customer: {}" ,customerRequest, e);
             throw new StitchException();
         }
+    }
+
+    @MutationMapping(value = "updateCustomer")
+    public CustomerDto updateCustomer(@Argument("customerRequest") CustomerUpdateRequest customerRequest,
+                                      @Argument("emailAddress") String emailAddress) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        try {
+            return customerService.updateCustomer(customerRequest, emailAddress);
+        }
+        catch (Exception e) {
+            log.error("Error updating customer: {}" ,customerRequest, e);
+            throw new StitchException();
+        }
+    }
+
+    @MutationMapping(value = "updateCustomerProfileImage")
+    public Response updateCustomerProfileImage(@Argument("profileImage") String profileImage,
+                                      @Argument("emailAddress") String emailAddress) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            return customerService.updateCustomerProfileImage(profileImage, emailAddress);
     }
 
 
@@ -106,6 +130,11 @@ public class CustomerController {
     @QueryMapping(value = "customer")
     public CustomerDto getCustomer(@Argument("customerId") String customerId) {
         return customerService.getCustomer(customerId);
+    }
+
+    @QueryMapping(value = "customerDetails")
+    public CustomerDto getCustomerByEmailAddress(@Argument("emailAddress") String emailAddress) {
+        return customerService.getCustomerByEmail(emailAddress);
     }
 
 

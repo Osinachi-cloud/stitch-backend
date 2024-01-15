@@ -42,10 +42,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmailAddress(), loginRequest.getPassword()));
 
-            log.info("second point");
+            log.info("second point : {}", authentication.getPrincipal());
 
 
             CustomerDto user = getUser(authentication);
+
+//            CustomerDto customerDto = customerService.getCustomerByEmail(user.getEmailAddress());
 
             log.info("third point :  {}", user);
 
@@ -56,7 +58,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             LoginResponse loginResponse = new LoginResponse(user, token);
 
             log.info("fifth point :  {}", loginResponse);
-
 
             onSuccessfulAuthentication(user);
             return loginResponse;

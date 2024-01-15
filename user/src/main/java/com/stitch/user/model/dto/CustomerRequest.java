@@ -18,5 +18,6 @@ public class CustomerRequest {
     private String password;
     private String country;
     private DeviceDto device;
-
+    private String profileImage;
+    private String username;
 }
