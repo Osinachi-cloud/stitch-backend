@@ -18,6 +18,7 @@
         <module>wallet</module>
         <module>currency</module>
         <module>Order</module>
+        <module>product</module>
         <!--        <module>psp</module>-->
 <!--        <module>billers</module>-->
     </modules>

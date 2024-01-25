@@ -12,7 +12,6 @@ import jakarta.persistence.*;
 @Table(name = "customer")
 public class Customer extends User {
 
-
     @Column(name = "username", unique = true)
     private String username;
 
@@ -59,6 +58,5 @@ public class Customer extends User {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "body_measurement_id", referencedColumnName = "id")
     private BodyMeasurement bodyMeasurement;
-
 
 }

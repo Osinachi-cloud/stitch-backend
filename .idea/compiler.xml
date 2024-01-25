@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Order" />
         <module name="notification" />
+        <module name="product" />
         <module name="wallet" />
         <module name="payment" />
         <module name="currency" />
@@ -33,6 +34,7 @@
       <module name="gateway" options="-parameters" />
       <module name="notification" options="-parameters" />
       <module name="payment" options="-parameters" />
+      <module name="product" options="-parameters" />
       <module name="psp" options="-parameters" />
       <module name="user" options="-parameters" />
       <module name="wallet" options="-parameters" />

@@ -15,8 +15,6 @@ public interface CustomerService {
 
     CustomerDto createCustomer(CustomerRequest customerRequest);
 
-
-
     CustomerDto updateCustomer(CustomerUpdateRequest customerRequest, String emailAddress);
 
     Response updateCustomerProfileImage(String profileImage, String emailAddress);

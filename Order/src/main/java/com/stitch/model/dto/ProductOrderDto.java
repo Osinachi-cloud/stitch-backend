@@ -1,12 +1,14 @@
 package com.stitch.model.dto;
 
+import com.stitch.commons.model.entity.BaseEntity;
+import com.stitch.currency.model.enums.Currency;
 import com.stitch.model.enums.OrderStatus;
 import com.stitch.model.enums.PaymentMode;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Currency;
+import java.time.LocalDateTime;
 
 @Data
 //@Builder(toBuilder = true)
@@ -22,7 +24,7 @@ public class ProductOrderDto {
 
 
     private String productCategoryName;
-    private String vendor;
+    private String vendorId;
     private PaymentMode paymentMode;
     private BigDecimal amount;
     private String customerId;
@@ -39,6 +41,7 @@ public class ProductOrderDto {
     private boolean saveBeneficiary;
     private Integer number;
     private String startTime;
+    private String dateCreated;
     //    private OrderFrequency frequency;
 //    private ScheduleStatus scheduleStatus;
     private String orderId;

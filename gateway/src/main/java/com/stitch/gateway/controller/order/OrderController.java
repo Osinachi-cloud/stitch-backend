@@ -1,17 +1,25 @@
 package com.stitch.gateway.controller.order;
 
+import com.stitch.commons.exception.StitchException;
 import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.model.dto.ProductOrderDto;
+import com.stitch.model.dto.ProductOrderRequest;
+import com.stitch.model.dto.ProductOrderStatistics;
+import com.stitch.model.entity.ProductOrder;
 import com.stitch.service.ProductOrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.stitch.utils.Utils.convertProductOrderToDto;
+import static com.stitch.utils.Utils.convertRequestToModel;
 
 //package com.stitch.gateway.controller.order;
 //
@@ -62,6 +70,7 @@ public class OrderController {
     @QueryMapping(value = "fetchCustomerOrdersBy")
     public PaginatedResponse<List<ProductOrderDto>> fetchCustomerOrdersBy(
             @Argument Optional<String> productId,
+            @Argument Optional<String> customerId,
             @Argument Optional<String> status,
             @Argument Optional<String> orderId,
             @Argument Optional<String> productCategory,
@@ -69,11 +78,30 @@ public class OrderController {
             @Argument Optional<Integer> page,
             @Argument Optional<Integer> size) {
 
-
-
         PageRequest pr = PageRequest.of(page.orElse(0),size.orElse(10));
-        return productOrderService.fetchCustomerOrdersBy(productId.orElse(null), status.orElse(null), orderId.orElse(null), productCategory.orElse(null), vendorId.orElse(null) ,pr);
+        return productOrderService.fetchCustomerOrdersBy(productId.orElse(null), customerId.orElse(null), status.orElse(null), orderId.orElse(null), productCategory.orElse(null), vendorId.orElse(null) ,pr);
     }
+
+    @MutationMapping(value = "createProductOrder")
+    public ProductOrderDto createProductOrder(@Argument("productOrderRequest") ProductOrderRequest productOrderDto ){
+//        try {
+            return productOrderService.createProductOrder(productOrderDto);
+//        }catch (Exception e){
+//            throw new StitchException("product could not be created");
+//        }
+    }
+
+
+    @QueryMapping(value = "getProductOrderStatsByCustomer")
+    public ProductOrderStatistics getProductOrderStatsByCustomer(@Argument("customerId") String customerId ){
+
+        try{
+            return productOrderService.getCustomerProductStat(customerId);
+        }catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
 
 }
 //

@@ -17,11 +17,71 @@ type Mutation{
     allowSaveCard(savedCard: Boolean): Response
     createBodyMeasurement(bodyMeasurementRequest: BodyMeasurementRequest) : BodyMeasurementDto
     updateBodyMeasurement(bodyMeasurementRequest: BodyMeasurementRequest): BodyMeasurementDto
+    createProductOrder(productOrderRequest: ProductOrderRequest) : ProductOrderDto
+}
+
+type ProductOrderDto{
+
+    status: String
+    referenceNumber: String
+    transactionId: String
+    message: String
+    clientSecret: String
+    paymentId: String
+    productCategoryName: String
+    vendor: String
+    paymentMode: String
+    amount: BigDecimal
+    customerId: String
+    customerName: String
+    email: String
+    cardId: String
+    txRef: String
+    saveCard: Boolean
+    currency: String
+    narration: String
+    walletId: String
+    pin: String
+    psp: String
+    saveBeneficiary: Boolean
+    number: Int
+    startTime: String
+    orderId: String
+}
+
+input ProductOrderRequest {
+
+    orderId: String
+    customerId: String
+    productId: String
+    productCategoryName: String
+    vendorId: String
+    paymentMode: PaymentMode
+    currency: Currency
+    amount: BigDecimal
+    status: OrderStatus
+    narration: String
 
 }
 
-type BodyMeasurementDto {
+enum PaymentMode {
+    FLUTTERWAVE
+    PAYSTACK
+}
 
+enum OrderStatus {
+    PROCESSING
+    COMPLETED
+    FAILED
+    REJECTED
+}
+
+enum Currency {
+    NGN
+    USD
+}
+
+type BodyMeasurementDto {
     neck:Int
     shoulder:Int
     chest:Int

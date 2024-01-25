@@ -37,27 +37,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public LoginResponse authenticate(LoginRequest loginRequest) {
 
-        log.info("first point");
-
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmailAddress(), loginRequest.getPassword()));
-
-            log.info("second point : {}", authentication.getPrincipal());
-
 
             CustomerDto user = getUser(authentication);
 
 //            CustomerDto customerDto = customerService.getCustomerByEmail(user.getEmailAddress());
 
-            log.info("third point :  {}", user);
-
             Token token = tokenUtils.generateAccessAndRefreshToken(user);
 
-            log.info("fourth point :  {}", token);
-
             LoginResponse loginResponse = new LoginResponse(user, token);
-
-            log.info("fifth point :  {}", loginResponse);
 
             onSuccessfulAuthentication(user);
             return loginResponse;
@@ -98,12 +87,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return tokenUtils.generateAccessAndRefreshToken(customer);
     }
 
-
     private CustomerDto getUser(Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         return userDetails.getUser();
     }
-
 
     @Override
     public CustomerDto getAuthenticatedUser() {
