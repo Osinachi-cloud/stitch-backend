@@ -12,7 +12,7 @@ import jakarta.persistence.*;
 @Table(name = "customer")
 public class Customer extends User {
 
-    @Column(name = "username", unique = true)
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
 
     @Column(name = "profile_image")

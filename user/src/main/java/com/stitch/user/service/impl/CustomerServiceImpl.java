@@ -83,9 +83,12 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setPhoneNumber(customerRequest.getPhoneNumber());
         customer.setCountry(customerRequest.getCountry());
         customer.setPassword(passwordService.encode(customerRequest.getPassword()));
-        byte[] imageBytes = Base64.decodeBase64(customerRequest.getProfileImage());
-        String base64EncodedImage = Base64.encodeBase64String(imageBytes);
-        customer.setProfileImage(base64EncodedImage);
+        if(Objects.nonNull(customerRequest.getProfileImage())){
+            byte[] imageBytes = Base64.decodeBase64(customerRequest.getProfileImage());
+            String base64EncodedImage = Base64.encodeBase64String(imageBytes);
+            customer.setProfileImage(base64EncodedImage);
+        }
+
         if (customerRequest.getDevice() != null) {
             customer.setDevice(new Device(customerRequest.getDevice()));
         }
@@ -175,8 +178,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Response updateCustomerProfileImage(String profileImage, String emailAddress) {
         log.info("email address value: {}", emailAddress);
-        log.info("profileImage: {}", profileImage);
-
+//        log.info("profileImage: {}", profileImage)
             Optional<Customer> existingCustomer = customerRepository.findByEmailAddress(emailAddress);
 
             if (existingCustomer.isEmpty()) {
@@ -224,6 +226,10 @@ public class CustomerServiceImpl implements CustomerService {
         Optional<Customer> existingCustomer = customerRepository.findByEmailAddress(customerRequest.getEmailAddress());
 
         Optional<Customer> existingCustomerByUsername = customerRepository.findByUsername(customerRequest.getUsername());
+
+        if(existingCustomer.isPresent()) {
+            log.info("customer ===>>> :{}", existingCustomer.get().getEmailAddress());
+        }
 
 
         if (existingCustomer.isPresent()) {

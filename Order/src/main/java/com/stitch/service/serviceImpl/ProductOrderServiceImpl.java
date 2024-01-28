@@ -98,7 +98,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
             throw new StitchException("customer with : " + customerId + " does not exist");
         }
 
-        log.info("existingProductOrder ===> :{}", existingProductOrder);
         ProductOrderStatistics productOrderStatistics = new ProductOrderStatistics();
         productOrderStatistics.setAllOrdersCount(productOrderRepository.countAllOrdersByCustomerId(customerId));
         productOrderStatistics.setCompletedOrdersCount(productOrderRepository.countCompletedOrdersByCustomerId(customerId));

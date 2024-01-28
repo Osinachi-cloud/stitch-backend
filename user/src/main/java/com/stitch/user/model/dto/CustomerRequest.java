@@ -1,9 +1,6 @@
 package com.stitch.user.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Builder
@@ -19,5 +16,6 @@ public class CustomerRequest {
     private String country;
     private DeviceDto device;
     private String profileImage;
+    @NonNull
     private String username;
 }
