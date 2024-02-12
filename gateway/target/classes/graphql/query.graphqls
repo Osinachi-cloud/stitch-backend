@@ -11,9 +11,17 @@ type Query {
     verifyResetPinCode(code: String): Response
     fetchCustomerOrdersBy(productId: String, customerId:String , status: String, orderId: String, productCategory: String, vendorId: String, page: Int, size: Int): OrderPagination
     getProductOrderStatsByCustomer (customerId: String): ProductOrderStatistics
-
-
+    getProductByProductId(productId: String): ProductDto
+    getProductByVendor(productId: String, page: Int, size: Int) : ProductPagination
 }
+
+type ProductPagination {
+    page: Int
+    size: Int
+    total: Int
+    data: [ProductDto!]
+}
+
 
 type ProductOrderStatistics{
     allOrdersCount: Int

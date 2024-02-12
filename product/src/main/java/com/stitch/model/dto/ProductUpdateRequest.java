@@ -1,7 +1,11 @@
 package com.stitch.model.dto;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 
+
+@Data
 public class ProductUpdateRequest {
 
     private String name;
@@ -15,5 +19,7 @@ public class ProductUpdateRequest {
     private String category;
 
     private boolean fixedPrice;
+
+    private String code;
 
 }

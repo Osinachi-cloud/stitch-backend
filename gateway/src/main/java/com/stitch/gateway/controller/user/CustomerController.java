@@ -53,9 +53,9 @@ public class CustomerController {
     @MutationMapping(value = "createCustomer")
     public CustomerDto createCustomer(@Argument("customerRequest") CustomerRequest customerRequest) {
         try {
-            String currency = countryService.getCurrencyByCountryName(customerRequest.getCountry());
+//            String currency = countryService.getCurrencyByCountryName(customerRequest.getCountry());
             CustomerDto customer = customerService.createCustomer(customerRequest);
-            walletService.createWallet(new WalletRequest(customer.getCustomerId(), currency, true));
+            walletService.createWallet(new WalletRequest(customer.getCustomerId(), customerRequest.getCurrency(), true));
             return customer;
         } catch (StitchException exception) {
             throw exception;

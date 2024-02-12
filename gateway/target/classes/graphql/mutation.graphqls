@@ -18,6 +18,11 @@ type Mutation{
     createBodyMeasurement(bodyMeasurementRequest: BodyMeasurementRequest) : BodyMeasurementDto
     updateBodyMeasurement(bodyMeasurementRequest: BodyMeasurementRequest): BodyMeasurementDto
     createProductOrder(productOrderRequest: ProductOrderRequest) : ProductOrderDto
+    createProduct(productRequest:ProductRequest): ProductDto
+    updateProduct(productUpdateRequest: ProductUpdateRequest, productId: String): ProductDto
+    deleteProduct(productId:String): Response
+    updateProductProfileImage(productImage: String, productId: String ): Response
+
 }
 
 type ProductOrderDto{
@@ -170,7 +175,7 @@ input CustomerRequest {
     emailAddress: String!
     username:String!
     phoneNumber: String!
-    country: String!
+#    country: String!
     password: String!
     device: DeviceDto
 }
@@ -234,6 +239,44 @@ type VerificationResponse {
 #    enablePush: Boolean
 #
 #}
+
+
+input ProductUpdateRequest {
+    name: String
+    productImage: String
+    amount: BigDecimal
+    quantity: BigDecimal
+    category: String
+    fixedPrice: Boolean
+    code: String
+}
+
+input ProductRequest {
+    productId: String
+    vendorId: String
+    name: String
+    code: String
+    productImage: String
+    amount: BigDecimal
+    quantity: BigDecimal
+    category: String
+    fixedPrice: Boolean
+    country: String
+}
+
+type ProductDto {
+    name: String
+    code: String
+    productImage: String
+    amount: BigDecimal
+    quantity: BigDecimal
+    outOfStock: Boolean
+    category: String
+    provider: String
+    fixedPrice: Boolean
+    country: String
+    vendor: String
+}
 
 
 

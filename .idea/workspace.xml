@@ -6,11 +6,22 @@
   <component name="ChangeListManager">
     <list default="true" id="08636b1d-24fc-4130-803a-464da45dbbe3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/src/main/java/com/stitch/service/serviceImpl/ProductOrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Order/src/main/java/com/stitch/service/serviceImpl/ProductOrderServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/controller/product/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/controller/product/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/controller/user/CustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/controller/user/CustomerController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/graphql/mutation.graphqls" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/resources/graphql/mutation.graphqls" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/graphql/query.graphqls" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/resources/graphql/query.graphqls" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/controller/user/CustomerController.class" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/controller/user/CustomerController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/target/classes/graphql/mutation.graphqls" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/target/classes/graphql/mutation.graphqls" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/target/classes/graphql/query.graphqls" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/target/classes/graphql/query.graphqls" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/src/main/java/com/stitch/model/dto/ProductDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/product/src/main/java/com/stitch/model/dto/ProductDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/src/main/java/com/stitch/model/dto/ProductUpdateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/product/src/main/java/com/stitch/model/dto/ProductUpdateRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/src/main/java/com/stitch/model/entity/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/product/src/main/java/com/stitch/model/entity/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/src/main/java/com/stitch/repository/ProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/product/src/main/java/com/stitch/repository/ProductRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/src/main/java/com/stitch/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/product/src/main/java/com/stitch/service/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/src/main/java/com/stitch/service/serviceImpl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/product/src/main/java/com/stitch/service/serviceImpl/ProductServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/model/dto/CustomerRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/model/dto/CustomerRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/model/entity/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/model/entity/Customer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/service/impl/CustomerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/service/impl/CustomerServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -21,9 +32,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Enum" />
         <option value="Interface" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -53,6 +64,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.stitch.model.enums" />
       <recent name="com.stitch.model.dto" />
       <recent name="com.stitch.user.model.dto" />
     </key>

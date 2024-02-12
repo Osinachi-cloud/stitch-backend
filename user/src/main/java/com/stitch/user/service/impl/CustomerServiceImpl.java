@@ -38,6 +38,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.stitch.user.util.CountryUtils.getCountryCodeFromEndpoint;
+import static com.stitch.user.util.CountryUtils.getCountryNameFromEndpoint;
+
 
 @Service
 @Slf4j
@@ -72,6 +75,12 @@ public class CustomerServiceImpl implements CustomerService {
 
         log.debug("Creating customer with request: {}", customerRequest);
 
+        String country = getCountryNameFromEndpoint(getCountryCodeFromEndpoint());
+
+        customerRequest.setCountry(country);
+
+        log.debug("Creating customer with request: {}", customerRequest);
+
         validate(customerRequest);
 
         Customer customer = new Customer();
@@ -81,7 +90,7 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setEmailAddress(customerRequest.getEmailAddress());
         customer.setUsername(customerRequest.getUsername());
         customer.setPhoneNumber(customerRequest.getPhoneNumber());
-        customer.setCountry(customerRequest.getCountry());
+        customer.setCountry(country);
         customer.setPassword(passwordService.encode(customerRequest.getPassword()));
         if(Objects.nonNull(customerRequest.getProfileImage())){
             byte[] imageBytes = Base64.decodeBase64(customerRequest.getProfileImage());

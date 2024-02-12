@@ -1,5 +1,6 @@
 package com.stitch.user.model.dto;
 
+import com.stitch.currency.model.enums.Currency;
 import lombok.*;
 
 @Data
@@ -16,6 +17,7 @@ public class CustomerRequest {
     private String country;
     private DeviceDto device;
     private String profileImage;
+    private String currency;
     @NonNull
     private String username;
 }
