@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -29,6 +30,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 //import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Configuration
@@ -39,11 +44,11 @@ public class SecurityConfig {
 
     private final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
 
-    @Autowired
-    private TokenAuthenticationProvider tokenAuthenticationProvider;
-
-    @Autowired
-    private  TokenAuthenticationFilter tokenAuthenticationFilter;
+//    @Autowired
+//    private TokenAuthenticationProvider tokenAuthenticationProvider;
+//
+//    @Autowired
+//    private  TokenAuthenticationFilter tokenAuthenticationFilter;
 
 //    @Autowired
 //    private CustomAccessDeniedHandler customAccessDeniedHandler;
@@ -98,7 +103,7 @@ public class SecurityConfig {
                 .and()
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 //                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
@@ -121,21 +126,87 @@ public class SecurityConfig {
 //    }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
+    public AuthenticationProvider vendorAuthenticationProvider() {
+        System.out.println(" entered vendorAuthenticationProvider method");
+
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsServiceImpl());
+        authenticationProvider.setUserDetailsService(vendorUserDetailsServiceImpl());
+        authenticationProvider.setPasswordEncoder(passwordEncoder);
+        return authenticationProvider;
+    }
+
+
+    @Bean
+    public AuthenticationProvider customerAuthenticationProvider() {
+        System.out.println(" entered customerAuthenticationProvider method");
+
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsServiceImpl()); // Use combined UserDetailsService
         authenticationProvider.setPasswordEncoder(passwordEncoder);
         return authenticationProvider;
     }
 
     @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(compositeUserDetailsService());
+        authenticationProvider.setPasswordEncoder(passwordEncoder);
+        return authenticationProvider;
+    }
+
+    @Bean
+    @Qualifier("compositeUserDetailsServices")
+    public CompositeUserDetailsService compositeUserDetailsService() {
+
+        List<UserDetailsService> userDetailsServiceList = new ArrayList<>();
+
+        userDetailsServiceList.add(vendorUserDetailsServiceImpl());
+        userDetailsServiceList.add(userDetailsServiceImpl());
+
+//        List<UserDetailsService> userDetailsServiceList = Arrays.asList(vendorUserDetailsServiceImpl(), userDetailsServiceImpl());
+
+
+        return new CompositeUserDetailsService(userDetailsServiceList);
+
+
+//        return new CompositeUserDetailsService(List.of(
+//                userDetailsServiceImpl(),
+//                vendorUserDetailsServiceImpl()
+//        ));
+    }
+
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        System.out.println(" entered authenticationManager method");
+
+        List<AuthenticationProvider> authProviders = new ArrayList<>(Arrays.asList(
+                customerAuthenticationProvider(),
+                vendorAuthenticationProvider()
+        ));
+        return new ProviderManager(authProviders);
+    }
+
+
+
+
+    @Bean
+    @Qualifier("customerUserDetailsService")
     public UserDetailsService userDetailsServiceImpl() {
+        System.out.println(" entered userDetailsServiceImpl method");
         return new CustomUserDetailsServiceImpl();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
+    @Qualifier("vendorUserDetailsService")
+    public UserDetailsService vendorUserDetailsServiceImpl() {
+        System.out.println(" entered vendorUserDetailsServiceImpl method");
+        return new VendorUserDetailsServiceImpl();
     }
+
+//    @Bean
+//    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+//        return config.getAuthenticationManager();
+//    }
 
 }

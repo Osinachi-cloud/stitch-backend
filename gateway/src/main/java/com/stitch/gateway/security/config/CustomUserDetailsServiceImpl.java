@@ -7,6 +7,7 @@ import com.stitch.gateway.security.model.CustomUserDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,8 +17,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Slf4j
-@Service("userDetailsService")
+@Service("customerUserDetailsService")
 public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
+
+
 
     @Autowired
     private CustomerService customerService;

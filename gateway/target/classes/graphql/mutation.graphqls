@@ -6,7 +6,8 @@ type Mutation{
     updateCustomerProfileImage(profileImage: String, emailAddress: String): Response
     verifyEmail(emailAddress: String): VerificationResponse
     validateEmailCode(verificationRequest: EmailVerificationRequest): VerificationResponse
-    login(loginRequest: LoginRequest): LoginResponse
+    customerLogin(loginRequest: LoginRequest): LoginResponse
+    vendorLogin(loginRequest: LoginRequest): LoginResponse
     requestToken(refreshToken: String): Token
     requestPasswordReset(emailAddress: String): Response
     validateResetCode(resetCodeValidationRequest: ResetCodeValidationRequest): Response
@@ -22,7 +23,7 @@ type Mutation{
     updateProduct(productUpdateRequest: ProductUpdateRequest, productId: String): ProductDto
     deleteProduct(productId:String): Response
     updateProductProfileImage(productImage: String, productId: String ): Response
-
+    togglePublishProduct(productId : String): Boolean
 }
 
 type ProductOrderDto{
@@ -197,6 +198,7 @@ input DeviceDto {
 
 type LoginResponse {
     customerId: ID
+    vendorId: ID
     firstName: String
     lastName: String
     emailAddress: String
@@ -262,6 +264,13 @@ input ProductRequest {
     category: String
     fixedPrice: Boolean
     country: String
+    discount: BigDecimal
+    publishStatus: String
+    shortDescription:String
+    longDescription:String
+    materialUsed:String
+    readyIn:String
+    sellingPrice:BigDecimal
 }
 
 type ProductDto {
@@ -276,6 +285,27 @@ type ProductDto {
     fixedPrice: Boolean
     country: String
     vendor: String
+    publishStatus: String
+    discount: BigDecimal
+    productId: String
+    shortDescription:String
+    longDescription:String
+    materialUsed:String
+    readyIn:String
+    sellingPrice:BigDecimal
+}
+
+input ProductFilterRequest {
+    page: Int
+    size: Int
+    name: String
+    code: String
+    outOfStock: Boolean
+    category: String
+    provider: String
+    vendorId: String
+    publishStatus: String
+    productId: String
 }
 
 

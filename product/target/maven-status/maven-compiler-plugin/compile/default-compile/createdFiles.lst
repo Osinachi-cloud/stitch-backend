@@ -1,0 +1,12 @@
+com/stitch/utils/ProductUtils.class
+com/stitch/model/dto/ProductUpdateRequest.class
+com/stitch/service/ProductService.class
+com/stitch/model/enums/PublishStatus.class
+com/stitch/service/serviceImpl/ProductServiceImpl.class
+com/stitch/model/ProductCategory.class
+com/stitch/model/dto/ProductRequest.class
+com/stitch/repository/ProductRepository.class
+com/stitch/ProductSpecification.class
+com/stitch/model/dto/ProductFilterRequest.class
+com/stitch/model/dto/ProductDto.class
+com/stitch/model/entity/Product.class

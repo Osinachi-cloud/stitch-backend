@@ -88,7 +88,6 @@ public class CustomerController {
             return customerService.updateCustomerProfileImage(profileImage, emailAddress);
     }
 
-
     @Unsecured
     @MutationMapping(value = "requestPasswordReset")
     public Response requestPasswordReset(@Argument("emailAddress") String emailAddress) {
@@ -107,10 +106,15 @@ public class CustomerController {
         return customerService.validatePasswordResetCode(passwordResetRequest);
     }
 
+//    @Unsecured
+//    @MutationMapping(value = "vendorLogin")
+//    public LoginResponse vendorLogin(@Argument("loginRequest") LoginRequest loginRequest) {
+//        return authenticationService.authenticateVendor(loginRequest);
+//    }
 
     @Unsecured
-    @MutationMapping(value = "login")
-    public LoginResponse login(@Argument("loginRequest") LoginRequest loginRequest) {
+    @MutationMapping(value = "customerLogin")
+    public LoginResponse customerLogin(@Argument("loginRequest") LoginRequest loginRequest) {
         return authenticationService.authenticate(loginRequest);
     }
 

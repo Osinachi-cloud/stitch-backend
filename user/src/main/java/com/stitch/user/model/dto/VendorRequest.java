@@ -2,9 +2,12 @@ package com.stitch.user.model.dto;
 
 import com.stitch.user.enums.Tier;
 import jakarta.persistence.Column;
+import lombok.Data;
 
 import java.time.Instant;
 
+
+@Data
 public class VendorRequest {
 
     private String firstName;
@@ -28,5 +31,7 @@ public class VendorRequest {
     private String pin;
 
     private String country;
+
+    private DeviceDto device;
 
 }

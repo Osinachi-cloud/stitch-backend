@@ -122,23 +122,25 @@
 
     <build>
         <finalName>stitch</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-<!--                <configuration>-->
-<!--                    <image>-->
-<!--                        <builder>paketobuildpacks/builder-jammy-base:latest</builder>-->
-<!--                    </image>-->
-<!--                    <excludes>-->
-<!--                        <exclude>-->
-<!--                            <groupId>org.projectlombok</groupId>-->
-<!--                            <artifactId>lombok</artifactId>-->
-<!--                        </exclude>-->
-<!--                    </excludes>-->
-<!--                </configuration>-->
-            </plugin>
-        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+<!--                    <configuration>-->
+<!--                        <image>-->
+<!--                            <builder>paketobuildpacks/builder-jammy-base:latest</builder>-->
+<!--                        </image>-->
+<!--                        <excludes>-->
+<!--                            <exclude>-->
+<!--                                <groupId>org.projectlombok</groupId>-->
+<!--                                <artifactId>lombok</artifactId>-->
+<!--                            </exclude>-->
+<!--                        </excludes>-->
+<!--                    </configuration>-->
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
 </project>

@@ -1,6 +1,7 @@
 package com.stitch.model.dto;
 
 import com.stitch.model.ProductCategory;
+import com.stitch.model.enums.PublishStatus;
 import com.stitch.user.model.entity.Vendor;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class ProductDto {
 
     private boolean outOfStock;
 
-    private String category;
+    private ProductCategory category;
 
     private String provider;
 
@@ -32,4 +33,20 @@ public class ProductDto {
     private String country;
 
     private String vendor;
+
+    private PublishStatus publishStatus;
+
+    private BigDecimal discount;
+
+    private String productId;
+
+    private String shortDescription;
+
+    private String longDescription;
+
+    private String materialUsed;
+
+    private String readyIn;
+
+    private BigDecimal sellingPrice;
 }

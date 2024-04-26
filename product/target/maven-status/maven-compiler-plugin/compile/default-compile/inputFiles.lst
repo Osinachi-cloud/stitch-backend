@@ -1,0 +1,12 @@
+/Users/user/Desktop/my-builds/stitch/stitch-backend/product/src/main/java/com/stitch/utils/ProductUtils.java
+/Users/user/Desktop/my-builds/stitch/stitch-backend/product/src/main/java/com/stitch/model/dto/ProductFilterRequest.java
+/Users/user/Desktop/my-builds/stitch/stitch-backend/product/src/main/java/com/stitch/model/ProductCategory.java
+/Users/user/Desktop/my-builds/stitch/stitch-backend/product/src/main/java/com/stitch/service/serviceImpl/ProductServiceImpl.java
+/Users/user/Desktop/my-builds/stitch/stitch-backend/product/src/main/java/com/stitch/model/entity/Product.java
+/Users/user/Desktop/my-builds/stitch/stitch-backend/product/src/main/java/com/stitch/model/enums/PublishStatus.java
+/Users/user/Desktop/my-builds/stitch/stitch-backend/product/src/main/java/com/stitch/ProductSpecification.java
+/Users/user/Desktop/my-builds/stitch/stitch-backend/product/src/main/java/com/stitch/model/dto/ProductDto.java
+/Users/user/Desktop/my-builds/stitch/stitch-backend/product/src/main/java/com/stitch/model/dto/ProductUpdateRequest.java
+/Users/user/Desktop/my-builds/stitch/stitch-backend/product/src/main/java/com/stitch/repository/ProductRepository.java
+/Users/user/Desktop/my-builds/stitch/stitch-backend/product/src/main/java/com/stitch/model/dto/ProductRequest.java
+/Users/user/Desktop/my-builds/stitch/stitch-backend/product/src/main/java/com/stitch/service/ProductService.java

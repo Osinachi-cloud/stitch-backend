@@ -14,4 +14,8 @@ public interface VendorService {
     VendorDto getVendor(String vendorId);
 
     VendorDto getVendorByEmail(String emailAddress);
+
+    void updateLastLogin(VendorDto user);
+
+    void updateLoginAttempts(String emailAddress);
 }

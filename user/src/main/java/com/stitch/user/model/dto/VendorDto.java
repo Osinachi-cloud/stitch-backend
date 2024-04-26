@@ -1,12 +1,18 @@
 package com.stitch.user.model.dto;
 
 import com.stitch.user.enums.Tier;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import com.stitch.user.model.entity.Vendor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class VendorDto {
 
     private String firstName;
@@ -14,6 +20,8 @@ public class VendorDto {
     private String lastName;
 
     private String middleName;
+
+    private String password;
 
     private String emailAddress;
 
@@ -43,8 +51,19 @@ public class VendorDto {
 
     private Integer pinAttempts = 0;
 
-    private Tier tier = Tier.ONE;
+    private String tier;
 
     private String country;
+
+    public VendorDto(Vendor vendor){
+        this.vendorId = vendor.getVendorId();
+        this.firstName = vendor.getFirstName();
+        this.lastName = vendor.getLastName();
+        this.emailAddress = vendor.getEmailAddress();
+        this.phoneNumber = vendor.getPhoneNumber();
+        this.tier = vendor.getTier().name();
+        this.country = vendor.getCountry();
+        this.profileImage = vendor.getProfileImage();
+    }
 
 }

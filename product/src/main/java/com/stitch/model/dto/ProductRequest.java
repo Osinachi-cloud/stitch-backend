@@ -1,5 +1,6 @@
 package com.stitch.model.dto;
 
+import com.stitch.model.enums.PublishStatus;
 import com.stitch.user.model.entity.Vendor;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -32,5 +33,18 @@ public class ProductRequest {
     private boolean fixedPrice;
 
     private String country;
+
+    private String publishStatus;
+
+
+    private String shortDescription;
+
+    private String longDescription;
+
+    private BigDecimal discount;
+
+    private String materialUsed;
+
+    private String readyIn;
 
 }

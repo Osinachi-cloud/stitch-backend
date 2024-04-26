@@ -10,6 +10,7 @@ import java.util.List;
 public class CustomUserDetails implements UserDetails {
 
     private CustomerDto user;
+
     private Collection<? extends GrantedAuthority> authorities;
 
 

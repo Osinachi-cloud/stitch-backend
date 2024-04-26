@@ -14,8 +14,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(basePackages = "com.stitch")
 @EntityScan(basePackages = "com.stitch")
 public class StitchGatewayApplication {
-
 	public static void main(String[] args) {
+
 		SpringApplication.run(StitchGatewayApplication.class, args);
 	}
 }

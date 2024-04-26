@@ -288,13 +288,15 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findByCustomerId(customerId).orElseThrow(() -> new UserNotFoundException(String.format("Customer [%s] not found", customerId)));
     }
 
-    @Cacheable(value = "customerCache")
+//    @Cacheable(value = "customerCache")
     @Override
     public CustomerDto getCustomerByEmail(String emailAddress) {
 
+        System.out.println("got to login method" + emailAddress);
+
         log.debug("Getting customer with email address: {}", emailAddress);
         Customer customer = customerRepository.findByEmailAddress(emailAddress)
-                .orElseThrow(() -> new UserNotFoundException(String.format("Customer [%s] not found", emailAddress)));
+                .orElseThrow(() -> new UserNotFoundException(String.format("Customer with this email [%s] not found", emailAddress)));
 
         CustomerDto customerDto = new CustomerDto();
         customerDto.setCustomerId(customer.getCustomerId());

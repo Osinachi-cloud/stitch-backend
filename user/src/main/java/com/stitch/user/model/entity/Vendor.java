@@ -3,11 +3,15 @@ package com.stitch.user.model.entity;
 
 import com.stitch.user.enums.Tier;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @Table(name = "vendor")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Vendor extends User{
 
     @Column(name = "business_name", unique = true)
@@ -31,5 +35,9 @@ public class Vendor extends User{
 
     @Column(name = "country")
     private String country;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinTable(name = "vendor_device", joinColumns = @JoinColumn(name = "vendor_id"), inverseJoinColumns = @JoinColumn(name = "device_id"))
+    private Device device;
 
 }

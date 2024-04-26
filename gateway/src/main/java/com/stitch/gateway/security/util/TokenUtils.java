@@ -2,6 +2,7 @@ package com.stitch.gateway.security.util;
 
 import com.stitch.user.model.dto.CustomerDto;
 import com.stitch.gateway.security.model.Token;
+import com.stitch.user.model.dto.VendorDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -55,6 +56,33 @@ public class TokenUtils {
 
     }
 
+    public String generateVendorAccessToken(VendorDto user) {
+
+        log.info("Inside generate token method 1");
+
+        Claims claims = Jwts.claims()
+                .setSubject(user.getVendorId());
+        claims.put("email", String.valueOf(user.getEmailAddress()));
+        claims.put("role", "VENDOR");
+
+        log.info("Inside generate token method 2");
+
+
+        Date now = new Date();
+        Date accessTokenExpiration = new Date(now.getTime() + accessTokenExpiryInMilliseconds);
+
+        log.info("Inside generate token method 3");
+
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(accessTokenExpiration)
+                .signWith(SignatureAlgorithm.HS512, accessTokenSecretKey)
+                .compact();
+
+    }
+
 
     public String generateRefreshToken(CustomerDto user) {
 
@@ -74,9 +102,31 @@ public class TokenUtils {
 
     }
 
+    public String generateVendorRefreshToken(VendorDto user) {
+
+        Claims claims = Jwts.claims()
+                .setSubject(user.getVendorId());
+        claims.put("role", "VENDOR");
+
+        Date now = new Date();
+        Date refreshTokenExpiration = new Date(now.getTime() + refreshTokenExpiryInMilliseconds);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(refreshTokenExpiration)
+                .signWith(SignatureAlgorithm.HS512, refreshTokenSecretKey)
+                .compact();
+
+    }
+
 
     public Token generateAccessAndRefreshToken(CustomerDto user){
         return new Token(generateAccessToken(user), generateRefreshToken(user));
+    }
+
+    public Token generateVendorAccessAndRefreshToken(VendorDto user){
+        return new Token(generateVendorAccessToken(user), generateVendorRefreshToken(user));
     }
 
 

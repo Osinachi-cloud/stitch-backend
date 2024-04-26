@@ -5,6 +5,7 @@ import com.stitch.commons.exception.StitchException;
 import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.commons.model.dto.Response;
 import com.stitch.model.dto.ProductDto;
+import com.stitch.model.dto.ProductFilterRequest;
 import com.stitch.model.dto.ProductRequest;
 import com.stitch.model.dto.ProductUpdateRequest;
 import com.stitch.service.ProductService;
@@ -30,6 +31,15 @@ public class ProductController {
     public ProductDto createProduct(@Argument("productRequest")ProductRequest productRequest){
         try {
             return productService.createProduct(productRequest);
+        }catch (StitchException e){
+            throw new StitchException(e.getMessage());
+        }
+    }
+
+    @MutationMapping(value = "togglePublishProduct")
+    public boolean togglePublishProduct(@Argument("productId")String productId){
+        try {
+            return productService.togglePublishProduct(productId);
         }catch (StitchException e){
             throw new StitchException(e.getMessage());
         }
@@ -62,8 +72,8 @@ public class ProductController {
         }
     }
 
-    @QueryMapping(value = "getProductByVendor")
-    public PaginatedResponse<List<ProductDto>> getProductByVendor(@Argument("productId") String vendorId,
+    @QueryMapping(value = "getProductsByVendorId")
+    public PaginatedResponse<List<ProductDto>> getProductsByVendorId(@Argument("vendorId") String vendorId,
                                                                   @Argument("page") Optional<Integer> page,
                                                                   @Argument("size") Optional<Integer> size
 
@@ -84,6 +94,13 @@ public class ProductController {
         }catch (StitchException e){
             throw new StitchException(e.getMessage());
         }
+    }
+
+    @QueryMapping(value = "getAllProductsBy")
+    public PaginatedResponse<List<ProductDto>> getAllProductsBy(
+            @Argument("productFilterRequest") ProductFilterRequest productFilterRequest
+    ) {
+        return productService.fetchAllProducts(productFilterRequest);
     }
 
 

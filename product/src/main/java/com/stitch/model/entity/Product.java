@@ -2,6 +2,7 @@ package com.stitch.model.entity;
 
 import com.stitch.commons.model.entity.BaseEntity;
 import com.stitch.model.ProductCategory;
+import com.stitch.model.enums.PublishStatus;
 import com.stitch.user.model.entity.BodyMeasurement;
 import com.stitch.user.model.entity.Vendor;
 import jakarta.persistence.*;
@@ -19,6 +20,21 @@ public class Product extends BaseEntity {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "short_description")
+    private String shortDescription;
+
+    @Column(name = "long_description")
+    private String longDescription;
+
+    @Column(name = "material_used")
+    private String materialUsed;
+
+    @Column(name = "ready_in")
+    private String readyIn;
+
+    @Column(name = "selling_price")
+    private BigDecimal sellingPrice;
 
     @Column(name = "code")
     private String code;
@@ -49,8 +65,15 @@ public class Product extends BaseEntity {
     private String country;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "vendor_id", referencedColumnName = "id")
+    @JoinColumn(name = "vendor_id", referencedColumnName = "vendor_id")
     private Vendor vendor;
+
+    @Column(name = "publish_status",  nullable = false)
+    @Enumerated(EnumType.STRING)
+    private PublishStatus publishStatus;
+
+    @Column(name = "discount")
+    private BigDecimal discount;
 
 }
 
