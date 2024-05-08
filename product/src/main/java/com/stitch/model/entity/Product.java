@@ -74,6 +74,5 @@ public class Product extends BaseEntity {
 
     @Column(name = "discount")
     private BigDecimal discount;
-
 }
 

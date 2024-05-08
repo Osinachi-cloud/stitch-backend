@@ -24,6 +24,7 @@ import com.stitch.user.model.entity.Vendor;
 import com.stitch.user.repository.VendorRepository;
 import jakarta.servlet.ServletRequest;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -95,12 +96,21 @@ public class ProductServiceImpl implements ProductService {
         product.setVendor(vendor);
         product.setPublishStatus(PublishStatus.valueOf(productRequest.getPublishStatus()));
 
+        if(Objects.nonNull(productRequest.getProductImage())){
+            byte[] imageBytes = Base64.decodeBase64(productRequest.getProductImage());
+            String base64EncodedImage = Base64.encodeBase64String(imageBytes);
+            product.setProductImage(base64EncodedImage);
+        }
+
         Product savedProduct = productRepository.save(product);
 
         log.info("saved Product : {}", savedProduct);
 
         return convertProductToDto(savedProduct);
     }
+
+
+
 
     public  void validateProductRequest(ProductRequest productRequest){
 
