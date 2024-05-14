@@ -1,4 +1,7 @@
 FROM maven:3.8.7-openjdk-18 AS build
+EXPOSE 8080
+ADD target/stitch.jar stitch.jar
+ENTRYPOINT ["java", "-jar", "/stitch.jar"]
 WORKDIR /build
 COPY pom.xml .
 RUN mvn dependency:go-offline
@@ -12,7 +15,7 @@ ARG APP_VERSION=1.0.0
 WORKDIR /build
 COPY --from=build /build/target/stitch*.jar /app/
 
-EXPOSE 8085
+#EXPOSE 8085
 
 ENV DB_URL=jdbc:postgresql://postgres-sql-stitch:5432/stitch
 ENV MAILDEV_URL=localhost

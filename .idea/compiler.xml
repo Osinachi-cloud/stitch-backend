@@ -28,7 +28,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="Order" options="-parameters" />
-      <module name="billers" options="" />
+      <module name="billers" options="-parameters" />
       <module name="commons" options="-parameters" />
       <module name="currency" options="-parameters" />
       <module name="gateway" options="-parameters" />
@@ -36,7 +36,7 @@
       <module name="payment" options="-parameters" />
       <module name="product" options="-parameters" />
       <module name="psp" options="-parameters" />
-      <module name="stitch-backend" options="-parameters" />
+      <module name="stitch-backend" options="" />
       <module name="user" options="-parameters" />
       <module name="wallet" options="-parameters" />
     </option>

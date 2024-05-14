@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="08636b1d-24fc-4130-803a-464da45dbbe3" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/src/main/java/com/stitch/service/serviceImpl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/product/src/main/java/com/stitch/service/serviceImpl/ProductServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,20 +38,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;body__measurement&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;corretto-17 (3)&quot;,
-    &quot;last_directory_selection&quot;: &quot;/Users/user/Desktop/my-builds/stitch/stitch-backend/Order/src/main/java/com/stitch/service&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/user/Desktop/my-builds/stitch/stitch-backend/gateway/src/main/resources&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.32960895&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "jdk.selected.JAVA_MODULE": "corretto-17 (3)",
+    "last_directory_selection": "/Users/user/Desktop/my-builds/stitch/stitch-backend/Order/src/main/java/com/stitch/service",
+    "last_opened_file_path": "/Users/user/Desktop/my-builds/stitch/stitch-backend/gateway/src/main/resources",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.32960895",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.stitch.model.dto" />
