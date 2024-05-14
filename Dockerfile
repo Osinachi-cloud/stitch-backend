@@ -1,12 +1,34 @@
+#FROM maven:3.8.7-openjdk-18 AS build
+#EXPOSE 8080
+#ADD gateway/target/stitch.jar stitch.jar
+#ENTRYPOINT ["java", "-jar", "/stitch.jar"]
+#WORKDIR /build
+#COPY pom.xml .
+## RUN mvn dependency:go-offline
+#COPY gateway/src ./src
+#RUN mvn clean package -DskipTests
+
+
+
 FROM maven:3.8.7-openjdk-18 AS build
 EXPOSE 8080
-ADD gateway/target/stitch.jar stitch.jar
-ENTRYPOINT ["java", "-jar", "/stitch.jar"]
+
+# Copy the entire parent directory that contains the pom.xml file and the gateway module
+COPY . .
+
+# Set the working directory to the root of the project
 WORKDIR /build
-COPY pom.xml .
-# RUN mvn dependency:go-offline
-COPY gateway/src ./src
+
+# Run the Maven build command
 RUN mvn clean package -DskipTests
+
+# Copy the built JAR file to the root of the Docker image
+COPY gateway/target/stitch.jar stitch.jar
+
+# Set the entrypoint for the Docker image
+ENTRYPOINT ["java", "-jar", "/stitch.jar"]
+
+
 
 #
 #FROM amazoncorretto:17
