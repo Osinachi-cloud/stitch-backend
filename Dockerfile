@@ -14,10 +14,13 @@ FROM maven:3.8.7-openjdk-18 AS build
 EXPOSE 8080
 
 # Copy the entire parent directory that contains the pom.xml file and the gateway module
-COPY . .
+#COPY . .
+
+ADD gateway/target/stitch.jar stitch.jar
+
 
 # Set the working directory to the root of the project
-WORKDIR /build
+WORKDIR /
 
 # Run the Maven build command
 RUN mvn clean package -DskipTests
