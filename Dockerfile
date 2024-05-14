@@ -4,7 +4,7 @@ ADD gateway/target/stitch.jar stitch.jar
 ENTRYPOINT ["java", "-jar", "/stitch.jar"]
 WORKDIR /build
 COPY pom.xml .
-RUN mvn dependency:go-offline
+# RUN mvn dependency:go-offline
 COPY gateway/src ./src
 RUN mvn clean package -DskipTests
 
