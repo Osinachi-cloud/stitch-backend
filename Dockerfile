@@ -14,8 +14,8 @@ FROM maven:3.8.7-openjdk-18 AS build
 EXPOSE 8080
 WORKDIR /app
 COPY pom.xml .
-RUN mvn dependency:go-offline
-COPY user/src user/src
+RUN #mvn dependency:go-offline
+COPY gateway/src gateway/src
 RUN mvn clean package -DskipTests
 
 
