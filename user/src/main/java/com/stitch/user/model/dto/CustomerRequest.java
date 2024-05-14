@@ -1,9 +1,7 @@
 package com.stitch.user.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.stitch.currency.model.enums.Currency;
+import lombok.*;
 
 @Data
 @Builder
@@ -18,5 +16,8 @@ public class CustomerRequest {
     private String password;
     private String country;
     private DeviceDto device;
-
+    private String profileImage;
+    private String currency;
+    @NonNull
+    private String username;
 }

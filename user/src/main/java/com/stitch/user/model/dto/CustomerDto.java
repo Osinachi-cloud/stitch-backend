@@ -32,7 +32,7 @@ public class CustomerDto implements Serializable {
     private boolean saveCard;
 
     private boolean enablePush;
-
+    private String profileImage;
 
     public CustomerDto(Customer customer){
         this.customerId = customer.getCustomerId();
@@ -45,6 +45,7 @@ public class CustomerDto implements Serializable {
         this.hasPin = customer.getPin() != null;
         this.saveCard = customer.isSaveCard();
         this.enablePush = customer.isEnablePush();
+        this.profileImage = customer.getProfileImage();
     }
 
 

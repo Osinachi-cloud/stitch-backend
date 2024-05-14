@@ -12,6 +12,11 @@ import jakarta.persistence.*;
 @Table(name = "customer")
 public class Customer extends User {
 
+    @Column(name = "username", unique = true, nullable = false)
+    private String username;
+
+    @Column(name = "profile_image")
+    private String profileImage;
 
     @Column(name = "customer_id", unique = true, nullable = false)
     private String customerId;
@@ -50,5 +55,8 @@ public class Customer extends User {
     @JoinTable(name = "customer_identity_document", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "identity_document_id"))
     private IdentityDocument identityDocument;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "body_measurement_id", referencedColumnName = "id")
+    private BodyMeasurement bodyMeasurement;
 
 }

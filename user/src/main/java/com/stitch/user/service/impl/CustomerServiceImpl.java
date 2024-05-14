@@ -1,6 +1,7 @@
 package com.stitch.user.service.impl;
 
 import com.stitch.commons.enums.ResponseStatus;
+import com.stitch.commons.exception.StitchException;
 import com.stitch.commons.model.dto.Response;
 import com.stitch.commons.util.NumberUtils;
 import com.stitch.commons.util.ResponseUtils;
@@ -14,6 +15,7 @@ import com.stitch.user.exception.UserException;
 import com.stitch.user.exception.UserNotFoundException;
 import com.stitch.user.model.dto.CustomerDto;
 import com.stitch.user.model.dto.CustomerRequest;
+import com.stitch.user.model.dto.CustomerUpdateRequest;
 import com.stitch.user.model.dto.PasswordResetRequest;
 import com.stitch.user.model.entity.ContactVerification;
 import com.stitch.user.model.entity.Customer;
@@ -25,6 +27,7 @@ import com.stitch.user.service.PasswordService;
 import com.stitch.user.util.UserValidationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,8 +35,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 
 import java.time.temporal.ChronoUnit;
-import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+
+import static com.stitch.user.util.CountryUtils.getCountryCodeFromEndpoint;
+import static com.stitch.user.util.CountryUtils.getCountryNameFromEndpoint;
 
 
 @Service
@@ -69,6 +75,12 @@ public class CustomerServiceImpl implements CustomerService {
 
         log.debug("Creating customer with request: {}", customerRequest);
 
+        String country = getCountryNameFromEndpoint(getCountryCodeFromEndpoint());
+
+        customerRequest.setCountry(country);
+
+        log.debug("Creating customer with request: {}", customerRequest);
+
         validate(customerRequest);
 
         Customer customer = new Customer();
@@ -76,9 +88,16 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setFirstName(customerRequest.getFirstName());
         customer.setLastName(customerRequest.getLastName());
         customer.setEmailAddress(customerRequest.getEmailAddress());
+        customer.setUsername(customerRequest.getUsername());
         customer.setPhoneNumber(customerRequest.getPhoneNumber());
-        customer.setCountry(customerRequest.getCountry());
+        customer.setCountry(country);
         customer.setPassword(passwordService.encode(customerRequest.getPassword()));
+        if(Objects.nonNull(customerRequest.getProfileImage())){
+            byte[] imageBytes = Base64.decodeBase64(customerRequest.getProfileImage());
+            String base64EncodedImage = Base64.encodeBase64String(imageBytes);
+            customer.setProfileImage(base64EncodedImage);
+        }
+
         if (customerRequest.getDevice() != null) {
             customer.setDevice(new Device(customerRequest.getDevice()));
         }
@@ -89,16 +108,111 @@ public class CustomerServiceImpl implements CustomerService {
 
             log.info("Created new customer with ID: {}", newCustomer.getCustomerId());
 
-            CustomerDto customerDto = new CustomerDto(newCustomer);
+            //            notificationService.welcome(new String[]{customer.getEmailAddress()}, customer.getFirstName());
 
-//            notificationService.welcome(new String[]{customer.getEmailAddress()}, customer.getFirstName());
-
-            return customerDto;
+            return new CustomerDto(newCustomer);
         } catch (Exception e){
             log.error("Error creating customer", e);
             throw new UserException("Failed to create customer", e);
         }
     }
+
+    @Override
+    public CustomerDto updateCustomer(CustomerUpdateRequest customerRequest, String emailAddress) {
+
+        Optional<Customer> existingCustomer = customerRepository.findByEmailAddress(emailAddress);
+
+        if (existingCustomer.isEmpty()) {
+            throw new UserException(ResponseStatus.EMAIL_ADDRESS_NOT_FOUND);
+        }
+
+        Customer customer = existingCustomer.get();
+        customer.setFirstName(customerRequest.getFirstName());
+        customer.setLastName(customerRequest.getLastName());
+        customer.setCountry(customerRequest.getCountry());
+
+        try {
+
+            Customer newCustomer = customerRepository.saveAndFlush(customer);
+
+            log.info("Updated customer with ID: {}", newCustomer.getCustomerId());
+
+            return new CustomerDto(newCustomer);
+        } catch (Exception e){
+            log.error("Error creating customer", e);
+            throw new UserException("Failed to create customer", e);
+        }
+
+    }
+
+//    @Override
+//    public Response updateCustomerProfileImage(String profileImage, String emailAddress) {
+//        log.info("email address value: {}", emailAddress);
+//
+//        log.info("profileImage: {}", profileImage);
+//
+//        Optional<Customer> existingCustomer = customerRepository.findByEmailAddress(emailAddress);
+//
+//        if (existingCustomer.isEmpty()) {
+//            throw new StitchException("customer does not exist");
+//        }
+//        log.info("existingCustomer: {}", existingCustomer.get().getFirstName());
+//
+//
+//        Customer customer = existingCustomer.get();
+//
+//        if(profileImage != null && !profileImage.isEmpty()){
+//            byte[] imageBytes = Base64.decodeBase64(profileImage);
+//            String base64EncodedImage = Base64.encodeBase64String(imageBytes);
+//            customer.setProfileImage(base64EncodedImage);
+//        }else {
+//            throw new StitchException("image field can not be empty");
+//        }
+//
+//        try {
+//
+//            Customer newCustomer = customerRepository.saveAndFlush(customer);
+//
+//            log.info("Updated customer with ID: {}", newCustomer.getCustomerId());
+//
+//            return ResponseUtils.createSuccessResponse("profile image updated successfully");
+//        } catch (Exception e){
+//            log.error("Error creating customer", e);
+//            throw new UserException("Failed to create customer", e);
+//        }
+//
+//    }
+
+
+    @Override
+    public Response updateCustomerProfileImage(String profileImage, String emailAddress) {
+        log.info("email address value: {}", emailAddress);
+//        log.info("profileImage: {}", profileImage)
+            Optional<Customer> existingCustomer = customerRepository.findByEmailAddress(emailAddress);
+
+            if (existingCustomer.isEmpty()) {
+                throw new UserException("customer does not exist");
+            }
+            log.info("existingCustomer: {}", existingCustomer.get().getFirstName());
+
+            Customer customer = existingCustomer.get();
+
+            if (profileImage != null && !profileImage.isEmpty()) {
+                byte[] imageBytes = Base64.decodeBase64(profileImage);
+                String base64EncodedImage = Base64.encodeBase64String(imageBytes);
+                customer.setProfileImage(base64EncodedImage);
+                Customer newCustomer = customerRepository.saveAndFlush(customer);
+
+                log.info("Updated customer with ID: {}", newCustomer.getCustomerId());
+
+                return ResponseUtils.createSuccessResponse("profile image updated successfully");
+
+
+            } else {
+                throw new StitchException("image field can not be empty");
+            }
+    }
+
 
 
     private void validate(CustomerRequest customerRequest) {
@@ -120,8 +234,19 @@ public class CustomerServiceImpl implements CustomerService {
         }
         Optional<Customer> existingCustomer = customerRepository.findByEmailAddress(customerRequest.getEmailAddress());
 
+        Optional<Customer> existingCustomerByUsername = customerRepository.findByUsername(customerRequest.getUsername());
+
+        if(existingCustomer.isPresent()) {
+            log.info("customer ===>>> :{}", existingCustomer.get().getEmailAddress());
+        }
+
+
         if (existingCustomer.isPresent()) {
             throw new UserException(ResponseStatus.EMAIL_ADDRESS_EXISTS);
+        }
+
+        if (existingCustomerByUsername.isPresent()) {
+            throw new UserException(ResponseStatus.USERNAME_EXISTS);
         }
 
         ContactVerification contactVerification = verificationRepository.findFirstByEmailAddressOrderByDateCreatedDesc(customerRequest.getEmailAddress());
@@ -163,13 +288,15 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findByCustomerId(customerId).orElseThrow(() -> new UserNotFoundException(String.format("Customer [%s] not found", customerId)));
     }
 
-    @Cacheable(value = "customerCache")
+//    @Cacheable(value = "customerCache")
     @Override
     public CustomerDto getCustomerByEmail(String emailAddress) {
 
+        System.out.println("got to login method" + emailAddress);
+
         log.debug("Getting customer with email address: {}", emailAddress);
         Customer customer = customerRepository.findByEmailAddress(emailAddress)
-                .orElseThrow(() -> new UserNotFoundException(String.format("Customer [%s] not found", emailAddress)));
+                .orElseThrow(() -> new UserNotFoundException(String.format("Customer with this email [%s] not found", emailAddress)));
 
         CustomerDto customerDto = new CustomerDto();
         customerDto.setCustomerId(customer.getCustomerId());
@@ -179,8 +306,10 @@ public class CustomerServiceImpl implements CustomerService {
         customerDto.setPhoneNumber(customer.getPhoneNumber());
         customerDto.setCountry(customer.getCountry());
         customerDto.setEnabled(customer.isEnabled());
+        customerDto.setProfileImage(customer.getProfileImage());
         customerDto.setAccountLocked(customer.isAccountLocked());
         customerDto.setPassword(customer.getPassword());
+        customerDto.setProfileImage(customer.getProfileImage());
         customerDto.setSaveCard(customer.isSaveCard());
         customerDto.setEnablePush(customer.isEnablePush());
         customerDto.setHasPin(customer.getPin() != null);

@@ -5,6 +5,7 @@ import com.stitch.commons.model.dto.Response;
 //import com.stitch.notification.model.dto.InAppNotificationStatsResponse;
 import com.stitch.user.model.dto.CustomerDto;
 import com.stitch.user.model.dto.CustomerRequest;
+import com.stitch.user.model.dto.CustomerUpdateRequest;
 import com.stitch.user.model.dto.PasswordResetRequest;
 
 import java.util.List;
@@ -14,6 +15,9 @@ public interface CustomerService {
 
     CustomerDto createCustomer(CustomerRequest customerRequest);
 
+    CustomerDto updateCustomer(CustomerUpdateRequest customerRequest, String emailAddress);
+
+    Response updateCustomerProfileImage(String profileImage, String emailAddress);
 
     CustomerDto getCustomer(String customerId);
 

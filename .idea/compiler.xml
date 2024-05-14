@@ -7,15 +7,17 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="Order" />
         <module name="notification" />
+        <module name="product" />
         <module name="wallet" />
         <module name="payment" />
         <module name="currency" />
         <module name="billers" />
         <module name="psp" />
         <module name="user" />
-        <module name="gateway" />
         <module name="commons" />
+        <module name="gateway" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -25,13 +27,16 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Order" options="-parameters" />
       <module name="billers" options="" />
       <module name="commons" options="-parameters" />
       <module name="currency" options="-parameters" />
       <module name="gateway" options="-parameters" />
       <module name="notification" options="-parameters" />
       <module name="payment" options="-parameters" />
+      <module name="product" options="-parameters" />
       <module name="psp" options="-parameters" />
+      <module name="stitch-backend" options="-parameters" />
       <module name="user" options="-parameters" />
       <module name="wallet" options="-parameters" />
     </option>

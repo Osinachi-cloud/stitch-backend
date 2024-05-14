@@ -1,6 +1,7 @@
 package com.stitch.gateway.model;
 
 import com.stitch.user.model.dto.CustomerDto;
+import com.stitch.user.model.dto.VendorDto;
 import com.stitch.wallet.model.dto.WalletDto;
 import com.stitch.gateway.security.model.Token;
 import lombok.Data;
@@ -11,6 +12,7 @@ import java.util.List;
 public class LoginResponse {
 
     private String customerId;
+    private String vendorId;
     private String tier;
     private String country;
     private String password;
@@ -24,6 +26,7 @@ public class LoginResponse {
     private boolean enablePush;
     private String accessToken;
     private String refreshToken;
+    private String profileImage;
     private List<WalletDto> wallets;
 
     public LoginResponse(CustomerDto customer, Token token) {
@@ -39,5 +42,20 @@ public class LoginResponse {
         this.enablePush = customer.isEnablePush();
         this.accessToken = token.getAccessToken();
         this.refreshToken = token.getRefreshToken();
+        this.profileImage = customer.getProfileImage();
+    }
+
+
+    public LoginResponse(VendorDto vendorDto, Token token) {
+        this.vendorId = vendorDto.getVendorId();
+        this.tier = vendorDto.getTier();
+        this.country = vendorDto.getCountry();
+        this.firstName = vendorDto.getFirstName();
+        this.lastName = vendorDto.getLastName();
+        this.emailAddress = vendorDto.getEmailAddress();
+        this.phoneNumber = vendorDto.getPhoneNumber();
+        this.accessToken = token.getAccessToken();
+        this.refreshToken = token.getRefreshToken();
+        this.profileImage = vendorDto.getProfileImage();
     }
 }

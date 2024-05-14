@@ -1,32 +1,115 @@
-//package com.stitch.gateway.controller.product;
-//
-//
-//import com.exquisapps.billanted.billers.model.dtos.*;
-//import com.exquisapps.billanted.product.model.dto.CableInfoDto;
-//import com.exquisapps.billanted.product.model.dto.ProductCategoryDto;
-//import com.exquisapps.billanted.product.model.dto.ProviderDto;
-//import com.exquisapps.billanted.product.service.ProductService;
-//import org.springframework.graphql.data.method.annotation.Argument;
-//import org.springframework.graphql.data.method.annotation.QueryMapping;
-//import org.springframework.stereotype.Controller;
-//
-//import java.util.List;
-//
-//@Controller
-//public class ProductController {
-//
-//    private final ProductService productService;
-//
-//    public ProductController(ProductService productService) {
-//        this.productService = productService;
-//    }
-//
-//
+package com.stitch.gateway.controller.product;
+
+
+import com.stitch.commons.exception.StitchException;
+import com.stitch.commons.model.dto.PaginatedResponse;
+import com.stitch.commons.model.dto.Response;
+import com.stitch.model.dto.ProductDto;
+import com.stitch.model.dto.ProductFilterRequest;
+import com.stitch.model.dto.ProductRequest;
+import com.stitch.model.dto.ProductUpdateRequest;
+import com.stitch.service.ProductService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.stereotype.Controller;
+
+import java.util.List;
+import java.util.Optional;
+
+@Controller
+public class ProductController {
+
+    private final ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
+
+    @MutationMapping(value = "createProduct")
+    public ProductDto createProduct(@Argument("productRequest")ProductRequest productRequest){
+        try {
+            return productService.createProduct(productRequest);
+        }catch (StitchException e){
+            throw new StitchException(e.getMessage());
+        }
+    }
+
+    @MutationMapping(value = "togglePublishProduct")
+    public boolean togglePublishProduct(@Argument("productId")String productId){
+        try {
+            return productService.togglePublishProduct(productId);
+        }catch (StitchException e){
+            throw new StitchException(e.getMessage());
+        }
+    }
+
+    @MutationMapping(value = "updateProduct")
+    public ProductDto updateProduct(@Argument("productUpdateRequest") ProductUpdateRequest productRequest, @Argument("productId") String productId){
+        try {
+            return productService.updateProduct(productRequest, productId);
+        }catch (StitchException e){
+            throw new StitchException(e.getMessage());
+        }
+    }
+
+    @MutationMapping(value = "deleteProduct")
+    public void deleteProduct(@Argument("productId") String productId){
+        try {
+             productService.deleteProduct(productId);
+        }catch (StitchException e){
+            throw new StitchException(e.getMessage());
+        }
+    }
+
+    @QueryMapping(value = "getProductByProductId")
+    public ProductDto getProductByProductId(@Argument("productId") String productId){
+        try {
+            return productService.getProductByProductId(productId);
+        }catch (StitchException e){
+            throw new StitchException(e.getMessage());
+        }
+    }
+
+    @QueryMapping(value = "getProductsByVendorId")
+    public PaginatedResponse<List<ProductDto>> getProductsByVendorId(@Argument("vendorId") String vendorId,
+                                                                  @Argument("page") Optional<Integer> page,
+                                                                  @Argument("size") Optional<Integer> size
+
+    ){
+        PageRequest pr = PageRequest.of(page.orElse(0), size.orElse(10));
+
+        try {
+            return productService.getProductByVendor(vendorId, pr);
+        }catch (StitchException e){
+            throw new StitchException(e.getMessage());
+        }
+    }
+
+    @MutationMapping(value = "updateProductProfileImage")
+    public Response updateProductProfileImage(@Argument("productImage") String productImage, @Argument("productId") String productId){
+        try {
+            return productService.updateProductProfileImage(productImage, productId);
+        }catch (StitchException e){
+            throw new StitchException(e.getMessage());
+        }
+    }
+
+    @QueryMapping(value = "getAllProductsBy")
+    public PaginatedResponse<List<ProductDto>> getAllProductsBy(
+            @Argument("productFilterRequest") ProductFilterRequest productFilterRequest
+    ) {
+        return productService.fetchAllProducts(productFilterRequest);
+    }
+
+
+
 //    @QueryMapping(value = "getAllProductCategories")
 //    public List<ProductCategoryDto> getProductCategories() {
 //        return productService.getAllProductCategories();
 //    }
-//
+
 //    @QueryMapping(value = "getActiveProductCategories")
 //    public List<ProductCategoryDto> getActiveProductCategories() {
 //        return productService.getActiveProductCategories();
@@ -41,31 +124,5 @@
 //    public List<ProviderDto> getActiveProviders(@Argument("categoryName") String categoryName) {
 //        return productService.getActiveProvidersByCategoryName(categoryName);
 //    }
-//
-//
-//    @QueryMapping(value = "getDataPackages")
-//    public DataPlanDto getDataPlan(@Argument("productCode") String productCode) {
-//        return  productService.getDataPackages(productCode);
-//    }
-//
-//    @QueryMapping(value = "getCableTvPackages")
-//    public VTPassCablePackageDto getCableTvPackage(@Argument("cableTVType") String cableTVType) {
-//        return  productService.getCableTvPackages(cableTVType);
-//    }
-//
-//
-//    @QueryMapping(value = "cableInfoEnquiry")
-//    public VTPassCableInfoResponse cableInfoEnquiry(@Argument("cableData") CableInfoDto cableInfoDto) {
-//        return  productService.cableInfoEnquiry(cableInfoDto.getServiceID(), cableInfoDto.getSmartCard());
-//    }
-//
-//    @QueryMapping(value = "verifyInternetUserEmail")
-//    public VTPassDataEmailVerificationResponse verifyInternetUserEmail(@Argument("emailVerificationRequest") InternetEmailVerificationRequest internetEmailVerificationRequest) {
-//        return  productService.verifyInternetUserEmail(internetEmailVerificationRequest.getServiceId(), internetEmailVerificationRequest.getEmailAddress());
-//    }
-//
-//    @QueryMapping(value = "meterNumberValidation")
-//    public MeterValidationResponse meterNumberValidation(@Argument("meterData") ElectricityMeterValidationRequest request) {
-//        return  productService.validateMeterNumber(request);
-//    }
-//}
+
+}

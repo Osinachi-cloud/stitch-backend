@@ -3,11 +3,60 @@ scalar BigDecimal
 
 type Query {
     customer(customerId: ID): CustomerDto
+    customerDetails(emailAddress: String): CustomerDto
     getCountries: [CountryDto]
     getExchangeRates: [CurrencyDto]
     verifyInternetUserEmail(emailVerificationRequest: InternetEmailVerificationRequest):VTPassDataEmailVerificationResponse
     getWallets: [WalletDto]
     verifyResetPinCode(code: String): Response
+    fetchCustomerOrdersBy(productId: String, customerId:String , status: String, orderId: String, productCategory: String, vendorId: String, page: Int, size: Int): OrderPagination
+    getProductOrderStatsByCustomer (customerId: String): ProductOrderStatistics
+    getProductByProductId(productId: String): ProductDto
+    getProductsByVendorId(vendorId: String, page: Int, size: Int) : ProductPagination
+
+    getAllProductsBy(productFilterRequest : ProductFilterRequest): ProductDtoPagination
+
+}
+
+type ProductDtoPagination {
+    page: Int
+    size: Int
+    total: Int
+    data: [ProductDto!]
+}
+
+type ProductPagination {
+    page: Int
+    size: Int
+    total: Int
+    data: [ProductDto!]
+}
+
+
+type ProductOrderStatistics{
+    allOrdersCount: Int
+    processingOrdersCount:Int
+    cancelledOrdersCount:Int
+    failedOrdersCount:Int
+    completedOrdersCount:Int
+}
+
+type OrderPagination {
+    page: Int
+    size: Int
+    total: Int
+    data: [Order]
+}
+
+type Order {
+    orderId: String
+    vendorId : String
+    amount: Int
+    status: String
+    dateCreated: String
+    currency: Currency
+    customerId:String
+
 }
 
 type VTPassDataEmailVerificationResponse {
@@ -49,11 +98,13 @@ type CustomerDto {
     firstName: String
     lastName: String
     emailAddress: String
+    username:String
     phoneNumber: String
     tier: String
     country: String
     hasPin: Boolean
     enablePush: Boolean
+    profileImage:String
 
 }
 

@@ -1,0 +1,48 @@
+services:
+  postgres:
+    container_name: postgres-sql-stitch
+    image: postgres
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: stitch
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - 5432:5432
+    networks:
+      - spring-demo
+    restart: unless-stopped
+  mail-dev:
+    container_name: mail-dev-stitch
+    image: maildev/maildev
+    ports:
+      - 1080:1080
+      - 1025:1025
+  stitch-api:
+    container_name: stitch-api
+    image: stitch/stitch:1.0.8
+    ports:
+      - 8088:8088
+    networks:
+      - spring-demo
+    depends_on:
+      - postgres
+
+  stitch-ui:
+    container_name: stitch-ui
+    image: stitch/stitch-ui:1.0.0
+    ports:
+      - 8080:80
+    networks:
+      - spring-demo
+    depends_on:
+      - stitch-api
+networks:
+  spring-demo:
+    driver: bridge
+
+volumes:
+  postgres:
+    driver: local

@@ -22,12 +22,16 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 
 @Slf4j
 @Controller
+@CrossOrigin(origins = "http://localhost:4200/login")
 public class CustomerController {
 
     private final CustomerService customerService;
@@ -49,9 +53,9 @@ public class CustomerController {
     @MutationMapping(value = "createCustomer")
     public CustomerDto createCustomer(@Argument("customerRequest") CustomerRequest customerRequest) {
         try {
-            String currency = countryService.getCurrencyByCountryName(customerRequest.getCountry());
+//            String currency = countryService.getCurrencyByCountryName(customerRequest.getCountry());
             CustomerDto customer = customerService.createCustomer(customerRequest);
-            walletService.createWallet(new WalletRequest(customer.getCustomerId(), currency, true));
+            walletService.createWallet(new WalletRequest(customer.getCustomerId(), customerRequest.getCurrency(), true));
             return customer;
         } catch (StitchException exception) {
             throw exception;
@@ -62,6 +66,27 @@ public class CustomerController {
         }
     }
 
+    @MutationMapping(value = "updateCustomer")
+    public CustomerDto updateCustomer(@Argument("customerRequest") CustomerUpdateRequest customerRequest,
+                                      @Argument("emailAddress") String emailAddress) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        try {
+            return customerService.updateCustomer(customerRequest, emailAddress);
+        }
+        catch (Exception e) {
+            log.error("Error updating customer: {}" ,customerRequest, e);
+            throw new StitchException();
+        }
+    }
+
+    @MutationMapping(value = "updateCustomerProfileImage")
+    public Response updateCustomerProfileImage(@Argument("profileImage") String profileImage,
+                                      @Argument("emailAddress") String emailAddress) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            return customerService.updateCustomerProfileImage(profileImage, emailAddress);
+    }
 
     @Unsecured
     @MutationMapping(value = "requestPasswordReset")
@@ -81,10 +106,15 @@ public class CustomerController {
         return customerService.validatePasswordResetCode(passwordResetRequest);
     }
 
+//    @Unsecured
+//    @MutationMapping(value = "vendorLogin")
+//    public LoginResponse vendorLogin(@Argument("loginRequest") LoginRequest loginRequest) {
+//        return authenticationService.authenticateVendor(loginRequest);
+//    }
 
     @Unsecured
-    @MutationMapping(value = "login")
-    public LoginResponse login(@Argument("loginRequest") LoginRequest loginRequest) {
+    @MutationMapping(value = "customerLogin")
+    public LoginResponse customerLogin(@Argument("loginRequest") LoginRequest loginRequest) {
         return authenticationService.authenticate(loginRequest);
     }
 
@@ -93,7 +123,6 @@ public class CustomerController {
     public List<WalletDto> wallets(LoginResponse loginResponse) {
         return walletService.getAllWallets(loginResponse.getCustomerId());
     }
-
 
     @Unsecured
     @MutationMapping(value = "requestToken")
@@ -105,6 +134,11 @@ public class CustomerController {
     @QueryMapping(value = "customer")
     public CustomerDto getCustomer(@Argument("customerId") String customerId) {
         return customerService.getCustomer(customerId);
+    }
+
+    @QueryMapping(value = "customerDetails")
+    public CustomerDto getCustomerByEmailAddress(@Argument("emailAddress") String emailAddress) {
+        return customerService.getCustomerByEmail(emailAddress);
     }
 
 

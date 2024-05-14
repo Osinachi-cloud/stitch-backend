@@ -22,15 +22,12 @@ public class WalletRequest {
     private String description;
     private Boolean isDefault;
 
-
     public WalletRequest(String customerId, String currency) {
-
         this.customerId = customerId;
         this.currency = currency;
     }
 
     public WalletRequest(String customerId, String currency, Boolean isDefault) {
-
         this.customerId = customerId;
         this.currency = currency;
         this.isDefault = isDefault;

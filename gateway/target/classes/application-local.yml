@@ -48,4 +48,8 @@ graphql:
       initial-settings:
         theme: dracula
 
-
+cors:
+  allowed-credential: true
+  allowed-origin: "http://localhost:4200"
+  allowed-header: "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  allowed-method: "GET, POST, PUT, DELETE, OPTIONS"

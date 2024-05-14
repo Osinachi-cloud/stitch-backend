@@ -2,9 +2,12 @@
 
 type Mutation{
     createCustomer(customerRequest: CustomerRequest): CustomerDto
+    updateCustomer(customerRequest: CustomerUpdateRequest, emailAddress: String): CustomerDto
+    updateCustomerProfileImage(profileImage: String, emailAddress: String): Response
     verifyEmail(emailAddress: String): VerificationResponse
     validateEmailCode(verificationRequest: EmailVerificationRequest): VerificationResponse
-    login(loginRequest: LoginRequest): LoginResponse
+    customerLogin(loginRequest: LoginRequest): LoginResponse
+    vendorLogin(loginRequest: LoginRequest): LoginResponse
     requestToken(refreshToken: String): Token
     requestPasswordReset(emailAddress: String): Response
     validateResetCode(resetCodeValidationRequest: ResetCodeValidationRequest): Response
@@ -13,6 +16,109 @@ type Mutation{
     resetPinInitiateEmail(phoneNumber: String): Response
     resetPin(pin: String): Response
     allowSaveCard(savedCard: Boolean): Response
+    createBodyMeasurement(bodyMeasurementRequest: BodyMeasurementRequest) : BodyMeasurementDto
+    updateBodyMeasurement(bodyMeasurementRequest: BodyMeasurementRequest): BodyMeasurementDto
+    createProductOrder(productOrderRequest: ProductOrderRequest) : ProductOrderDto
+    createProduct(productRequest:ProductRequest): ProductDto
+    updateProduct(productUpdateRequest: ProductUpdateRequest, productId: String): ProductDto
+    deleteProduct(productId:String): Response
+    updateProductProfileImage(productImage: String, productId: String ): Response
+    togglePublishProduct(productId : String): Boolean
+}
+
+type ProductOrderDto{
+
+    status: String
+    referenceNumber: String
+    transactionId: String
+    message: String
+    clientSecret: String
+    paymentId: String
+    productCategoryName: String
+    vendor: String
+    paymentMode: String
+    amount: BigDecimal
+    customerId: String
+    customerName: String
+    email: String
+    cardId: String
+    txRef: String
+    saveCard: Boolean
+    currency: String
+    narration: String
+    walletId: String
+    pin: String
+    psp: String
+    saveBeneficiary: Boolean
+    number: Int
+    startTime: String
+    orderId: String
+}
+
+input ProductOrderRequest {
+
+    orderId: String
+    customerId: String
+    productId: String
+    productCategoryName: String
+    vendorId: String
+    paymentMode: PaymentMode
+    currency: Currency
+    amount: BigDecimal
+    status: OrderStatus
+    narration: String
+
+}
+
+enum PaymentMode {
+    FLUTTERWAVE
+    PAYSTACK
+}
+
+enum OrderStatus {
+    PROCESSING
+    COMPLETED
+    FAILED
+    REJECTED
+}
+
+enum Currency {
+    NGN
+    USD
+}
+
+type BodyMeasurementDto {
+    neck:Int
+    shoulder:Int
+    chest:Int
+    tummy:Int
+    hipWidth:Int
+    neckToHipLength:Int
+    shortSleeveAtBiceps:Int
+    midSleeveAtElbow:Int
+    longSleeveAtWrist:Int
+    waist:Int
+    thigh:Int
+    knee:Int
+    ankle:Int
+    trouserLength:Int
+}
+
+input BodyMeasurementRequest {
+    neck:Int
+    shoulder:Int
+    chest:Int
+    tummy:Int
+    hipWidth:Int
+    neckToHipLength:Int
+    shortSleeveAtBiceps:Int
+    midSleeveAtElbow:Int
+    longSleeveAtWrist:Int
+    waist:Int
+    thigh:Int
+    knee:Int
+    ankle:Int
+    trouserLength:Int
 }
 
 #input TransactionRequest {
@@ -68,10 +174,18 @@ input CustomerRequest {
     firstName: String!
     lastName: String!
     emailAddress: String!
+    username:String!
     phoneNumber: String!
-    country: String!
+#    country: String!
     password: String!
     device: DeviceDto
+}
+
+input CustomerUpdateRequest {
+    firstName: String
+    lastName: String
+    country: String
+    profileImage: String
 }
 
 input DeviceDto {
@@ -84,6 +198,7 @@ input DeviceDto {
 
 type LoginResponse {
     customerId: ID
+    vendorId: ID
     firstName: String
     lastName: String
     emailAddress: String
@@ -96,6 +211,7 @@ type LoginResponse {
     accessToken: String
     refreshToken: String
     wallets: [WalletDto]
+    profileImage: String
 }
 
 input LoginRequest {
@@ -125,6 +241,72 @@ type VerificationResponse {
 #    enablePush: Boolean
 #
 #}
+
+
+input ProductUpdateRequest {
+    name: String
+    productImage: String
+    amount: BigDecimal
+    quantity: BigDecimal
+    category: String
+    fixedPrice: Boolean
+    code: String
+}
+
+input ProductRequest {
+    productId: String
+    vendorId: String
+    name: String
+    code: String
+    productImage: String
+    amount: BigDecimal
+    quantity: BigDecimal
+    category: String
+    fixedPrice: Boolean
+    country: String
+    discount: BigDecimal
+    publishStatus: String
+    shortDescription:String
+    longDescription:String
+    materialUsed:String
+    readyIn:String
+    sellingPrice:BigDecimal
+}
+
+type ProductDto {
+    name: String
+    code: String
+    productImage: String
+    amount: BigDecimal
+    quantity: BigDecimal
+    outOfStock: Boolean
+    category: String
+    provider: String
+    fixedPrice: Boolean
+    country: String
+    vendor: String
+    publishStatus: String
+    discount: BigDecimal
+    productId: String
+    shortDescription:String
+    longDescription:String
+    materialUsed:String
+    readyIn:String
+    sellingPrice:BigDecimal
+}
+
+input ProductFilterRequest {
+    page: Int
+    size: Int
+    name: String
+    code: String
+    outOfStock: Boolean
+    category: String
+    provider: String
+    vendorId: String
+    publishStatus: String
+    productId: String
+}
 
 
 
