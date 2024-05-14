@@ -16,7 +16,7 @@ WORKDIR /app
 COPY pom.xml .
 RUN #mvn dependency:go-offline
 COPY gateway/src gateway/src
-RUN mvn clean package -DskipTests
+RUN #mvn clean package -DskipTests
 
 
 
