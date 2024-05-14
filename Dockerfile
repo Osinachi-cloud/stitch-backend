@@ -1,6 +1,6 @@
 FROM maven:3.8.7-openjdk-18 AS build
 EXPOSE 8080
-ADD target/stitch.jar stitch.jar
+ADD gateway/target/stitch.jar stitch.jar
 ENTRYPOINT ["java", "-jar", "/stitch.jar"]
 WORKDIR /build
 COPY pom.xml .
