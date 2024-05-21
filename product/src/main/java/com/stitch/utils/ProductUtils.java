@@ -3,6 +3,7 @@ package com.stitch.utils;
 import com.stitch.model.dto.ProductDto;
 import com.stitch.model.dto.ProductRequest;
 import com.stitch.model.entity.Product;
+import com.stitch.model.entity.ProductLike;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
@@ -28,5 +29,6 @@ public class ProductUtils {
 
         return productDtoList;
     }
+
 
 }

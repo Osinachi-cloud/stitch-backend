@@ -24,6 +24,10 @@ type Mutation{
     deleteProduct(productId:String): Response
     updateProductProfileImage(productImage: String, productId: String ): Response
     togglePublishProduct(productId : String): Boolean
+    addProductLikes(productId : String): Response
+    deleteProductLike(productId : String): Response
+    addProductCart(productId : String): Response
+    deleteProductCart(productId : String): Response
 }
 
 type ProductOrderDto{
@@ -306,6 +310,11 @@ input ProductFilterRequest {
     vendorId: String
     publishStatus: String
     productId: String
+}
+
+input ProductLikeRequest {
+    page: Int
+    size: Int
 }
 
 

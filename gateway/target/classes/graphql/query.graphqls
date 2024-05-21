@@ -13,8 +13,11 @@ type Query {
     getProductOrderStatsByCustomer (customerId: String): ProductOrderStatistics
     getProductByProductId(productId: String): ProductDto
     getProductsByVendorId(vendorId: String, page: Int, size: Int) : ProductPagination
-
     getAllProductsBy(productFilterRequest : ProductFilterRequest): ProductDtoPagination
+    getAllProductLikes(productLikeRequest : ProductLikeRequest): ProductDtoPagination
+    getAllProductCart(productCartRequest : ProductLikeRequest): ProductDtoPagination
+
+
 
 }
 

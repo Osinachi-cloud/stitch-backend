@@ -8,8 +8,10 @@ com/stitch/gateway/model/ErrorResponse.class
 com/stitch/gateway/controller/user/CustomerController.class
 com/stitch/gateway/security/model/Token.class
 com/stitch/gateway/security/config/TokenAuthenticationFilterConfigurer.class
+com/stitch/model/dto/ProductLikeRequest.class
 com/stitch/gateway/security/model/VendorUserDetails.class
 com/stitch/gateway/security/model/Token$TokenBuilder.class
+com/stitch/gateway/controller/productLike/ProductLikeController.class
 com/stitch/gateway/controller/product/ProductController.class
 com/stitch/gateway/config/cors/WebConfig.class
 com/stitch/gateway/security/config/CustomUserDetailsServiceImpl.class
