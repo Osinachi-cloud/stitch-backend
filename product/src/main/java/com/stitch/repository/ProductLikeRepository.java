@@ -3,6 +3,7 @@ package com.stitch.repository;
 
 import com.stitch.model.entity.Product;
 import com.stitch.model.entity.ProductLike;
+import com.stitch.user.model.entity.Customer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,7 +15,7 @@ import java.util.Optional;
 
 @Repository
 public interface ProductLikeRepository extends JpaRepository<ProductLike, Long> {
-    Page<ProductLike> findProductLikesByCustomerId(String id, Pageable pageable);
+    Page<ProductLike> findProductLikesByCustomer(Customer customer, Pageable pageable);
 
     Optional<ProductLike> findByProductId(String productId);
 

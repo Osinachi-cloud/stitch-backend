@@ -12,6 +12,7 @@ import com.stitch.repository.ProductRepository;
 import com.stitch.service.ProductLikeService;
 import com.stitch.user.model.entity.Customer;
 import com.stitch.user.repository.CustomerRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class ProductLikeServiceImpl implements ProductLikeService {
 
     private final ProductLikeRepository productLikeRepository;
@@ -89,14 +91,23 @@ public class ProductLikeServiceImpl implements ProductLikeService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
+        Optional<Customer> customerOptional = customerRepository.findByEmailAddress(username);
+        if(customerOptional.isEmpty()){
+            throw new StitchException("Customer with Id : " + username + " does not exist");
+        }
+
+        Customer customer = customerOptional.get();
+
         Pageable pagerequest = PageRequest.of(page, size);
 
-        Page<ProductLike> productLikes = productLikeRepository.findProductLikesByCustomerId(username, pagerequest);
+         Page<ProductLike> productLikes = productLikeRepository.findProductLikesByCustomer(customer, pagerequest);
+
+         log.info("productLikes : {} " + customer.getCustomerId() + " ", productLikes.getContent());
 
         PaginatedResponse<List<ProductDto>> paginatedResponse = new PaginatedResponse<>();
         paginatedResponse.setPage(productLikes.getNumber());
         paginatedResponse.setSize(productLikes.getSize());
-        paginatedResponse.setTotal((int) productLikeRepository.getLikeCount(username));
+        paginatedResponse.setTotal((int) productLikeRepository.getLikeCount(customer.getCustomerId()));
         paginatedResponse.setData(convertProductLikeListToDto(productLikes.getContent()));
         return paginatedResponse;
     }
