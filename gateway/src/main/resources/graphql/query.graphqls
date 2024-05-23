@@ -16,6 +16,7 @@ type Query {
     getAllProductsBy(productFilterRequest : ProductFilterRequest): ProductDtoPagination
     getAllProductLikes(pageRequest : ProductPageRequest): ProductDtoPagination
     getCart(pageRequest : ProductPageRequest): CartDtoPagination
+    sumAmountByQuantityByCustomerId: BigDecimal
 
 }
 

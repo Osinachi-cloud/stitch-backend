@@ -5,6 +5,7 @@ import com.stitch.commons.model.dto.Response;
 import com.stitch.model.dto.CartDto;
 import com.stitch.model.dto.ProductDto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductCartService {
@@ -15,5 +16,9 @@ public interface ProductCartService {
     Response removeProductFromCart(String productId);
 
     PaginatedResponse<List<CartDto>> getCart(int page, int size);
+
+    BigDecimal sumAmountByQuantityByCustomerId();
+
+    Response clearCart();
 }
 

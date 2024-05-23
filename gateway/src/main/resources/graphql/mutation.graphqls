@@ -29,6 +29,7 @@ type Mutation{
     addProductCart(productId : String): Response
     deleteProductCart(productId : String): Response
     removeEntireProductFromCart(productId : String): Response
+    clearCart: Response
 }
 
 type ProductOrderDto{

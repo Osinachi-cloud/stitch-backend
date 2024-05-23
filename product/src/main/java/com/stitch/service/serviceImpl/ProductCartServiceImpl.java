@@ -5,7 +5,6 @@ import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.commons.model.dto.Response;
 import com.stitch.commons.util.ResponseUtils;
 import com.stitch.model.dto.CartDto;
-import com.stitch.model.dto.ProductDto;
 import com.stitch.model.entity.Product;
 import com.stitch.model.entity.ProductCart;
 import com.stitch.repository.ProductCartRepository;
@@ -21,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -169,5 +169,44 @@ public class ProductCartServiceImpl implements ProductCartService{
             productDtoList.add(cartDto);
         }
         return productDtoList;
+    }
+
+    @Override
+    public BigDecimal sumAmountByQuantityByCustomerId(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        Optional<Customer> customerOptional = customerRepository.findByEmailAddress(username);
+        if(customerOptional.isEmpty()){
+            throw new StitchException("Customer with Id : " + username + " does not exist");
+        }
+        Customer customer = customerOptional.get();
+
+       return productCartRepository.sumAmountByQuantityByCustomerId(customer.getCustomerId());
+    }
+
+    @Override
+    @Transactional
+    public Response clearCart() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        Optional<Customer> customerOptional = customerRepository.findByEmailAddress(username);
+        if(customerOptional.isEmpty()){
+            throw new StitchException("Customer with Id : " + username + " does not exist");
+        }
+        Customer customer = customerOptional.get();
+
+        log.info("customer id : {}", customer.getCustomerId());
+
+        List<ProductCart> productCart = productCartRepository.findProductCartByCustomer(customer);
+
+        log.info("productCart : {}", productCart);
+
+        for(ProductCart product: productCart){
+            productCartRepository.delete(product);
+        }
+
+        return ResponseUtils.createDefaultSuccessResponse();
     }
 }

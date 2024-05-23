@@ -14,6 +14,7 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -51,6 +52,15 @@ public class ProductCartController {
         }
     }
 
+    @MutationMapping(value = "clearCart")
+    public Response clearCart(){
+        try {
+            return productCartService.clearCart();
+        }catch (StitchException e){
+            throw new StitchException(e.getMessage());
+        }
+    }
+
 
 
     @QueryMapping(value = "getCart")
@@ -61,5 +71,16 @@ public class ProductCartController {
             throw new StitchException(e.getMessage());
         }
     }
+
+    @QueryMapping(value = "sumAmountByQuantityByCustomerId")
+    public BigDecimal sumAmountByQuantityByCustomerId(){
+        try {
+            return productCartService.sumAmountByQuantityByCustomerId();
+        }catch (StitchException e){
+            throw new StitchException(e.getMessage());
+        }
+    }
+
+
 
 }

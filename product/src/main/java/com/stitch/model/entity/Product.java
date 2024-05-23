@@ -8,6 +8,7 @@ import com.stitch.user.model.entity.Vendor;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 
 @Data
@@ -34,6 +35,7 @@ public class Product extends BaseEntity {
     private String readyIn;
 
     @Column(name = "selling_price")
+    @Min(value = 0, message = "Value cannot be negative")
     private BigDecimal sellingPrice;
 
     @Column(name = "code")
@@ -43,9 +45,11 @@ public class Product extends BaseEntity {
     private String productImage;
 
     @Column(name = "amount")
+    @Min(value = 0, message = "Value cannot be negative")
     private BigDecimal amount;
 
     @Column(name = "quantity")
+    @Min(value = 0, message = "Value cannot be negative")
     private BigDecimal quantity;
 
     @Column(name = "out_of_stock")
@@ -73,6 +77,7 @@ public class Product extends BaseEntity {
     private PublishStatus publishStatus;
 
     @Column(name = "discount")
+    @Min(value = 0, message = "Value cannot be negative")
     private BigDecimal discount;
 }
 

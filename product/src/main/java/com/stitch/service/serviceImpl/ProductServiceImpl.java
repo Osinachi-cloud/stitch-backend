@@ -241,18 +241,18 @@ public class ProductServiceImpl implements ProductService {
     public PaginatedResponse<List<ProductDto>> fetchAllProducts(ProductFilterRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String emailAddress = authentication.getName();
-//        Optional<Vendor> vendorExists = vendorRepository.findByEmailAddress(emailAddress);
-//
-//        if(vendorExists.isEmpty()){
-//            throw new UserException("Vendor with Id: " + request.getVendorId() + " does not exist");
-//        }
+        Optional<Vendor> vendorExists = vendorRepository.findByEmailAddress(emailAddress);
+
+        if(vendorExists.isEmpty()){
+            throw new UserException("Vendor with Id: " + request.getVendorId() + " does not exist");
+        }
 
         Specification<Product> spec = Specification.where(
                         ProductSpecification.nameEqual(request.getName()))
                 .and(ProductSpecification.categoryEqual(request.getCategory()))
                 .and(ProductSpecification.codeEqual(request.getCode()))
                 .and(ProductSpecification.productIdEqual(request.getProductId()))
-//                .and(ProductSpecification.vendorEqual(vendorExists.get()))
+                .and(ProductSpecification.vendorEqual(vendorExists.get()))
                 ;
 
         Page<Product> products = productRepository.findAll(spec, PageRequest.of(request.getPage(), request.getSize(), Sort.by(Sort.Direction.DESC, "dateCreated")));
