@@ -2,6 +2,7 @@ package com.stitch.repository;
 
 import com.stitch.model.entity.ProductCart;
 import com.stitch.model.entity.ProductLike;
+import com.stitch.user.model.entity.Customer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 @Repository
 public interface ProductCartRepository extends JpaRepository<ProductCart, Long> {
-    Page<ProductCart> findProductCartByCustomerId(String id, Pageable pageable);
+    Page<ProductCart> findProductCartByCustomer(Customer customer, Pageable pageable);
 
     Optional<ProductCart> findByProductId(String productId);
 

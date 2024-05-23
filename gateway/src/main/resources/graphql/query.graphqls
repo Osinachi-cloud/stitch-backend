@@ -14,10 +14,8 @@ type Query {
     getProductByProductId(productId: String): ProductDto
     getProductsByVendorId(vendorId: String, page: Int, size: Int) : ProductPagination
     getAllProductsBy(productFilterRequest : ProductFilterRequest): ProductDtoPagination
-    getAllProductLikes(productLikeRequest : ProductLikeRequest): ProductDtoPagination
-    getAllProductCart(productCartRequest : ProductLikeRequest): ProductDtoPagination
-
-
+    getAllProductLikes(pageRequest : ProductPageRequest): ProductDtoPagination
+    getCart(pageRequest : ProductPageRequest): CartDtoPagination
 
 }
 
@@ -27,6 +25,14 @@ type ProductDtoPagination {
     total: Int
     data: [ProductDto!]
 }
+
+type CartDtoPagination {
+    page: Int
+    size: Int
+    total: Int
+    data: [CartDto!]
+}
+
 
 type ProductPagination {
     page: Int

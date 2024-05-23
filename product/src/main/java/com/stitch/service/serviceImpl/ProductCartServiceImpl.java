@@ -4,6 +4,7 @@ import com.stitch.commons.exception.StitchException;
 import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.commons.model.dto.Response;
 import com.stitch.commons.util.ResponseUtils;
+import com.stitch.model.dto.CartDto;
 import com.stitch.model.dto.ProductDto;
 import com.stitch.model.entity.Product;
 import com.stitch.model.entity.ProductCart;
@@ -12,6 +13,7 @@ import com.stitch.repository.ProductRepository;
 import com.stitch.service.ProductCartService;
 import com.stitch.user.model.entity.Customer;
 import com.stitch.user.repository.CustomerRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,12 +22,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 
 @Service
+@Slf4j
 public class ProductCartServiceImpl implements ProductCartService{
 
     private final ProductCartRepository productCartRepository;
@@ -63,6 +67,7 @@ public class ProductCartServiceImpl implements ProductCartService{
         if(existingProductCart.isPresent()){
             ProductCart productCart = existingProductCart.get();
             productCart.setQuantity(productCart.getQuantity() + 1);
+            productCart.setAmountByQuantity(existingProduct.get().getSellingPrice().multiply(BigDecimal.valueOf(productCart.getQuantity())));
             productCartRepository.save(productCart);
             return ResponseUtils.createDefaultSuccessResponse();
 
@@ -79,9 +84,15 @@ public class ProductCartServiceImpl implements ProductCartService{
     }
 
     @Override
-    public Response removeFromCart(String productId){
+    public Response removeOrReduceFromCart(String productId){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
+
+        Optional<Product> existingProduct = productRepository.findByProductId(productId);
+
+        if(existingProduct.isEmpty()){
+            throw new StitchException("Product with Id : " + productId + " does not exist");
+        }
 
         Optional<ProductCart> existingProductCart = productCartRepository.findByProductId(productId);
         if(existingProductCart.isEmpty()){
@@ -89,7 +100,22 @@ public class ProductCartServiceImpl implements ProductCartService{
         }else if(existingProductCart.get().getQuantity() > 1){
             ProductCart productCart = existingProductCart.get();
             productCart.setQuantity(productCart.getQuantity() - 1);
+            productCart.setAmountByQuantity(existingProduct.get().getSellingPrice().multiply(BigDecimal.valueOf(productCart.getQuantity())));
             productCartRepository.save(productCart);
+        }else {
+            productCartRepository.delete(existingProductCart.get());
+        }
+        return ResponseUtils.createDefaultSuccessResponse();
+    }
+
+    @Override
+    public Response removeProductFromCart(String productId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        Optional<ProductCart> existingProductCart = productCartRepository.findByProductId(productId);
+        if(existingProductCart.isEmpty()){
+            throw new StitchException("Product in cart with Id : " + productId + " does not exist");
         }
         productCartRepository.delete(existingProductCart.get());
         return ResponseUtils.createDefaultSuccessResponse();
@@ -97,7 +123,7 @@ public class ProductCartServiceImpl implements ProductCartService{
 
 
     @Override
-    public PaginatedResponse<List<ProductDto>> getCart(int page, int size){
+    public PaginatedResponse<List<CartDto>> getCart(int page, int size){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
@@ -109,20 +135,25 @@ public class ProductCartServiceImpl implements ProductCartService{
 
         Pageable pagerequest = PageRequest.of(page, size);
 
-        Page<ProductCart> productCart = productCartRepository.findProductCartByCustomerId(customer.getCustomerId(), pagerequest);
+        log.info("customer id : {}", customer.getCustomerId());
 
-        PaginatedResponse<List<ProductDto>> paginatedResponse = new PaginatedResponse<>();
+        Page<ProductCart> productCart = productCartRepository.findProductCartByCustomer(customer, pagerequest);
+
+        log.info("productCart : {}", productCart.getContent());
+
+
+        PaginatedResponse<List<CartDto>> paginatedResponse = new PaginatedResponse<>();
         paginatedResponse.setPage(productCart.getNumber());
         paginatedResponse.setSize(productCart.getSize());
-        paginatedResponse.setTotal((int) productCartRepository.getCartCount(username));
-        paginatedResponse.setData(convertProductcartListToDto(productCart.getContent()));
+        paginatedResponse.setTotal((int) productCartRepository.getCartCount(customer.getCustomerId()));
+        paginatedResponse.setData(convertProductCartListToDto(productCart.getContent()));
         return paginatedResponse;
     }
 
 
-    private List<ProductDto> convertProductcartListToDto(List<ProductCart> productCartList){
+    private List<CartDto> convertProductCartListToDto(List<ProductCart> productCartList){
 
-        List<ProductDto> productDtoList = new ArrayList<>();
+        List<CartDto> productDtoList = new ArrayList<>();
         for(ProductCart productCart: productCartList){
             Optional<Product> productExists = productRepository.findByProductId(productCart.getProductId());
             if(productExists.isEmpty()){
@@ -130,9 +161,12 @@ public class ProductCartServiceImpl implements ProductCartService{
             }
             Product product = productExists.get();
 
-            ProductDto productDto = new ProductDto();
-            BeanUtils.copyProperties(product, productDto);
-            productDtoList.add(productDto);
+            CartDto cartDto = new CartDto();
+            BeanUtils.copyProperties(product, cartDto);
+            cartDto.setAmountByQuantity(productCart.getAmountByQuantity());
+            cartDto.setQuantity(BigDecimal.valueOf(productCart.getQuantity()));
+
+            productDtoList.add(cartDto);
         }
         return productDtoList;
     }

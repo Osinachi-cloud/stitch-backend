@@ -39,9 +39,9 @@ public class ProductLikeController {
     }
 
     @QueryMapping(value = "getAllProductLikes")
-    public PaginatedResponse<List<ProductDto>> getAllProductLikes(@Argument("productLikeRequest") ProductLikeRequest productLikeRequest){
+    public PaginatedResponse<List<ProductDto>> getAllProductLikes(@Argument("pageRequest") PageRequest pageRequest){
         try {
-            return productLikeService.getAllLikes(productLikeRequest.getPage(), productLikeRequest.getSize());
+            return productLikeService.getAllLikes(pageRequest.getPage(), pageRequest.getSize());
         }catch (StitchException e){
             throw new StitchException(e.getMessage());
         }

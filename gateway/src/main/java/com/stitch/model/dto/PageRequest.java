@@ -3,7 +3,7 @@ package com.stitch.model.dto;
 import lombok.Data;
 
 @Data
-public class ProductLikeRequest {
+public class PageRequest {
     private int page;
     private int size;
 }

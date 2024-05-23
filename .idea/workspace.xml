@@ -5,12 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="08636b1d-24fc-4130-803a-464da45dbbe3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/src/main/java/com/stitch/repository/ProductLikeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/product/src/main/java/com/stitch/repository/ProductLikeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/src/main/java/com/stitch/service/serviceImpl/ProductLikeServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/product/src/main/java/com/stitch/service/serviceImpl/ProductLikeServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/repository/ProductLikeRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/repository/ProductLikeRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductLikeServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductLikeServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/controller/productLike/ProductLikeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/controller/productLike/ProductLikeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/controller/productcart/ProductCartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/controller/productcart/ProductCartController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/security/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/security/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/model/dto/ProductLikeRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/model/dto/PageRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/graphql/mutation.graphqls" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/resources/graphql/mutation.graphqls" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/graphql/query.graphqls" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/resources/graphql/query.graphqls" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/controller/productLike/ProductLikeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/controller/productLike/ProductLikeController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/controller/productcart/ProductCartController.class" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/controller/productcart/ProductCartController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/security/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/target/classes/com/stitch/gateway/security/config/SecurityConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/target/classes/com/stitch/model/dto/ProductLikeRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/target/classes/graphql/mutation.graphqls" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/target/classes/graphql/mutation.graphqls" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/target/classes/graphql/query.graphqls" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/target/classes/graphql/query.graphqls" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/src/main/java/com/stitch/model/dto/ProductDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/product/src/main/java/com/stitch/model/dto/ProductDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/src/main/java/com/stitch/model/entity/ProductCart.java" beforeDir="false" afterPath="$PROJECT_DIR$/product/src/main/java/com/stitch/model/entity/ProductCart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/src/main/java/com/stitch/repository/ProductCartRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/product/src/main/java/com/stitch/repository/ProductCartRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/src/main/java/com/stitch/service/ProductCartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/product/src/main/java/com/stitch/service/ProductCartService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/src/main/java/com/stitch/service/serviceImpl/ProductCartServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/product/src/main/java/com/stitch/service/serviceImpl/ProductCartServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/entity/ProductCart.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/entity/ProductCart.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/repository/ProductCartRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/repository/ProductCartRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/service/ProductCartService.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/service/ProductCartService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductCartServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductCartServiceImpl.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

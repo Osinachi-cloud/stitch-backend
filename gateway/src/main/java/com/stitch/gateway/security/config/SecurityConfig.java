@@ -88,6 +88,7 @@ public class SecurityConfig {
                                     "/actuator/health",
                                     "/graphql",
                                     "/vendor/**"
+//                                    "api/save-merchant"
                             )
                             .permitAll()
 //                            .requestMatchers("/graphql").permitAll()

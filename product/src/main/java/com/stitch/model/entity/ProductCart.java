@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @Entity
@@ -17,6 +19,9 @@ public class ProductCart extends BaseEntity {
 
     @Column(name = "quantity")
     private int quantity;
+
+    @Column(name = "amount_by_quantity")
+    private BigDecimal amountByQuantity;
 
     @OneToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")

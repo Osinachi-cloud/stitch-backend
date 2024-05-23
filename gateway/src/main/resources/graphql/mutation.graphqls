@@ -28,6 +28,7 @@ type Mutation{
     deleteProductLike(productId : String): Response
     addProductCart(productId : String): Response
     deleteProductCart(productId : String): Response
+    removeEntireProductFromCart(productId : String): Response
 }
 
 type ProductOrderDto{
@@ -299,6 +300,24 @@ type ProductDto {
     sellingPrice:BigDecimal
 }
 
+
+type CartDto {
+    name: String
+    code: String
+    productImage: String
+    amount: BigDecimal
+    quantity: BigDecimal
+    category: String
+    fixedPrice: Boolean
+    vendor: String
+    discount: BigDecimal
+    productId: String
+    readyIn:String
+    sellingPrice:BigDecimal
+    amountByQuantity: BigDecimal
+
+}
+
 input ProductFilterRequest {
     page: Int
     size: Int
@@ -312,7 +331,7 @@ input ProductFilterRequest {
     productId: String
 }
 
-input ProductLikeRequest {
+input ProductPageRequest {
     page: Int
     size: Int
 }
