@@ -21,7 +21,7 @@ public class WalletDto {
 
 
     public  WalletDto (Wallet wallet){
-        this.customerId = wallet.getCustomerId();
+        this.customerId = wallet.getUserId();
         this.walletId  = wallet.getWalletId();
         this.name = wallet.getName();
         this.currency = wallet.getCurrency().toString();

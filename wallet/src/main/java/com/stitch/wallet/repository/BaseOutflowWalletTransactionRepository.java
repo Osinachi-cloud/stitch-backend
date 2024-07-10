@@ -12,5 +12,5 @@ public interface BaseOutflowWalletTransactionRepository extends JpaRepository<Ba
 
     Optional<BaseOutflowWalletTransaction> findByCurrency(Currency currency);
 
-    Optional<BaseOutflowWalletTransaction> findByCustomerWalletTransactionId(String walletTransactionId);
+    Optional<BaseOutflowWalletTransaction> findByUserWalletTransactionId(String walletTransactionId);
 }

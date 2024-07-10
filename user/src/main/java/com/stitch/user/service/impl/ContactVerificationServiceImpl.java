@@ -8,7 +8,7 @@ import com.stitch.user.model.dto.EmailVerificationRequest;
 import com.stitch.user.model.dto.VerificationResponse;
 import com.stitch.user.model.entity.ContactVerification;
 import com.stitch.user.repository.ContactVerificationRepository;
-import com.stitch.user.repository.CustomerRepository;
+import com.stitch.user.repository.UserRepository;
 import com.stitch.user.service.ContactVerificationService;
 import com.stitch.user.util.UserValidationUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +22,12 @@ import java.time.temporal.ChronoUnit;
 public class ContactVerificationServiceImpl implements ContactVerificationService {
 
     private final ContactVerificationRepository verificationRepository;
-    private final CustomerRepository customerRepository;
+    private final UserRepository customerRepository;
 //    private final NotificationService notificationService;
 
     public ContactVerificationServiceImpl(
             ContactVerificationRepository verificationRepository,
-            CustomerRepository customerRepository
+            UserRepository customerRepository
 //            ,NotificationService notificationService
     ) {
         this.verificationRepository = verificationRepository;

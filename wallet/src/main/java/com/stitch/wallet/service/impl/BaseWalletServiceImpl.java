@@ -52,7 +52,7 @@ public class BaseWalletServiceImpl implements BaseWalletService {
 
             BaseInflowWalletTransaction baseInflowWalletTransaction = BaseInflowWalletTransaction.builder()
                     .baseInflowWallet(baseInflowWallet)
-                    .customerId(creditRequest.getCustomerId())
+                    .userId(creditRequest.getCustomerId())
                     .customerWalletId(creditRequest.getWalletId())
                     .amount(creditRequest.getAmount())
                     .currency(creditRequest.getCurrency())
@@ -79,9 +79,9 @@ public class BaseWalletServiceImpl implements BaseWalletService {
 
             BaseOutflowWalletTransaction walletTransaction = BaseOutflowWalletTransaction.builder()
                     .baseOutflowWallet(outflowWallet)
-                    .customerId(creditRequest.getCustomerId())
+                    .userId(creditRequest.getCustomerId())
                     .customerWalletId(creditRequest.getWalletId())
-                    .customerWalletTransactionId(creditRequest.getCustomerWalletTransactionId())
+                    .userWalletTransactionId(creditRequest.getCustomerWalletTransactionId())
                     .amount(creditRequest.getAmount())
                     .currency(creditRequest.getCurrency())
                     .transactionType(TransactionType.C)
@@ -109,7 +109,7 @@ public class BaseWalletServiceImpl implements BaseWalletService {
             BaseInflowWalletTransaction baseInflowWalletTransaction = BaseInflowWalletTransaction.builder()
                     .baseInflowWallet(baseInflowWallet)
                     .customerWalletTransactionId(debitRequest.getCustomerWalletTransactionId())
-                    .customerId(debitRequest.getCustomerId())
+                    .userId(debitRequest.getCustomerId())
                     .customerWalletId(debitRequest.getWalletId())
                     .amount(debitRequest.getAmount())
                     .currency(debitRequest.getCurrency())
@@ -137,8 +137,8 @@ public class BaseWalletServiceImpl implements BaseWalletService {
 
             BaseOutflowWalletTransaction outflowWalletTransaction = BaseOutflowWalletTransaction.builder()
                     .baseOutflowWallet(baseOutflowWallet)
-                    .customerWalletTransactionId(debitRequest.getCustomerWalletTransactionId())
-                    .customerId(debitRequest.getCustomerId())
+                    .userWalletTransactionId(debitRequest.getCustomerWalletTransactionId())
+                    .userId(debitRequest.getCustomerId())
                     .customerWalletId(debitRequest.getWalletId())
                     .amount(debitRequest.getAmount())
                     .currency(debitRequest.getCurrency())
@@ -160,7 +160,7 @@ public class BaseWalletServiceImpl implements BaseWalletService {
     public void reverseOutflowBaseWalletTransaction(WalletDebitReversalRequest debitReversalRequest) {
         log.debug("Reversing outflow base wallet transaction: {}", debitReversalRequest);
 
-        BaseOutflowWalletTransaction outflowWalletTransaction = baseOutflowWalletTransactionRepository.findByCustomerWalletTransactionId(debitReversalRequest.getWalletTransactionId())
+        BaseOutflowWalletTransaction outflowWalletTransaction = baseOutflowWalletTransactionRepository.findByUserWalletTransactionId(debitReversalRequest.getWalletTransactionId())
                 .orElseThrow(() -> new WalletTransactionException("Could not find reference base outflow wallet transaction for customer wallet transactionId: " + debitReversalRequest.getWalletTransactionId()));
 
         if (!debitReversalRequest.getAmount().equals(outflowWalletTransaction.getAmount())){
@@ -177,7 +177,7 @@ public class BaseWalletServiceImpl implements BaseWalletService {
 
         BaseWalletDebitRequest baseWalletDebitRequest = BaseWalletDebitRequest.builder()
                 .customerWalletTransactionId(debitReversalRequest.getWalletTransactionId())
-                .customerId(outflowWalletTransaction.getCustomerId())
+                .customerId(outflowWalletTransaction.getUserId())
                 .walletId(outflowWalletTransaction.getCustomerWalletId())
                 .amount(outflowWalletTransaction.getAmount())
                 .currency(outflowWalletTransaction.getCurrency())

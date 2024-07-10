@@ -90,7 +90,7 @@ public class WalletServiceImpl implements WalletService {
                 .description(transactionRequest.getDescription())
                 .transactionType(TransactionType.C)
                 .status(TransactionStatus.P)
-                .customerId(transactionRequest.getCustomerId())
+                .userId(transactionRequest.getCustomerId())
                 .walletId(transactionRequest.getWalletId())
                 .build();
 
@@ -100,8 +100,8 @@ public class WalletServiceImpl implements WalletService {
 
     private void validateCustomerWallet(final Wallet wallet, final String customerId, Currency currency) {
 
-        if (!wallet.getCustomerId().equals(customerId)) {
-            throw new InvalidWalletException(String.format("Wallet customerId [%s] does not match logged in customer ID [%s]", wallet.getCustomerId(), customerId));
+        if (!wallet.getUserId().equals(customerId)) {
+            throw new InvalidWalletException(String.format("Wallet customerId [%s] does not match logged in customer ID [%s]", wallet.getUserId(), customerId));
         }
 
         if (!wallet.getStatus().equals(WalletStatus.A)) {
@@ -140,7 +140,7 @@ public class WalletServiceImpl implements WalletService {
             final String walletId = generateWalletId();
             Wallet wallet = Wallet.builder()
                     .walletId(walletId)
-                    .customerId(walletRequest.getCustomerId())
+                    .userId(walletRequest.getCustomerId())
                     .currency(Currency.valueOf(walletRequest.getCurrency()))
                     .balance(BigDecimal.ZERO)
                     .name(!StringUtils.isBlank(walletRequest.getName()) ? walletRequest.getName() : "Wallet" + walletId.substring(6))
@@ -289,7 +289,7 @@ public class WalletServiceImpl implements WalletService {
     public List<WalletDto> getAllWallets(final String customerId) {
 
         log.debug("Getting all wallets for customer: {}", customerId);
-        List<Wallet> wallets = this.walletRepository.findByCustomerId(customerId);
+        List<Wallet> wallets = this.walletRepository.findByUserId(customerId);
         return wallets.stream()
                 .map(WalletDto::new)
                 .collect(Collectors.toList());
@@ -308,7 +308,7 @@ public class WalletServiceImpl implements WalletService {
             WalletCreditRequest creditRequest = WalletCreditRequest.builder()
                     .walletId(walletTransactionRequest.getWalletId())
                     .currency(walletTransactionRequest.getCurrency())
-                    .customerId(walletTransactionRequest.getCustomerId())
+                    .customerId(walletTransactionRequest.getUserId())
                     .transactionStatus(walletTransactionRequest.getStatus())
                     .amount(walletTransactionRequest.getAmount())
                     .paymentTransactionId(transactionRequest.getTxRef())
@@ -400,7 +400,7 @@ public class WalletServiceImpl implements WalletService {
         WalletCreditRequest creditRequest = WalletCreditRequest.builder()
                 .walletId(wallet.getWalletId())
                 .currency(wallet.getCurrency())
-                .customerId(wallet.getCustomerId())
+                .customerId(wallet.getUserId())
                 .transactionStatus(TransactionStatus.S)
                 .amount(debitReversalRequest.getAmount())
                 .transactionType(TransactionType.C)
@@ -411,14 +411,14 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     public Currency getCustomerCurrency(String customerId) {
-        Wallet wallet = walletRepository.findByCustomerIdAndIsDefaultTrue(customerId)
+        Wallet wallet = walletRepository.findByUserIdAndIsDefaultTrue(customerId)
                 .orElseThrow(() -> new WalletNotFoundException(" for default wallet with customerId: " + customerId));
         return wallet.getCurrency();
     }
 
     @Override
     public String getCustomerDefaultWalletId(String customerId) {
-        Wallet wallet = walletRepository.findByCustomerIdAndIsDefaultTrue(customerId)
+        Wallet wallet = walletRepository.findByUserIdAndIsDefaultTrue(customerId)
                 .orElseThrow(() -> new WalletNotFoundException(" for default wallet with customerId: " + customerId));
         return wallet.getWalletId();
     }

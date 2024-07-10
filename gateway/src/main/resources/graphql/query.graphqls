@@ -14,6 +14,7 @@ type Query {
     getProductByProductId(productId: String): ProductDto
     getProductsByVendorId(vendorId: String, page: Int, size: Int) : ProductPagination
     getAllProductsBy(productFilterRequest : ProductFilterRequest): ProductDtoPagination
+    getVendorProductsBy(productFilterRequest : ProductFilterRequest): ProductDtoPagination
     getAllProductLikes(pageRequest : ProductPageRequest): ProductDtoPagination
     getCart(pageRequest : ProductPageRequest): CartDtoPagination
     sumAmountByQuantityByCustomerId: BigDecimal
@@ -115,7 +116,7 @@ type CustomerDto {
     hasPin: Boolean
     enablePush: Boolean
     profileImage:String
-
+    role: String!
 }
 
 type WalletDto {
@@ -126,6 +127,82 @@ type WalletDto {
     status: String
     isDefault: Boolean
 
+}
+
+
+
+type PaymentVerificationResponse {
+    status: Boolean
+    message: String
+    data: Data
+}
+
+type Data {
+    id: ID
+    domain: String
+    status: String
+    reference: String
+#    accessCode: String
+#    authorizationUrl: String
+    receiptNumber: String
+    amount: BigDecimal
+    message: String
+    gatewayResponse: String
+    paidAt: String
+    createdAt: String
+    channel: String
+    currency: String
+    ipAddress: String
+    metadata: String
+    log: String
+    fees: String
+    feesSplit: String
+#    authorization: Authorization
+    customer: Customer
+#    plan: Plan
+#    split: Split
+    orderId: String
+    paidAtAlternate: String
+    createdAtAlternate: String
+    requestedAmount: Int
+    posTransactionData: String
+    source: String
+    feesBreakdown: String
+    connect: String
+    transactionDate: String
+#    planObject: PlanObject
+#    subaccount: Subaccount
+}
+
+type Customer {
+    id: ID
+    firstName: String
+    lastName: String
+    email: String
+    customerCode: String
+    phone: String
+    metadata: String
+    riskAction: String
+    internationalFormatPhone: String
+}
+
+
+#type PlanObject {
+#}
+#
+#type Subaccount {
+#}
+
+type InitializeTransactionResponse {
+    status: Boolean
+    message: String
+    data: InitializeTransactionData
+}
+
+type InitializeTransactionData {
+    authorizationUrl: String
+    accessCode: String
+    reference: String
 }
 
 

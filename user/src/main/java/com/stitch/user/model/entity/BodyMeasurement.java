@@ -7,7 +7,8 @@ import lombok.*;
 import javax.validation.constraints.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "body_measurement")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -62,6 +63,6 @@ public class BodyMeasurement extends BaseEntity {
     private int trouserLength;
 
     @OneToOne(mappedBy = "bodyMeasurement")
-    private Customer customer;
+    private UserEntity userEntity;
 
 }

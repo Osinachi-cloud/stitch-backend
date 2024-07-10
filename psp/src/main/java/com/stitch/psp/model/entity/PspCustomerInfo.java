@@ -17,11 +17,11 @@ import jakarta.persistence.*;
 @Entity(name = "psp_customer_info")
 public class PspCustomerInfo extends BaseEntity {
 
-    @Column(name = "billanted_customer_id", nullable = false)
-    private String billantedCustomerId;
+    @Column(name = "billanted_user_id", nullable = false)
+    private String billantedUserId;
 
-    @Column(name = "psp_customer_id", nullable = false)
-    private String pspCustomerId;
+    @Column(name = "psp_user_id", nullable = false)
+    private String pspUserId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_provider", nullable = false)

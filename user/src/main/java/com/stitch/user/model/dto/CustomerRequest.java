@@ -18,6 +18,7 @@ public class CustomerRequest {
     private DeviceDto device;
     private String profileImage;
     private String currency;
+    private String roleName;
     @NonNull
     private String username;
 }

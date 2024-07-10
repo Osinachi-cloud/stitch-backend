@@ -21,7 +21,6 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="payment" target="17" />
       <module name="psp" target="17" />
     </bytecodeTargetLevel>
   </component>

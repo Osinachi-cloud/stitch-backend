@@ -30,6 +30,9 @@ type Mutation{
     deleteProductCart(productId : String): Response
     removeEntireProductFromCart(productId : String): Response
     clearCart: Response
+    initializePayment(paymentRequest: InitializeTransactionRequest): InitializeTransactionResponse
+    verifyPayment(paymentReference: String): PaymentVerificationResponse
+
 }
 
 type ProductOrderDto{
@@ -63,17 +66,13 @@ type ProductOrderDto{
 
 input ProductOrderRequest {
 
-    orderId: String
-    customerId: String
     productId: String
     productCategoryName: String
     vendorId: String
     paymentMode: PaymentMode
     currency: Currency
     amount: BigDecimal
-    status: OrderStatus
     narration: String
-
 }
 
 enum PaymentMode {
@@ -125,6 +124,19 @@ input BodyMeasurementRequest {
     knee:Int
     ankle:Int
     trouserLength:Int
+}
+
+input InitializeTransactionRequest {
+    amount: BigDecimal
+    channel: [String]
+    reference: String
+    productId:String
+    productCategoryName: String
+    vendorId: String
+    narration: String
+    quantity: BigDecimal
+    orderId: String
+    customerId: String
 }
 
 #input TransactionRequest {
@@ -185,6 +197,7 @@ input CustomerRequest {
 #    country: String!
     password: String!
     device: DeviceDto
+    roleName:String!
 }
 
 input CustomerUpdateRequest {
@@ -218,6 +231,8 @@ type LoginResponse {
     refreshToken: String
     wallets: [WalletDto]
     profileImage: String
+    role: String
+
 }
 
 input LoginRequest {
@@ -310,7 +325,7 @@ type CartDto {
     quantity: BigDecimal
     category: String
     fixedPrice: Boolean
-    vendor: String
+    vendorId: String
     discount: BigDecimal
     productId: String
     readyIn:String

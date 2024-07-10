@@ -35,7 +35,7 @@ public class InAppNotificationServiceImpl implements InAppNotificationService {
 
     private InAppNotification mapToEntity(InAppNotificationRequest request) {
         InAppNotification appNotification = new InAppNotification();
-        appNotification.setCustomerId(request.getCustomerId());
+        appNotification.setUserId(request.getCustomerId());
         appNotification.setNotificationId(NumberUtils.generate(20));
         appNotification.setSubject(request.getSubject());
         appNotification.setContent(request.getContent());
@@ -68,7 +68,7 @@ public class InAppNotificationServiceImpl implements InAppNotificationService {
 
     private InAppNotificationResponse mapToDto(InAppNotification appNotification) {
         InAppNotificationResponse response = new InAppNotificationResponse();
-        response.setCustomerId(appNotification.getCustomerId());
+        response.setCustomerId(appNotification.getUserId());
         response.setNotificationId(appNotification.getNotificationId());
         response.setSubject(appNotification.getSubject());
         response.setContent(appNotification.getContent());

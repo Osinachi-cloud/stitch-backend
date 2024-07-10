@@ -6,7 +6,6 @@ import com.stitch.model.dto.ProductDto;
 import com.stitch.model.dto.ProductFilterRequest;
 import com.stitch.model.dto.ProductRequest;
 import com.stitch.model.dto.ProductUpdateRequest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -26,7 +25,9 @@ public interface ProductService {
     void deleteProduct(String productId);
 
 
-    PaginatedResponse<List<ProductDto>> fetchAllProducts(ProductFilterRequest request);
+    PaginatedResponse<List<ProductDto>> fetchAllProductsByVendor(ProductFilterRequest request);
+
+    PaginatedResponse<List<ProductDto>> fetchAllProductsBy(ProductFilterRequest request);
 
     boolean togglePublishProduct(String productId);
 }

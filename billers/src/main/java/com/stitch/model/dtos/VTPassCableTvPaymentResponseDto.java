@@ -43,8 +43,8 @@ public class VTPassCableTvPaymentResponseDto extends BillPaymentResponse {
         private int isApi;
         @JsonProperty("discount")
         private String discount;
-        @JsonProperty("customer_id")
-        private long customerId;
+        @JsonProperty("user_id")
+        private long userId;
         @JsonProperty("email")
         private String email;
         @JsonProperty("phone")

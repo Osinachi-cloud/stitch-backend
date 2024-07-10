@@ -2,6 +2,8 @@ package com.stitch.gateway.controller.order;
 
 import com.stitch.commons.exception.StitchException;
 import com.stitch.commons.model.dto.PaginatedResponse;
+import com.stitch.commons.util.NumberUtils;
+import com.stitch.gateway.security.model.CustomUserDetails;
 import com.stitch.model.dto.ProductOrderDto;
 import com.stitch.model.dto.ProductOrderRequest;
 import com.stitch.model.dto.ProductOrderStatistics;
@@ -13,6 +15,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
@@ -70,25 +75,35 @@ public class OrderController {
     @QueryMapping(value = "fetchCustomerOrdersBy")
     public PaginatedResponse<List<ProductOrderDto>> fetchCustomerOrdersBy(
             @Argument Optional<String> productId,
-            @Argument Optional<String> customerId,
+            @Argument Optional<String> userId,
             @Argument Optional<String> status,
             @Argument Optional<String> orderId,
             @Argument Optional<String> productCategory,
-            @Argument Optional<String> vendorId,
             @Argument Optional<Integer> page,
             @Argument Optional<Integer> size) {
 
         PageRequest pr = PageRequest.of(page.orElse(0),size.orElse(10));
-        return productOrderService.fetchCustomerOrdersBy(productId.orElse(null), customerId.orElse(null), status.orElse(null), orderId.orElse(null), productCategory.orElse(null), vendorId.orElse(null) ,pr);
+        return productOrderService.fetchCustomerOrdersBy(productId.orElse(null), userId.orElse(null), status.orElse(null), orderId.orElse(null), productCategory.orElse(null) ,pr);
     }
 
     @MutationMapping(value = "createProductOrder")
     public ProductOrderDto createProductOrder(@Argument("productOrderRequest") ProductOrderRequest productOrderDto ){
-//        try {
+        try {
+
+        log.info("productOrderDto : {}", productOrderDto);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails customer = (CustomUserDetails) authentication.getPrincipal();
+        String userId = customer.getUser().getUserId();
+//        productOrderDto.setCustomerId(userId);
+        productOrderDto.setStatus("PROCESSING");
+        productOrderDto.setOrderId(NumberUtils.generate(10));
+            log.info("productOrderDto 2: {}", productOrderDto);
+
             return productOrderService.createProductOrder(productOrderDto);
-//        }catch (Exception e){
-//            throw new StitchException("product could not be created");
-//        }
+        }catch (Exception e){
+            throw new StitchException("product could not be created");
+        }
     }
 
 

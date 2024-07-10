@@ -2,7 +2,6 @@ package com.stitch.gateway.security.util;
 
 import com.stitch.user.model.dto.CustomerDto;
 import com.stitch.gateway.security.model.Token;
-import com.stitch.user.model.dto.VendorDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -34,36 +33,9 @@ public class TokenUtils {
         log.info("Inside generate token method 1");
 
         Claims claims = Jwts.claims()
-                .setSubject(user.getCustomerId());
+                .setSubject(user.getUserId());
         claims.put("email", String.valueOf(user.getEmailAddress()));
-        claims.put("role", "CUSTOMER");
-
-        log.info("Inside generate token method 2");
-
-
-        Date now = new Date();
-        Date accessTokenExpiration = new Date(now.getTime() + accessTokenExpiryInMilliseconds);
-
-        log.info("Inside generate token method 3");
-
-
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(accessTokenExpiration)
-                .signWith(SignatureAlgorithm.HS512, accessTokenSecretKey)
-                .compact();
-
-    }
-
-    public String generateVendorAccessToken(VendorDto user) {
-
-        log.info("Inside generate token method 1");
-
-        Claims claims = Jwts.claims()
-                .setSubject(user.getVendorId());
-        claims.put("email", String.valueOf(user.getEmailAddress()));
-        claims.put("role", "VENDOR");
+        claims.put("role", "ROLE_"+user.getRole().getName());
 
         log.info("Inside generate token method 2");
 
@@ -87,8 +59,8 @@ public class TokenUtils {
     public String generateRefreshToken(CustomerDto user) {
 
         Claims claims = Jwts.claims()
-                .setSubject(user.getCustomerId());
-        claims.put("role", "CUSTOMER");
+                .setSubject(user.getUserId());
+        claims.put("role", "ROLE_CUSTOMER");
 
         Date now = new Date();
         Date refreshTokenExpiration = new Date(now.getTime() + refreshTokenExpiryInMilliseconds);
@@ -101,34 +73,10 @@ public class TokenUtils {
                 .compact();
 
     }
-
-    public String generateVendorRefreshToken(VendorDto user) {
-
-        Claims claims = Jwts.claims()
-                .setSubject(user.getVendorId());
-        claims.put("role", "VENDOR");
-
-        Date now = new Date();
-        Date refreshTokenExpiration = new Date(now.getTime() + refreshTokenExpiryInMilliseconds);
-
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(refreshTokenExpiration)
-                .signWith(SignatureAlgorithm.HS512, refreshTokenSecretKey)
-                .compact();
-
-    }
-
 
     public Token generateAccessAndRefreshToken(CustomerDto user){
         return new Token(generateAccessToken(user), generateRefreshToken(user));
     }
-
-    public Token generateVendorAccessAndRefreshToken(VendorDto user){
-        return new Token(generateVendorAccessToken(user), generateVendorRefreshToken(user));
-    }
-
 
     public Claims validateAccessToken(String token) {
 

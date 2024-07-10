@@ -24,7 +24,7 @@ public class CartDto {
 
     private boolean fixedPrice;
 
-    private String vendor;
+    private String vendorId;
 
     private PublishStatus publishStatus;
 

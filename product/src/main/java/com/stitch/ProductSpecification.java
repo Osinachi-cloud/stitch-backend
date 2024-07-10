@@ -2,7 +2,7 @@ package com.stitch;
 
 import com.stitch.model.ProductCategory;
 import com.stitch.model.entity.Product;
-import com.stitch.user.model.entity.Vendor;
+import com.stitch.user.model.entity.UserEntity;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.Instant;
@@ -41,9 +41,9 @@ public final class ProductSpecification {
                 productId != null ? builder.equal(root.get("productId"), productId) : null;
     }
 
-    public static Specification<Product> vendorEqual(Vendor vendor) {
+    public static Specification<Product> vendorEqual(UserEntity vendor) {
         return (root, query, builder) ->
-                vendor != null ? builder.equal(root.get("vendor"), vendor) : null;
+                vendor != null ? builder.equal(root.get("userEntity"), vendor) : null;
     }
 
     public static Specification<Product> codeEqual(String code) {

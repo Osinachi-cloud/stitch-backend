@@ -10,8 +10,8 @@ import com.stitch.model.entity.ProductLike;
 import com.stitch.repository.ProductLikeRepository;
 import com.stitch.repository.ProductRepository;
 import com.stitch.service.ProductLikeService;
-import com.stitch.user.model.entity.Customer;
-import com.stitch.user.repository.CustomerRepository;
+import com.stitch.user.model.entity.UserEntity;
+import com.stitch.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -32,9 +32,9 @@ public class ProductLikeServiceImpl implements ProductLikeService {
     private final ProductLikeRepository productLikeRepository;
     private final ProductRepository productRepository;
 
-    private final CustomerRepository customerRepository;
+    private final UserRepository customerRepository;
 
-    public ProductLikeServiceImpl(ProductLikeRepository productLikeRepository, ProductRepository productRepository, CustomerRepository customerRepository) {
+    public ProductLikeServiceImpl(ProductLikeRepository productLikeRepository, ProductRepository productRepository, UserRepository customerRepository) {
         this.productLikeRepository = productLikeRepository;
         this.productRepository = productRepository;
 
@@ -47,12 +47,12 @@ public class ProductLikeServiceImpl implements ProductLikeService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
-        Optional<Customer> customerOptional = customerRepository.findByEmailAddress(username);
+        Optional<UserEntity> customerOptional = customerRepository.findByEmailAddress(username);
         if(customerOptional.isEmpty()){
             throw new StitchException("Customer with Id : " + username + " does not exist");
         }
 
-        Customer customer = customerOptional.get();
+        UserEntity customer = customerOptional.get();
 
         Optional<ProductLike> existingProductLike = productLikeRepository.findByProductId(productId);
         if(existingProductLike.isPresent()){
@@ -66,7 +66,7 @@ public class ProductLikeServiceImpl implements ProductLikeService {
 
         ProductLike productLike = new ProductLike();
         productLike.setProductId(productId);
-        productLike.setCustomer(customer);
+        productLike.setUserEntity(customer);
 
         productLikeRepository.save(productLike);
         return ResponseUtils.createDefaultSuccessResponse();
@@ -91,23 +91,23 @@ public class ProductLikeServiceImpl implements ProductLikeService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
-        Optional<Customer> customerOptional = customerRepository.findByEmailAddress(username);
+        Optional<UserEntity> customerOptional = customerRepository.findByEmailAddress(username);
         if(customerOptional.isEmpty()){
             throw new StitchException("Customer with Id : " + username + " does not exist");
         }
 
-        Customer customer = customerOptional.get();
+        UserEntity customer = customerOptional.get();
 
         Pageable pagerequest = PageRequest.of(page, size);
 
-         Page<ProductLike> productLikes = productLikeRepository.findProductLikesByCustomer(customer, pagerequest);
+         Page<ProductLike> productLikes = productLikeRepository.findProductLikesByUserEntity(customer, pagerequest);
 
-         log.info("productLikes : {} " + customer.getCustomerId() + " ", productLikes.getContent());
+         log.info("productLikes : {} " + customer.getUserId() + " ", productLikes.getContent());
 
         PaginatedResponse<List<ProductDto>> paginatedResponse = new PaginatedResponse<>();
         paginatedResponse.setPage(productLikes.getNumber());
         paginatedResponse.setSize(productLikes.getSize());
-        paginatedResponse.setTotal((int) productLikeRepository.getLikeCount(customer.getCustomerId()));
+        paginatedResponse.setTotal((int) productLikeRepository.getLikeCount(customer.getUserId()));
         paginatedResponse.setData(convertProductLikeListToDto(productLikes.getContent()));
         return paginatedResponse;
     }

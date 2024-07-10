@@ -1,13 +1,15 @@
 package com.stitch.user.model.dto;
 
 
-import com.stitch.user.model.entity.Customer;
+import com.stitch.user.model.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+
+import static com.stitch.user.util.DtoMapper.mapRoleToDto;
 
 @Data
 @Builder
@@ -17,7 +19,7 @@ public class CustomerDto implements Serializable {
 
     private static final long serialVersionUID = 2345L;
 
-    private String customerId;
+    private String userId;
     private String tier;
     private String country;
     private String password;
@@ -28,14 +30,15 @@ public class CustomerDto implements Serializable {
     private boolean enabled;
     private boolean accountLocked;
     private boolean hasPin;
-
     private boolean saveCard;
-
     private boolean enablePush;
+    private RoleDto role;
+    private String roleName;
+//    private RoleDto adminRole;
     private String profileImage;
 
-    public CustomerDto(Customer customer){
-        this.customerId = customer.getCustomerId();
+    public CustomerDto(UserEntity customer){
+        this.userId = customer.getUserId();
         this.firstName = customer.getFirstName();
         this.lastName = customer.getLastName();
         this.emailAddress = customer.getEmailAddress();
@@ -46,6 +49,9 @@ public class CustomerDto implements Serializable {
         this.saveCard = customer.isSaveCard();
         this.enablePush = customer.isEnablePush();
         this.profileImage = customer.getProfileImage();
+        this.role = mapRoleToDto(customer.getRole());
+        this.roleName = customer.getRole().getName();
+//        this.adminRole = mapRoleToDtoLoginResponse(customer.getRole());
     }
 
 

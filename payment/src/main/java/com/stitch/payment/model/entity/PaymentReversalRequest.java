@@ -23,8 +23,8 @@ public class PaymentReversalRequest extends BaseEntity {
     @Column(name = "order_id")
     private String orderId;
 
-    @Column(name = "customer_id")
-    private String customerId;
+    @Column(name = "user_id")
+    private String userId;
 
     @Column(name = "wallet_id")
     private String walletId;

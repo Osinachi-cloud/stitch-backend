@@ -13,9 +13,8 @@ import com.stitch.gateway.security.service.AuthenticationService;
 //import com.stitch.notification.model.dto.InAppNotificationStatsResponse;
 import com.stitch.user.model.dto.*;
 import com.stitch.user.service.ContactVerificationService;
-import com.stitch.user.service.CustomerService;
+import com.stitch.user.service.UserService;
 import com.stitch.wallet.model.dto.WalletDto;
-import com.stitch.wallet.model.dto.WalletRequest;
 import com.stitch.wallet.service.WalletService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -34,15 +33,15 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200/login")
 public class CustomerController {
 
-    private final CustomerService customerService;
+    private final UserService userService;
     private final AuthenticationService authenticationService;
     private final ContactVerificationService verificationService;
     private final WalletService walletService;
 
     private final CountryService countryService;
 
-    public CustomerController(CustomerService customerService, AuthenticationService authenticationService, ContactVerificationService verificationService, WalletService walletService, CountryService countryService) {
-        this.customerService = customerService;
+    public CustomerController(UserService userService, AuthenticationService authenticationService, ContactVerificationService verificationService, WalletService walletService, CountryService countryService) {
+        this.userService = userService;
         this.authenticationService = authenticationService;
         this.verificationService = verificationService;
         this.walletService = walletService;
@@ -54,8 +53,8 @@ public class CustomerController {
     public CustomerDto createCustomer(@Argument("customerRequest") CustomerRequest customerRequest) {
         try {
 //            String currency = countryService.getCurrencyByCountryName(customerRequest.getCountry());
-            CustomerDto customer = customerService.createCustomer(customerRequest);
-            walletService.createWallet(new WalletRequest(customer.getCustomerId(), customerRequest.getCurrency(), true));
+            CustomerDto customer = userService.createCustomer(customerRequest);
+//            walletService.createWallet(new WalletRequest(customer.getCustomerId(), customerRequest.getCurrency(), true));
             return customer;
         } catch (StitchException exception) {
             throw exception;
@@ -72,7 +71,7 @@ public class CustomerController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         try {
-            return customerService.updateCustomer(customerRequest, emailAddress);
+            return userService.updateCustomer(customerRequest, emailAddress);
         }
         catch (Exception e) {
             log.error("Error updating customer: {}" ,customerRequest, e);
@@ -85,25 +84,25 @@ public class CustomerController {
                                       @Argument("emailAddress") String emailAddress) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            return customerService.updateCustomerProfileImage(profileImage, emailAddress);
+            return userService.updateCustomerProfileImage(profileImage, emailAddress);
     }
 
     @Unsecured
     @MutationMapping(value = "requestPasswordReset")
     public Response requestPasswordReset(@Argument("emailAddress") String emailAddress) {
-        return customerService.requestPasswordReset(emailAddress);
+        return userService.requestPasswordReset(emailAddress);
     }
 
     @Unsecured
     @MutationMapping(value = "resetPassword")
     public Response resetPassword(@Argument("passwordResetRequest") PasswordResetRequest passwordResetRequest) {
-        return customerService.resetPassword(passwordResetRequest);
+        return userService.resetPassword(passwordResetRequest);
     }
 
     @Unsecured
     @MutationMapping(value = "validateResetCode")
     public Response validatePasswordResetCode(@Argument("resetCodeValidationRequest") PasswordResetRequest passwordResetRequest) {
-        return customerService.validatePasswordResetCode(passwordResetRequest);
+        return userService.validatePasswordResetCode(passwordResetRequest);
     }
 
 //    @Unsecured
@@ -115,6 +114,31 @@ public class CustomerController {
     @Unsecured
     @MutationMapping(value = "customerLogin")
     public LoginResponse customerLogin(@Argument("loginRequest") LoginRequest loginRequest) {
+//        Collection<? extends GrantedAuthority> permission = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+//        System.out.println("testing authorities");
+//        System.out.println(permission);
+//        System.out.println("testing authorities");
+//
+//        Collection<SimpleGrantedAuthority> oldAuthorities = (Collection<SimpleGrantedAuthority>)SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+//
+//        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_VENDOR");
+//        List<SimpleGrantedAuthority> updatedAuthorities = new ArrayList<SimpleGrantedAuthority>();
+////        updatedAuthorities.remove();
+//        updatedAuthorities.add(authority);
+//        updatedAuthorities.addAll(oldAuthorities);
+//
+//        SecurityContextHolder.getContext().setAuthentication(
+//                new UsernamePasswordAuthenticationToken(
+//                        SecurityContextHolder.getContext().getAuthentication().getPrincipal(),
+//                        SecurityContextHolder.getContext().getAuthentication().getCredentials(),
+//                        updatedAuthorities));
+//
+//        Collection<? extends GrantedAuthority> permission2 = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+//
+//        System.out.println("testing authorities 2 =====");
+//        System.out.println(permission2);
+//        System.out.println("testing authorities 2 =====");
+
         return authenticationService.authenticate(loginRequest);
     }
 
@@ -133,12 +157,12 @@ public class CustomerController {
 
     @QueryMapping(value = "customer")
     public CustomerDto getCustomer(@Argument("customerId") String customerId) {
-        return customerService.getCustomer(customerId);
+        return userService.getCustomer(customerId);
     }
 
     @QueryMapping(value = "customerDetails")
     public CustomerDto getCustomerByEmailAddress(@Argument("emailAddress") String emailAddress) {
-        return customerService.getCustomerByEmail(emailAddress);
+        return userService.getCustomerByEmail(emailAddress);
     }
 
 
@@ -158,32 +182,32 @@ public class CustomerController {
     @MutationMapping(value = "createPin")
     public Response createPin(@Argument("pin") String pin) {
         CustomerDto user = authenticationService.getAuthenticatedUser();
-        return customerService.createPin(user.getCustomerId(), pin.trim());
+        return userService.createPin(user.getUserId(), pin.trim());
     }
 
 
     @MutationMapping(value = "resetPinInitiateEmail")
     public Response resetPinInitiateEmail(@Argument("phoneNumber") String phoneNumber) {
         CustomerDto user = authenticationService.getAuthenticatedUser();
-        return customerService.resetPinInitiateEmail(user.getCustomerId(), phoneNumber.trim());
+        return userService.resetPinInitiateEmail(user.getUserId(), phoneNumber.trim());
     }
 
     @QueryMapping(value = "verifyResetPinCode")
     public Response verifyResetPinCode(@Argument("code") String code) {
         CustomerDto user = authenticationService.getAuthenticatedUser();
-        return customerService.verifyResetPinCode(user.getCustomerId(), code.trim());
+        return userService.verifyResetPinCode(user.getUserId(), code.trim());
     }
 
     @MutationMapping(value = "resetPin")
     public Response resetPin(@Argument("pin") String pin) {
         CustomerDto user = authenticationService.getAuthenticatedUser();
-        return customerService.resetPin(user.getCustomerId(), pin.trim());
+        return userService.resetPin(user.getUserId(), pin.trim());
     }
 
     @MutationMapping(value = "allowSaveCard")
     public Response allowSaveCard(@Argument("savedCard") Boolean savedCard) {
         CustomerDto user = authenticationService.getAuthenticatedUser();
-        return customerService.allowSaveCard(user.getCustomerId(), savedCard);
+        return userService.allowSaveCard(user.getUserId(), savedCard);
     }
 
 //    @MutationMapping(value = "enablePushNotification")

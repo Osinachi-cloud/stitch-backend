@@ -9,15 +9,25 @@ import com.stitch.model.dto.ProductFilterRequest;
 import com.stitch.model.dto.ProductRequest;
 import com.stitch.model.dto.ProductUpdateRequest;
 import com.stitch.service.ProductService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasAuthority;
+
+@Slf4j
 @Controller
 public class ProductController {
 
@@ -29,6 +39,14 @@ public class ProductController {
 
     @MutationMapping(value = "createProduct")
     public ProductDto createProduct(@Argument("productRequest")ProductRequest productRequest){
+        System.out.println("===========");
+        System.out.println(hasAuthority("VENDOR"));
+        System.out.println("===========");
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        log.info("Authorities: {}", authorities);
+
         try {
             return productService.createProduct(productRequest);
         }catch (StitchException e){
@@ -76,7 +94,6 @@ public class ProductController {
     public PaginatedResponse<List<ProductDto>> getProductsByVendorId(@Argument("vendorId") String vendorId,
                                                                   @Argument("page") Optional<Integer> page,
                                                                   @Argument("size") Optional<Integer> size
-
     ){
         PageRequest pr = PageRequest.of(page.orElse(0), size.orElse(10));
 
@@ -96,11 +113,18 @@ public class ProductController {
         }
     }
 
+    @QueryMapping(value = "getVendorProductsBy")
+    public PaginatedResponse<List<ProductDto>> getVendorProductsBy(
+            @Argument("productFilterRequest") ProductFilterRequest productFilterRequest
+    ) {
+        return productService.fetchAllProductsByVendor(productFilterRequest);
+    }
+
     @QueryMapping(value = "getAllProductsBy")
     public PaginatedResponse<List<ProductDto>> getAllProductsBy(
             @Argument("productFilterRequest") ProductFilterRequest productFilterRequest
     ) {
-        return productService.fetchAllProducts(productFilterRequest);
+        return productService.fetchAllProductsBy(productFilterRequest);
     }
 
 

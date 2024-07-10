@@ -25,14 +25,14 @@ public class BaseOutflowWalletTransaction extends BaseEntity {
     @JoinColumn(name = "base_wallet_id", nullable = false)
     private BaseOutflowWallet baseOutflowWallet;
 
-    @Column(name = "customer_wallet_transaction_id")
-    private String customerWalletTransactionId;
+    @Column(name = "user_wallet_transaction_id")
+    private String userWalletTransactionId;
 
-    @Column(name = "customer_wallet_id")
+    @Column(name = "user_wallet_id")
     private String customerWalletId;
 
-    @Column(name = "customer_id", nullable = false)
-    private String customerId;
+    @Column(name = "user_id", nullable = false)
+    private String userId;
 
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;

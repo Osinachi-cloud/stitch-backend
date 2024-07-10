@@ -15,7 +15,7 @@ import jakarta.persistence.*;
 @Table(name = "push_notification")
 public class PushNotification extends BaseEntity {
 
-    @Column(name = "customer_id")
+    @Column(name = "user_id")
     private String customerId;
 
     @Column(name = "token", unique = true)

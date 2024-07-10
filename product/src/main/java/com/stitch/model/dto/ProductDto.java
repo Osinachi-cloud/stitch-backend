@@ -2,8 +2,6 @@ package com.stitch.model.dto;
 
 import com.stitch.model.ProductCategory;
 import com.stitch.model.enums.PublishStatus;
-import com.stitch.user.model.entity.Vendor;
-import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;

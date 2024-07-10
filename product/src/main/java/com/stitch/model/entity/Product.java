@@ -3,8 +3,7 @@ package com.stitch.model.entity;
 import com.stitch.commons.model.entity.BaseEntity;
 import com.stitch.model.ProductCategory;
 import com.stitch.model.enums.PublishStatus;
-import com.stitch.user.model.entity.BodyMeasurement;
-import com.stitch.user.model.entity.Vendor;
+import com.stitch.user.model.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -69,8 +68,8 @@ public class Product extends BaseEntity {
     private String country;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "vendor_id", referencedColumnName = "vendor_id")
-    private Vendor vendor;
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private UserEntity userEntity;
 
     @Column(name = "publish_status",  nullable = false)
     @Enumerated(EnumType.STRING)
@@ -79,5 +78,6 @@ public class Product extends BaseEntity {
     @Column(name = "discount")
     @Min(value = 0, message = "Value cannot be negative")
     private BigDecimal discount;
+
 }
 

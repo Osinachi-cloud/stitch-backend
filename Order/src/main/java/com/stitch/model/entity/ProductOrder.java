@@ -6,20 +6,24 @@ import com.stitch.model.enums.OrderStatus;
 import com.stitch.model.enums.PaymentMode;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(name = "product_order")
 public class ProductOrder extends BaseEntity {
 
-
     @Column(name = "order_id", unique = true, nullable = false)
     private String orderId;
 
-    @Column(name = "customer_id", nullable = false)
-    private String customerId;
+    @Column(name = "user_id", nullable = false)
+    private String userId;
 
     @Column(name = "product_id", nullable = false)
     private String productId;
@@ -54,4 +58,6 @@ public class ProductOrder extends BaseEntity {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "quantity")
+    private String quantity;
 }

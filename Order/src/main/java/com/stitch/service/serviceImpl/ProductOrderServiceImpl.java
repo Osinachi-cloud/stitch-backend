@@ -12,9 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,9 +36,9 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     }
 
     @Override
-    public PaginatedResponse<List<ProductOrderDto>> fetchCustomerOrdersBy(String productId, String customerId , String status, String orderId, String productCategory, String vendorId, PageRequest pr) {
+    public PaginatedResponse<List<ProductOrderDto>> fetchCustomerOrdersBy(String productId, String userId , String status, String orderId, String productCategory, PageRequest pr) {
 
-        Page<ProductOrder> orderPage = productOrderRepository.fetchCustomerOrdersBy(productId, customerId, status, orderId, productCategory,vendorId, pr);
+        Page<ProductOrder> orderPage = productOrderRepository.fetchCustomerOrdersBy(productId, userId, status, orderId, productCategory, pr);
 
         List<ProductOrder> productOrderList = orderPage.getContent();
         log.info("productOrderList ====>>>  : {}", productOrderList);
@@ -80,6 +78,21 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     }
 
     @Override
+    public ProductOrder getOrderByOrderId(String orderId){
+        System.out.println("=====================1");
+        Optional<ProductOrder> existingProductOrder = productOrderRepository.findByOrderId(orderId);
+        System.out.println("=====================2");
+
+        if(existingProductOrder.isEmpty()){
+            throw new StitchException("product order does not exist " + orderId);
+        }
+        log.info(" existingProductOrder.get() : {}", existingProductOrder.get().getOrderId());
+
+            return existingProductOrder.get();
+    }
+
+    @Override
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     public ProductOrderDto createProductOrder(ProductOrderRequest productOrderDto){
         ProductOrder productOrder = convertRequestToModel(productOrderDto);
         ProductOrder savedproductOrder = productOrderRepository.save(productOrder);
@@ -92,7 +105,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     public ProductOrderStatistics getCustomerProductStat(String customerId){
         System.out.println("Got to stats method 2");
 
-        List<ProductOrder> existingProductOrder = productOrderRepository.findByCustomerId(customerId);
+        List<ProductOrder> existingProductOrder = productOrderRepository.findByUserId(customerId);
 
         if(existingProductOrder.isEmpty()){
             throw new StitchException("customer with : " + customerId + " does not exist");

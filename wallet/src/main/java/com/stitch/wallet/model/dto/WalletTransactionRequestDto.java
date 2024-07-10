@@ -36,7 +36,7 @@ public class WalletTransactionRequestDto {
                 .transactionType(transactionRequest.getTransactionType().getName())
                 .status(transactionRequest.getStatus().getDescription())
                 .walletId(transactionRequest.getWalletId())
-                .customerId(transactionRequest.getCustomerId())
+                .customerId(transactionRequest.getUserId())
                 .description(transactionRequest.getDescription())
                 .build();
     }

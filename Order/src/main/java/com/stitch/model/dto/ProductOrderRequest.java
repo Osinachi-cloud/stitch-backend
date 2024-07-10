@@ -18,7 +18,11 @@ public class ProductOrderRequest {
 
     private String orderId;
 
-    private String customerId;
+    private BigDecimal quantity;
+
+    private BigDecimal amount;
+
+    private String userId;
 
     private String productId;
 
@@ -32,12 +36,9 @@ public class ProductOrderRequest {
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
-    private BigDecimal amount;
-
 //    @Enumerated(EnumType.STRING)
     private String status;
 
     private String narration;
-
 
 }

@@ -25,8 +25,8 @@ public class InAppNotification extends BaseEntity {
     @Column(name = "notification_id", unique = true, nullable = false)
     private String notificationId;
 
-    @Column(name = "customer_id")
-    private String customerId;
+    @Column(name = "user_id")
+    private String userId;
 
     @Column(name = "subject")
     private String subject;

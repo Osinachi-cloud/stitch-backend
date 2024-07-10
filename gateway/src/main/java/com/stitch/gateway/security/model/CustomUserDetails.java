@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public class CustomUserDetails implements UserDetails {
 
@@ -14,14 +15,19 @@ public class CustomUserDetails implements UserDetails {
     private Collection<? extends GrantedAuthority> authorities;
 
 
-    public CustomUserDetails(CustomerDto user, List<GrantedAuthority> grantedAuthorities) {
-
+    public CustomUserDetails(CustomerDto user, Set<GrantedAuthority> grantedAuthorities) {
+        System.out.println("entered CustomUserDetails constructor");
         this.user = user;
+//        System.out.println(user?.getProfileImage().length());
         this.authorities = grantedAuthorities;
+        System.out.println(grantedAuthorities);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        System.out.println("autho================");
+        System.out.println(authorities);
+        System.out.println("autho================");
         return authorities;
     }
 
@@ -42,7 +48,9 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !user.isAccountLocked();
+
+//        return !user.isAccountLocked();
+        return true;
     }
 
     @Override
@@ -52,7 +60,9 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return user.isEnabled();
+
+//        return user.isEnabled();
+        return true;
     }
 
 

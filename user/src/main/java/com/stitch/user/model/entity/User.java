@@ -5,12 +5,13 @@ import com.stitch.commons.model.entity.BaseEntity;
 import lombok.Data;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
 
 @Data
 @MappedSuperclass
-public abstract class User extends BaseEntity {
+public abstract class User  extends BaseEntity {
 
 
     @Column(name = "first_name", nullable = false)

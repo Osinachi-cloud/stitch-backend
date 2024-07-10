@@ -2,6 +2,8 @@ com/stitch/repository/ProductLikeRepository.class
 com/stitch/utils/ProductUtils.class
 com/stitch/service/ProductService.class
 com/stitch/model/enums/PublishStatus.class
+com/stitch/model/entity/ProductCart.class
+com/stitch/service/ProductCartService.class
 com/stitch/model/dto/ProductRequest.class
 com/stitch/repository/ProductRepository.class
 com/stitch/model/entity/ProductLike.class
@@ -9,8 +11,11 @@ com/stitch/model/dto/ProductUpdateRequest.class
 com/stitch/service/serviceImpl/ProductLikeServiceImpl.class
 com/stitch/service/ProductLikeService.class
 com/stitch/service/serviceImpl/ProductServiceImpl.class
+com/stitch/service/serviceImpl/ProductCartServiceImpl.class
 com/stitch/model/ProductCategory.class
+com/stitch/repository/ProductCartRepository.class
 com/stitch/ProductSpecification.class
 com/stitch/model/dto/ProductFilterRequest.class
 com/stitch/model/dto/ProductDto.class
+com/stitch/model/dto/CartDto.class
 com/stitch/model/entity/Product.class

@@ -21,8 +21,8 @@ public class BillTransaction extends BaseEntity {
     @Column(name = "request_id")
     private String requestId;
 
-    @Column(name = "customer_id")
-    private String customerId;
+    @Column(name = "user_id")
+    private String userId;
 
     @Column(name = "order_id")
     private String orderId;
@@ -72,8 +72,8 @@ public class BillTransaction extends BaseEntity {
     @Column(name = "response_description")
     private String responseDescription;
 
-    @Column(name = "customer_address")
-    private String customerAddress;
+    @Column(name = "user_address")
+    private String userAddress;
 
     @Column(name = "transaction_status")
     private String transactionStatus;

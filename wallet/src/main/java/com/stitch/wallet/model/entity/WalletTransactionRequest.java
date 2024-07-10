@@ -49,7 +49,7 @@ public class WalletTransactionRequest extends BaseEntity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "customer_id", nullable = false)
-    private String customerId;
+    @Column(name = "user_id", nullable = false)
+    private String userId;
 
 }

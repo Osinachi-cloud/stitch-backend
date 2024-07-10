@@ -5,14 +5,16 @@ import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.commons.model.dto.Response;
 import com.stitch.model.dto.CartDto;
 import com.stitch.model.dto.PageRequest;
-import com.stitch.model.dto.ProductDto;
-import com.stitch.model.dto.ProductRequest;
+import com.stitch.payment.model.dto.PaymentVerificationResponse;
+import com.stitch.payment.model.entity.InitializeTransactionRequest;
+import com.stitch.payment.model.entity.InitializeTransactionResponse;
+import com.stitch.payment.service.PaymentService;
 import com.stitch.service.ProductCartService;
-import com.stitch.service.ProductLikeService;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -20,9 +22,11 @@ import java.util.List;
 @Controller
 public class ProductCartController {
     private final ProductCartService productCartService;
+    private final PaymentService paymentService;
 
-    public ProductCartController(ProductCartService productCartService) {
+    public ProductCartController(ProductCartService productCartService, PaymentService paymentService) {
         this.productCartService = productCartService;
+        this.paymentService = paymentService;
     }
 
     @MutationMapping(value = "addProductCart")
@@ -69,6 +73,8 @@ public class ProductCartController {
             return productCartService.getCart(pageRequest.getPage(), pageRequest.getSize());
         }catch (StitchException e){
             throw new StitchException(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -80,7 +86,5 @@ public class ProductCartController {
             throw new StitchException(e.getMessage());
         }
     }
-
-
 
 }

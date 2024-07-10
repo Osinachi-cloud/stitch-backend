@@ -16,13 +16,10 @@ import com.stitch.model.entity.Product;
 import com.stitch.model.enums.PublishStatus;
 import com.stitch.repository.ProductRepository;
 import com.stitch.service.ProductService;
-import com.stitch.user.enums.Tier;
 import com.stitch.user.exception.UserException;
-import com.stitch.user.model.dto.VendorDto;
-import com.stitch.user.model.entity.Device;
-import com.stitch.user.model.entity.Vendor;
-import com.stitch.user.repository.VendorRepository;
-import jakarta.servlet.ServletRequest;
+import com.stitch.user.model.entity.UserEntity;
+import com.stitch.user.repository.UserRepository;
+import com.stitch.user.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -32,12 +29,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -54,14 +51,19 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
-    private final VendorRepository vendorRepository;
+    private final UserRepository userRepository;
 
-    public ProductServiceImpl(ProductRepository productRepository, VendorRepository vendorRepository) {
+    private final UserService userService;
+
+
+    public ProductServiceImpl(ProductRepository productRepository, UserRepository userRepository, UserService userService) {
         this.productRepository = productRepository;
-        this.vendorRepository = vendorRepository;
+        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @Override
+    @PreAuthorize("hasAuthority('VENDOR')")
     public ProductDto createProduct(ProductRequest productRequest) {
 
         log.info("products one : {}", productRequest);
@@ -71,12 +73,12 @@ public class ProductServiceImpl implements ProductService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
 
-        Optional<Vendor> vendorExist = vendorRepository.findByEmailAddress(email);
-        if (vendorExist.isEmpty()){
+        Optional<UserEntity> customerExist = userRepository.findByEmailAddress(email);
+        if (customerExist.isEmpty()){
             throw new UserException("Vendor with : " + email + " does not exist");
         }
 
-        Vendor vendor = vendorExist.get();
+        UserEntity customer = customerExist.get();
 
         Product product = new Product();
         product.setProductId(NumberUtils.generate(10));
@@ -93,7 +95,7 @@ public class ProductServiceImpl implements ProductService {
         product.setMaterialUsed(productRequest.getMaterialUsed());
         product.setReadyIn(productRequest.getReadyIn());
         product.setDiscount(productRequest.getDiscount());
-        product.setVendor(vendor);
+        product.setUserEntity(customer);
         product.setPublishStatus(PublishStatus.valueOf(productRequest.getPublishStatus()));
 
         if(Objects.nonNull(productRequest.getProductImage())){
@@ -137,6 +139,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('VENDOR')")
     public ProductDto updateProduct(ProductUpdateRequest productRequest, String productId) {
 
         Product product = productRepository.findByProductId(productId).orElseThrow(()-> new StitchException("Product with id: " + productId + "  can not be found"));
@@ -156,6 +159,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('VENDOR')")
     public Response updateProductProfileImage(String profileImage, String productId) {
 
         try{
@@ -170,6 +174,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('VENDOR')")
     public ProductDto getProductByProductId(String productId) {
 
         Product product = productRepository.findByProductId(productId).orElseThrow(
@@ -178,15 +183,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('VENDOR')")
     public PaginatedResponse<List<ProductDto>> getProductByVendor(String vendorId, Pageable pageable) {
 
         log.info( " vendor ID : {}",vendorId);
 
-        Page<Product> productPage = productRepository.findProductsByVendorId(vendorId, pageable);
+        UserEntity customer = userService.getCustomerEntity(vendorId);
+
+        Page<Product> productPage = productRepository.findProductsByUserEntity(customer, pageable);
         List<Product> productList = productPage.getContent();
 
         log.info( " productList : {}",vendorId);
-
 
         PaginatedResponse<List<ProductDto>> paginatedResponse = new PaginatedResponse<>();
 
@@ -196,10 +203,10 @@ public class ProductServiceImpl implements ProductService {
         paginatedResponse.setPage(productPage.getNumber());
 
         return paginatedResponse;
-
     }
 
     @Override
+    @PreAuthorize("hasAuthority('VENDOR')")
     public void deleteProduct(String productId) {
         productRepository.deleteByProductId(productId);
     }
@@ -238,10 +245,11 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public PaginatedResponse<List<ProductDto>> fetchAllProducts(ProductFilterRequest request) {
+    @PreAuthorize("hasAuthority('VENDOR')")
+    public PaginatedResponse<List<ProductDto>> fetchAllProductsByVendor(ProductFilterRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String emailAddress = authentication.getName();
-        Optional<Vendor> vendorExists = vendorRepository.findByEmailAddress(emailAddress);
+        Optional<UserEntity> vendorExists = userRepository.findByEmailAddress(emailAddress);
 
         if(vendorExists.isEmpty()){
             throw new UserException("Vendor with Id: " + request.getVendorId() + " does not exist");
@@ -266,9 +274,30 @@ public class ProductServiceImpl implements ProductService {
         return paginatedResponse;
     }
 
-    @Override
-    public boolean togglePublishProduct(String productId) {
 
+    @Override
+//    @PreAuthorize("hasAuthority('VENDOR')")
+    public PaginatedResponse<List<ProductDto>> fetchAllProductsBy(ProductFilterRequest request) {
+        Specification<Product> spec = Specification.where(
+                        ProductSpecification.nameEqual(request.getName()))
+                .and(ProductSpecification.categoryEqual(request.getCategory()))
+                .and(ProductSpecification.codeEqual(request.getCode()))
+                .and(ProductSpecification.productIdEqual(request.getProductId()));
+
+        Page<Product> products = productRepository.findAll(spec, PageRequest.of(request.getPage(), request.getSize(), Sort.by(Sort.Direction.DESC, "dateCreated")));
+
+//        log.info("products all : {}", products.getContent());
+        PaginatedResponse<List<ProductDto>> paginatedResponse = new PaginatedResponse<>();
+        paginatedResponse.setPage(products.getNumber());
+        paginatedResponse.setSize(products.getSize());
+        paginatedResponse.setTotal((int) productRepository.count());
+        paginatedResponse.setData(convertProductListToDto(products.getContent()));
+        return paginatedResponse;
+    }
+
+    @Override
+    @PreAuthorize("hasAuthority('VENDOR')")
+    public boolean togglePublishProduct(String productId) {
         System.out.println(productId);
 
         boolean publishedStatus = false;
@@ -279,17 +308,15 @@ public class ProductServiceImpl implements ProductService {
         }
         Product product = existingProduct.get();
 
-        if(product.getPublishStatus().equals(PublishStatus.PUBLISH)){
-            product.setPublishStatus(PublishStatus.UNPUBLISH);
+        if(product.getPublishStatus().equals(PublishStatus.PUBLISHED)){
+            product.setPublishStatus(PublishStatus.UNPUBLISHED);
             productRepository.save(product);
         }else {
-            product.setPublishStatus(PublishStatus.PUBLISH);
+            product.setPublishStatus(PublishStatus.PUBLISHED);
             productRepository.save(product);
             publishedStatus = true;
         }
         log.info("product info : {}", product);
         return publishedStatus;
     }
-
-
 }

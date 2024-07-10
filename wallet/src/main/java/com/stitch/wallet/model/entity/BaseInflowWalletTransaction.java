@@ -32,8 +32,8 @@ public class BaseInflowWalletTransaction extends BaseEntity {
     @Column(name = "customer_wallet_id")
     private String customerWalletId;
 
-    @Column(name = "customer_id", nullable = false)
-    private String customerId;
+    @Column(name = "user_id", nullable = false)
+    private String userId;
 
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;

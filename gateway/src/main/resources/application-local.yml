@@ -1,8 +1,11 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/stitch
-    username: postgres
-    password: 1234
+#    url: jdbc:postgresql://localhost:5432/stitch
+    url: jdbc:postgresql://dpg-cpr9rcjqf0us738b6qrg-a.oregon-postgres.render.com:5432/stitch_4ckz
+    username: stitchuser
+    password: z1LqmznSv7x0KhnvwaqF66fBcycYxEST
+#    username: postgres
+#    password: 1234
     driverClassName: org.postgresql.Driver
   jpa:
     properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -53,3 +56,10 @@ cors:
   allowed-origin: "http://localhost:4200"
   allowed-header: "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   allowed-method: "GET, POST, PUT, DELETE, OPTIONS"
+
+
+paystack:
+  secret-key: sk_test_e44b040732630cb4a313d4087b5ef8352e252ae0
+  initialize-payment-url: https://api.paystack.co/transaction/initialize
+  call-back-url: http://localhost:4200/dashboard/orders/
+  verification-url: https://api.paystack.co/transaction/verify/

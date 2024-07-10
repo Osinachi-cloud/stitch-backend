@@ -8,9 +8,9 @@ import com.stitch.commons.util.ResponseUtils;
 import com.stitch.user.exception.PasswordException;
 import com.stitch.user.exception.UserNotFoundException;
 import com.stitch.user.model.dto.PasswordResetRequest;
-import com.stitch.user.model.entity.Customer;
+import com.stitch.user.model.entity.UserEntity;
 import com.stitch.user.model.entity.PasswordReset;
-import com.stitch.user.repository.CustomerRepository;
+import com.stitch.user.repository.UserRepository;
 import com.stitch.user.repository.PasswordResetRepository;
 import com.stitch.user.service.PasswordService;
 import com.stitch.user.util.UserValidationUtils;
@@ -28,14 +28,14 @@ import java.util.Optional;
 @Service
 public class PasswordServiceImpl implements PasswordService {
 
-    private final CustomerRepository customerRepository;
+    private final UserRepository customerRepository;
 //    private final NotificationService notificationService;
     private final PasswordResetRepository passwordResetRepository;
     private final PasswordEncoder passwordEncoder;
 
 
     public PasswordServiceImpl(
-            CustomerRepository customerRepository,
+            UserRepository customerRepository,
 //            NotificationService notificationService,
             PasswordResetRepository passwordResetRepository,
             PasswordEncoder passwordEncoder
@@ -57,13 +57,13 @@ public class PasswordServiceImpl implements PasswordService {
             throw new PasswordException(ResponseStatus.INVALID_EMAIL_ADDRESS);
         }
 
-        Optional<Customer> optionalCustomer = customerRepository.findByEmailAddress(emailAddress);
+        Optional<UserEntity> optionalCustomer = customerRepository.findByEmailAddress(emailAddress);
 
         if (optionalCustomer.isEmpty()) {
             log.error("A customer with email address [{}] not found for password reset", emailAddress);
             throw new PasswordException(ResponseStatus.USER_NOT_FOUND);
         }
-        final Customer customer = optionalCustomer.get();
+        final UserEntity customer = optionalCustomer.get();
 
         try {
             PasswordReset passwordReset = new PasswordReset();
@@ -79,7 +79,7 @@ public class PasswordServiceImpl implements PasswordService {
 
 //            notificationService.resetPasswordRequest(new String[]{emailAddress}, resetCode, customer.getFirstName());
 
-            log.info("Customer [{}] has requested a password reset process and reset code sent to email [{}]", customer.getCustomerId(), customer.getEmailAddress());
+            log.info("Customer [{}] has requested a password reset process and reset code sent to email [{}]", customer.getUserId(), customer.getEmailAddress());
             return ResponseUtils.createSuccessResponse("Password reset code sent to email");
 
         } catch (Exception e) {
@@ -120,7 +120,7 @@ public class PasswordServiceImpl implements PasswordService {
 
         try {
 
-            Customer customer = customerRepository.findByEmailAddress(passwordReset.getEmailAddress())
+            UserEntity customer = customerRepository.findByEmailAddress(passwordReset.getEmailAddress())
                     .orElseThrow(() -> new UserNotFoundException(ResponseStatus.USER_NOT_FOUND));
 
             customer.setPassword(encode(passwordResetRequest.getNewPassword()));
@@ -132,7 +132,7 @@ public class PasswordServiceImpl implements PasswordService {
 
 //            notificationService.resetPasswordSuccess(new String[]{customer.getEmailAddress()}, customer.getFirstName());
 
-            log.info("Customer [{}] password reset successfully", customer.getCustomerId());
+            log.info("Customer [{}] password reset successfully", customer.getUserId());
             return ResponseUtils.createDefaultSuccessResponse();
 
         } catch (Exception e) {

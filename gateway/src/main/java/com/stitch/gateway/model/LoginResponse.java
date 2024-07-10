@@ -1,7 +1,6 @@
 package com.stitch.gateway.model;
 
 import com.stitch.user.model.dto.CustomerDto;
-import com.stitch.user.model.dto.VendorDto;
 import com.stitch.wallet.model.dto.WalletDto;
 import com.stitch.gateway.security.model.Token;
 import lombok.Data;
@@ -21,7 +20,7 @@ public class LoginResponse {
     private String emailAddress;
     private String phoneNumber;
     private boolean hasPin;
-
+    private String role;
     private boolean saveCard;
     private boolean enablePush;
     private String accessToken;
@@ -30,7 +29,7 @@ public class LoginResponse {
     private List<WalletDto> wallets;
 
     public LoginResponse(CustomerDto customer, Token token) {
-        this.customerId = customer.getCustomerId();
+        this.customerId = customer.getUserId();
         this.tier = customer.getTier();
         this.country = customer.getCountry();
         this.firstName = customer.getFirstName();
@@ -40,22 +39,9 @@ public class LoginResponse {
         this.hasPin = customer.isHasPin();
         this.saveCard = customer.isSaveCard();
         this.enablePush = customer.isEnablePush();
+        this.role = customer.getRole().getName();
         this.accessToken = token.getAccessToken();
         this.refreshToken = token.getRefreshToken();
         this.profileImage = customer.getProfileImage();
-    }
-
-
-    public LoginResponse(VendorDto vendorDto, Token token) {
-        this.vendorId = vendorDto.getVendorId();
-        this.tier = vendorDto.getTier();
-        this.country = vendorDto.getCountry();
-        this.firstName = vendorDto.getFirstName();
-        this.lastName = vendorDto.getLastName();
-        this.emailAddress = vendorDto.getEmailAddress();
-        this.phoneNumber = vendorDto.getPhoneNumber();
-        this.accessToken = token.getAccessToken();
-        this.refreshToken = token.getRefreshToken();
-        this.profileImage = vendorDto.getProfileImage();
     }
 }

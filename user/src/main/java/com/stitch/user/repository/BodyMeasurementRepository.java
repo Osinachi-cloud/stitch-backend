@@ -1,15 +1,13 @@
 package com.stitch.user.repository;
 
 import com.stitch.user.model.entity.BodyMeasurement;
-import com.stitch.user.model.entity.Customer;
+import com.stitch.user.model.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
 public interface BodyMeasurementRepository extends JpaRepository<BodyMeasurement, Long> {
-    Optional<BodyMeasurement> findByCustomer(Customer customer);
+    Optional<BodyMeasurement> findByUserEntity(UserEntity customer);
 
 //    @Query("SELECT bm FROM BodyMeasurement bm WHERE bm.customer = :customer")
 //    Optional<BodyMeasurement> findByCustomer(@Param("customer") Customer customer);

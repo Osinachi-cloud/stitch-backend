@@ -42,11 +42,11 @@ public class Utils {
         productOrderDto.setProductCategoryName(productOrder.getProductCategoryName());
         productOrderDto.setVendorId(productOrder.getVendorId());
         productOrderDto.setOrderId(productOrder.getOrderId());
-        productOrderDto.setCustomerId(productOrder.getCustomerId());
+        productOrderDto.setCustomerId(productOrder.getUserId());
         productOrderDto.setCurrency(productOrder.getCurrency());
         productOrderDto.setPaymentMode(productOrder.getPaymentMode());
         productOrderDto.setAmount(productOrder.getAmount());
-        productOrderDto.setCustomerId(productOrder.getCustomerId());
+        productOrderDto.setCustomerId(productOrder.getUserId());
         productOrderDto.setDateCreated(formattedDate(productOrder.getDateCreated()));
         return productOrderDto;
     }
@@ -75,7 +75,7 @@ public class Utils {
         productOrder.setVendorId(productOrderDto.getVendorId());
         productOrder.setPaymentMode(productOrderDto.getPaymentMode());
         productOrder.setAmount(productOrderDto.getAmount());
-        productOrder.setCustomerId(productOrderDto.getCustomerId());
+        productOrder.setUserId(productOrderDto.getCustomerId());
         // Set other fields accordingly
         return productOrder;
     }
@@ -83,7 +83,7 @@ public class Utils {
     public static ProductOrder convertRequestToModel(ProductOrderRequest productOrderRequest) {
         ProductOrder productOrder = new ProductOrder();
         productOrder.setOrderId(productOrderRequest.getOrderId());
-        productOrder.setCustomerId(productOrderRequest.getCustomerId());
+        productOrder.setUserId(productOrderRequest.getUserId());
         productOrder.setProductId(productOrderRequest.getProductId());
         productOrder.setProductCategoryName(productOrderRequest.getProductCategoryName());
         productOrder.setVendorId(productOrderRequest.getVendorId());

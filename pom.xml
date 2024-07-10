@@ -21,6 +21,7 @@
         <module>currency</module>
         <module>Order</module>
         <module>product</module>
+        <module>Payment</module>
         <!--        <module>psp</module>-->
 <!--        <module>billers</module>-->
     </modules>

@@ -13,7 +13,7 @@ public interface AuthenticationService {
 
     LoginResponse authenticate(LoginRequest loginRequest);
 
-    LoginResponse authenticateVendor(LoginRequest loginRequest);
+//    LoginResponse authenticateVendor(LoginRequest loginRequest);
 
     Token refreshAccessToken(String token);
 

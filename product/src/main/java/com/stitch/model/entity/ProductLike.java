@@ -2,12 +2,10 @@ package com.stitch.model.entity;
 
 
 import com.stitch.commons.model.entity.BaseEntity;
-import com.stitch.user.model.entity.Customer;
+import com.stitch.user.model.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -19,6 +17,6 @@ public class ProductLike extends BaseEntity {
     private String productId;
 
     @OneToOne
-    @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
-    private Customer customer;
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private UserEntity userEntity;
 }

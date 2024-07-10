@@ -1,16 +1,14 @@
 package com.stitch.gateway.security.service;
 
 import com.stitch.commons.exception.StitchException;
-import com.stitch.gateway.security.model.VendorUserDetails;
 import com.stitch.user.model.dto.CustomerDto;
-import com.stitch.user.model.dto.VendorDto;
-import com.stitch.user.service.CustomerService;
+import com.stitch.user.service.UserService;
 import com.stitch.gateway.model.LoginRequest;
 import com.stitch.gateway.model.LoginResponse;
 import com.stitch.gateway.security.model.CustomUserDetails;
 import com.stitch.gateway.security.model.Token;
 import com.stitch.gateway.security.util.TokenUtils;
-import com.stitch.user.service.VendorService;
+import com.stitch.user.service.PasswordService;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
@@ -28,25 +26,35 @@ import org.springframework.stereotype.Service;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
-    private final CustomerService customerService;
+    private final UserService userService;
 
-    private final VendorService vendorService;
+
+    private final PasswordService passwordService;
 
     private final TokenUtils tokenUtils;
 
-    public AuthenticationServiceImpl(AuthenticationManager authenticationManager, CustomerService customerService, VendorService vendorService, TokenUtils tokenUtils) {
+    public AuthenticationServiceImpl(AuthenticationManager authenticationManager, UserService userService, PasswordService passwordService, TokenUtils tokenUtils) {
         this.authenticationManager = authenticationManager;
-        this.customerService = customerService;
-        this.vendorService = vendorService;
+        this.userService = userService;
+        this.passwordService = passwordService;
         this.tokenUtils = tokenUtils;
     }
 
     @Override
     public LoginResponse authenticate(LoginRequest loginRequest) {
+        System.out.println(loginRequest.getEmailAddress() + " " + loginRequest.getPassword());
+
+        boolean passwordMatch = passwordService.passwordMatch("A$123456", "$2a$10$S2O5dHSh41MHL7KvAPThm.VudYs0dvo19oFVGnBgvTiXiAjBbAVrK");
+
+        System.out.println(passwordMatch);
+        System.out.println("password matched");
+
+
 
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmailAddress(), loginRequest.getPassword()));
 
+            System.out.println(" troubleshooting login");
             CustomerDto user = getUser(authentication);
 
 //            CustomerDto customerDto = customerService.getCustomerByEmail(user.getEmailAddress());
@@ -77,80 +85,67 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
 
-    @Override
-    public LoginResponse authenticateVendor(LoginRequest loginRequest) {
-
-        try {
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmailAddress(), loginRequest.getPassword()));
-
-            System.out.println("+++++++++++++++++++++++++++++++++");
-            System.out.println(authentication.isAuthenticated());
-            System.out.println("=================================");
-
-            VendorDto user = getVendor(authentication);
-
-//            CustomerDto customerDto = customerService.getCustomerByEmail(user.getEmailAddress());
-
-            Token token = tokenUtils.generateVendorAccessAndRefreshToken(user);
-
-            LoginResponse loginResponse = new LoginResponse(user, token);
-
-            onSuccessfulVendorAuthentication(user);
-            return loginResponse;
-        } catch (BadCredentialsException e) {
-            log.error("Bad login credentials: " + loginRequest.getEmailAddress(), e);
-            onFailedVendorAuthentication(loginRequest.getEmailAddress(), e);
-            throw new BadCredentialsException("Incorrect email address or password");
-        } catch (AuthenticationException e) {
-            log.error("Authentication error for user: " + loginRequest.getEmailAddress(), e);
-            onFailedVendorAuthentication(loginRequest.getEmailAddress(), e);
-            if (e.getCause() != null) {
-                Throwable cause = e.getCause();
-                if (cause.getCause() != null) {
-                    Throwable initialCause = cause.getCause();
-                    throw new StitchException(initialCause.getMessage() != null ? initialCause.getMessage() : "Error processing request");
-                }
-                throw new StitchException(cause.getMessage() != null ? cause.getMessage() : "Error processing request");
-            }
-            throw new StitchException(e.getMessage() != null ? e.getMessage() : "Error processing request");
-        }
-    }
+//    @Override
+//    public LoginResponse authenticateVendor(LoginRequest loginRequest) {
+//
+//        try {
+//            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmailAddress(), loginRequest.getPassword()));
+//
+//            System.out.println("+++++++++++++++++++++++++++++++++");
+//            System.out.println(authentication.isAuthenticated());
+//            System.out.println("=================================");
+//
+//            VendorDto user = getVendor(authentication);
+//
+////            CustomerDto customerDto = customerService.getCustomerByEmail(user.getEmailAddress());
+//
+//            Token token = tokenUtils.generateVendorAccessAndRefreshToken(user);
+//
+//            LoginResponse loginResponse = new LoginResponse(user, token);
+//
+//            onSuccessfulVendorAuthentication(user);
+//            return loginResponse;
+//        } catch (BadCredentialsException e) {
+//            log.error("Bad login credentials: " + loginRequest.getEmailAddress(), e);
+//            onFailedVendorAuthentication(loginRequest.getEmailAddress(), e);
+//            throw new BadCredentialsException("Incorrect email address or password");
+//        } catch (AuthenticationException e) {
+//            log.error("Authentication error for user: " + loginRequest.getEmailAddress(), e);
+//            onFailedVendorAuthentication(loginRequest.getEmailAddress(), e);
+//            if (e.getCause() != null) {
+//                Throwable cause = e.getCause();
+//                if (cause.getCause() != null) {
+//                    Throwable initialCause = cause.getCause();
+//                    throw new StitchException(initialCause.getMessage() != null ? initialCause.getMessage() : "Error processing request");
+//                }
+//                throw new StitchException(cause.getMessage() != null ? cause.getMessage() : "Error processing request");
+//            }
+//            throw new StitchException(e.getMessage() != null ? e.getMessage() : "Error processing request");
+//        }
+//    }
 
 
     private void onFailedAuthentication(String emailAddress, Throwable e) {
-        customerService.updateLoginAttempts(emailAddress);
-    }
-
-    private void onFailedVendorAuthentication(String emailAddress, Throwable e) {
-        vendorService.updateLoginAttempts(emailAddress);
+        userService.updateLoginAttempts(emailAddress);
     }
 
     private void onSuccessfulAuthentication(CustomerDto user) {
-        log.debug("Successful authentication for user: " + user.getCustomerId());
-        customerService.updateLastLogin(user);
+        log.debug("Successful authentication for user: " + user.getUserId());
+        userService.updateLastLogin(user);
     }
 
-    private void onSuccessfulVendorAuthentication(VendorDto user) {
-        log.debug("Successful authentication for user: " + user.getVendorId());
-        vendorService.updateLastLogin(user);
-    }
 
 
     @Override
     public Token refreshAccessToken(String refreshToken) {
 
         Claims claims = tokenUtils.validateRefreshToken(refreshToken);
-        CustomerDto customer = customerService.getCustomer(claims.getSubject());
+        CustomerDto customer = userService.getCustomer(claims.getSubject());
         return tokenUtils.generateAccessAndRefreshToken(customer);
     }
 
     private CustomerDto getUser(Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        return userDetails.getUser();
-    }
-
-    private VendorDto getVendor(Authentication authentication) {
-        VendorUserDetails userDetails = (VendorUserDetails) authentication.getPrincipal();
         return userDetails.getUser();
     }
 
@@ -167,7 +162,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public String getAuthenticatedCustomerId() {
-        return getAuthenticatedUser().getCustomerId();
+        return getAuthenticatedUser().getUserId();
     }
 
 }

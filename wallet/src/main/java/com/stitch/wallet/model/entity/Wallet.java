@@ -21,8 +21,8 @@ import java.util.List;
 @Table(name = "wallet")
 public class Wallet extends BaseEntity {
 
-    @Column(name = "customer_id", nullable = false)
-    private String customerId;
+    @Column(name = "user_id", nullable = false)
+    private String userId;
 
     @Column(name = "wallet_id", unique = true, nullable = false)
     private String walletId; // 10 unique digits
@@ -54,7 +54,7 @@ public class Wallet extends BaseEntity {
     @Override
     public String toString() {
         return "Wallet{" +
-                "customerId='" + customerId + '\'' +
+                "customerId='" + userId + '\'' +
                 ", walletId='" + walletId + '\'' +
                 ", name='" + name + '\'' +
                 ", currency=" + currency +
