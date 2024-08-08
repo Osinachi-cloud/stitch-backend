@@ -3,6 +3,7 @@ package com.stitch.gateway.controller.productcart;
 import com.stitch.commons.exception.StitchException;
 import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.commons.model.dto.Response;
+import com.stitch.gateway.security.model.Unsecured;
 import com.stitch.model.dto.CartDto;
 import com.stitch.model.dto.PageRequest;
 import com.stitch.payment.model.dto.PaymentVerificationResponse;

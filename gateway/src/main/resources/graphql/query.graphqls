@@ -9,15 +9,21 @@ type Query {
     verifyInternetUserEmail(emailVerificationRequest: InternetEmailVerificationRequest):VTPassDataEmailVerificationResponse
     getWallets: [WalletDto]
     verifyResetPinCode(code: String): Response
-    fetchCustomerOrdersBy(productId: String, customerId:String , status: String, orderId: String, productCategory: String, vendorId: String, page: Int, size: Int): OrderPagination
-    getProductOrderStatsByCustomer (customerId: String): ProductOrderStatistics
+    fetchCustomerOrdersBy(productId: String, emailAddress:String , status: String, orderId: String, productCategory: String, vendorId: String, page: Int, size: Int): OrderPagination
+    fetchVendorOrdersBy(productId: String, status: String, orderId: String, productCategory: String, vendorId: String, page: Int, size: Int): OrderPagination
+    getProductOrderStatsByCustomer (emailAddress: String): ProductOrderStatistics
+    getProductOrderStatsByVendor: ProductOrderStatistics
     getProductByProductId(productId: String): ProductDto
     getProductsByVendorId(vendorId: String, page: Int, size: Int) : ProductPagination
     getAllProductsBy(productFilterRequest : ProductFilterRequest): ProductDtoPagination
+    getAllProductsByAuth(productFilterRequest : ProductFilterRequest): ProductDtoPagination
     getVendorProductsBy(productFilterRequest : ProductFilterRequest): ProductDtoPagination
     getAllProductLikes(pageRequest : ProductPageRequest): ProductDtoPagination
     getCart(pageRequest : ProductPageRequest): CartDtoPagination
     sumAmountByQuantityByCustomerId: BigDecimal
+    getOrderByOrderId(orderId: String): Order
+
+
 
 }
 
@@ -67,6 +73,10 @@ type Order {
     dateCreated: String
     currency: Currency
     customerId:String
+    quantity: BigDecimal
+    bodyMeasurementId: BigDecimal
+    bodyMeasurementDto: BodyMeasurementDto
+
 
 }
 

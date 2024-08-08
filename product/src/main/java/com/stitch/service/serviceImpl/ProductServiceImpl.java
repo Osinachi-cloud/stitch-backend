@@ -13,7 +13,9 @@ import com.stitch.model.dto.ProductFilterRequest;
 import com.stitch.model.dto.ProductRequest;
 import com.stitch.model.dto.ProductUpdateRequest;
 import com.stitch.model.entity.Product;
+import com.stitch.model.entity.ProductLike;
 import com.stitch.model.enums.PublishStatus;
+import com.stitch.repository.ProductLikeRepository;
 import com.stitch.repository.ProductRepository;
 import com.stitch.service.ProductService;
 import com.stitch.user.exception.UserException;
@@ -39,8 +41,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.stitch.utils.ProductUtils.convertProductListToDto;
-import static com.stitch.utils.ProductUtils.convertProductToDto;
+import static com.stitch.utils.ProductUtils.*;
 import static java.lang.Math.floorDiv;
 import static java.lang.Math.toIntExact;
 
@@ -51,13 +52,16 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
+    private final ProductLikeRepository productLikeRepository;
+
     private final UserRepository userRepository;
 
     private final UserService userService;
 
 
-    public ProductServiceImpl(ProductRepository productRepository, UserRepository userRepository, UserService userService) {
+    public ProductServiceImpl(ProductRepository productRepository, ProductLikeRepository productLikeRepository, UserRepository userRepository, UserService userService) {
         this.productRepository = productRepository;
+        this.productLikeRepository = productLikeRepository;
         this.userRepository = userRepository;
         this.userService = userService;
     }
@@ -95,7 +99,7 @@ public class ProductServiceImpl implements ProductService {
         product.setMaterialUsed(productRequest.getMaterialUsed());
         product.setReadyIn(productRequest.getReadyIn());
         product.setDiscount(productRequest.getDiscount());
-        product.setUserEntity(customer);
+        product.setVendor(customer);
         product.setPublishStatus(PublishStatus.valueOf(productRequest.getPublishStatus()));
 
         if(Objects.nonNull(productRequest.getProductImage())){
@@ -174,7 +178,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('VENDOR')")
+//    @PreAuthorize("hasAuthority('VENDOR')")
     public ProductDto getProductByProductId(String productId) {
 
         Product product = productRepository.findByProductId(productId).orElseThrow(
@@ -190,7 +194,7 @@ public class ProductServiceImpl implements ProductService {
 
         UserEntity customer = userService.getCustomerEntity(vendorId);
 
-        Page<Product> productPage = productRepository.findProductsByUserEntity(customer, pageable);
+        Page<Product> productPage = productRepository.findProductsByVendor(customer, pageable);
         List<Product> productList = productPage.getContent();
 
         log.info( " productList : {}",vendorId);
@@ -292,6 +296,40 @@ public class ProductServiceImpl implements ProductService {
         paginatedResponse.setSize(products.getSize());
         paginatedResponse.setTotal((int) productRepository.count());
         paginatedResponse.setData(convertProductListToDto(products.getContent()));
+        return paginatedResponse;
+    }
+
+
+    @Override
+    public PaginatedResponse<List<ProductDto>> fetchAllProductsByAuth(ProductFilterRequest request) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        Optional<UserEntity> customer = userRepository.findByEmailAddress(username);
+
+        if(customer.isEmpty()){
+            throw new StitchException("User does not exist");
+        }
+
+        Specification<Product> spec = Specification.where(
+                        ProductSpecification.nameEqual(request.getName()))
+                .and(ProductSpecification.categoryEqual(request.getCategory()))
+                .and(ProductSpecification.codeEqual(request.getCode()))
+                .and(ProductSpecification.productIdEqual(request.getProductId()));
+
+        Page<Product> products = productRepository.findAll(spec, PageRequest.of(request.getPage(), request.getSize(), Sort.by(Sort.Direction.DESC, "dateCreated")));
+
+        Pageable pagerequest = PageRequest.of(request.getPage(), request.getSize());
+
+        Page<ProductLike> productLikesPage = productLikeRepository.findProductLikesByUserEntity(customer.get(), pagerequest);
+
+//        log.info("products all : {}", products.getContent());
+        PaginatedResponse<List<ProductDto>> paginatedResponse = new PaginatedResponse<>();
+        paginatedResponse.setPage(products.getNumber());
+        paginatedResponse.setSize(products.getSize());
+        paginatedResponse.setTotal((int) productRepository.count());
+        paginatedResponse.setData(convertProductListToDtoAndSortProductLikes(products.getContent(), productLikesPage.getContent()));
         return paginatedResponse;
     }
 

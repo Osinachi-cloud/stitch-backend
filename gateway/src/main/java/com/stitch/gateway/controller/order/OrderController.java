@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,56 +27,18 @@ import java.util.Optional;
 import static com.stitch.utils.Utils.convertProductOrderToDto;
 import static com.stitch.utils.Utils.convertRequestToModel;
 
-//package com.stitch.gateway.controller.order;
-//
-//
-//import com.exquisapps.billanted.commons.model.dto.PaginatedResponse;
-//import com.exquisapps.billanted.commons.model.dto.Response;
-//import com.exquisapps.billanted.currency.model.enums.Currency;
-//import com.exquisapps.billanted.gateway.security.service.AuthenticationService;
-//import com.exquisapps.billanted.order.model.dto.OrderReceiptRequest;
-//import com.exquisapps.billanted.order.model.dto.OrderReceiptResponse;
-//import com.exquisapps.billanted.order.model.dto.OrderRequestDto;
-//import com.exquisapps.billanted.order.model.dto.OrderResponseDto;
-//import com.exquisapps.billanted.order.model.dto.ScheduleListRequest;
-//import com.exquisapps.billanted.order.service.OrderService;
-//import com.exquisapps.billanted.payment.model.dto.DailyLimitRequest;
-//import com.exquisapps.billanted.payment.model.enums.TierActionType;
-//import com.exquisapps.billanted.payment.service.TierConfigService;
-//import com.exquisapps.billanted.user.model.dto.CustomerDto;
-//import com.exquisapps.billanted.user.service.CustomerService;
-//import com.exquisapps.billanted.wallet.service.WalletService;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.graphql.data.method.annotation.Argument;
-//import org.springframework.graphql.data.method.annotation.MutationMapping;
-//import org.springframework.graphql.data.method.annotation.QueryMapping;
-//import org.springframework.stereotype.Controller;
-//
-//import java.time.LocalDateTime;
-//import java.time.ZoneOffset;
-//import java.util.List;
-//
+
 @Controller
 @Slf4j
 @RequiredArgsConstructor
 public class OrderController {
 
-//    private final AuthenticationService authenticationService;
-//
-//    private final CustomerService customerService;
-//
     private final ProductOrderService productOrderService;
-//
-//    private final WalletService walletService;
-//
-//    private final TierConfigService tierConfigService;
-
-
 
     @QueryMapping(value = "fetchCustomerOrdersBy")
     public PaginatedResponse<List<ProductOrderDto>> fetchCustomerOrdersBy(
             @Argument Optional<String> productId,
-            @Argument Optional<String> userId,
+            @Argument Optional<String> emailAddress,
             @Argument Optional<String> status,
             @Argument Optional<String> orderId,
             @Argument Optional<String> productCategory,
@@ -83,7 +46,21 @@ public class OrderController {
             @Argument Optional<Integer> size) {
 
         PageRequest pr = PageRequest.of(page.orElse(0),size.orElse(10));
-        return productOrderService.fetchCustomerOrdersBy(productId.orElse(null), userId.orElse(null), status.orElse(null), orderId.orElse(null), productCategory.orElse(null) ,pr);
+        return productOrderService.fetchCustomerOrdersBy(productId.orElse(null), emailAddress.orElse(null), status.orElse(null), orderId.orElse(null), productCategory.orElse(null) ,pr);
+    }
+
+    @QueryMapping(value = "fetchVendorOrdersBy")
+//    @PreAuthorize("hasAuthority('VENDOR')")
+    public PaginatedResponse<List<ProductOrderDto>> fetchVendorOrdersBy(
+            @Argument Optional<String> productId,
+            @Argument Optional<String> status,
+            @Argument Optional<String> orderId,
+            @Argument Optional<String> productCategory,
+            @Argument Optional<Integer> page,
+            @Argument Optional<Integer> size) {
+
+        PageRequest pr = PageRequest.of(page.orElse(0),size.orElse(10));
+        return productOrderService.fetchVendorOrdersBy(productId.orElse(null), status.orElse(null), orderId.orElse(null), productCategory.orElse(null) ,pr);
     }
 
     @MutationMapping(value = "createProductOrder")
@@ -106,16 +83,49 @@ public class OrderController {
         }
     }
 
+    @MutationMapping(value = "updateProductOrder")
+    public ProductOrderDto updateProductOrder(@Argument("productOrderRequest") ProductOrderRequest productOrderDto ){
+        log.info("productOrderDto 00: {}", productOrderDto);
+        try {
+            return productOrderService.updateProductOrder(productOrderDto);
+        }catch (Exception e){
+            throw new StitchException("product could not be updated");
+        }
+    }
 
     @QueryMapping(value = "getProductOrderStatsByCustomer")
-    public ProductOrderStatistics getProductOrderStatsByCustomer(@Argument("customerId") String customerId ){
+    public ProductOrderStatistics getProductOrderStatsByCustomer(@Argument("emailAddress") String emailAddress){
 
         try{
-            return productOrderService.getCustomerProductStat(customerId);
+            return productOrderService.getCustomerProductStat(emailAddress);
         }catch (Exception e){
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    @QueryMapping(value = "getProductOrderStatsByVendor")
+//    @PreAuthorize("hasAuthority('VENDOR')")
+    public ProductOrderStatistics getProductOrderStatsByVendor(){
+
+        try{
+            return productOrderService.getVendorProductStat();
+        }catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @QueryMapping(value = "getOrderByOrderId")
+//    @PreAuthorize("hasAuthority('VENDOR')")
+    public ProductOrderDto getOrderByOrderId(@Argument ("orderId") String orderId){
+
+        try{
+            return productOrderService.getOrderByOrderId(orderId);
+        }catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+
 
 
 }

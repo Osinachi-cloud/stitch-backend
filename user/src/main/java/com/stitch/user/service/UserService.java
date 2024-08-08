@@ -9,7 +9,7 @@ import com.stitch.user.model.entity.UserEntity;
 public interface UserService {
 
 
-    CustomerDto createCustomer(CustomerRequest customerRequest);
+    CustomerDto createCustomer(CustomerRequest customerRequest) throws InterruptedException;
 
     CustomerDto updateCustomer(CustomerUpdateRequest customerRequest, String emailAddress);
 

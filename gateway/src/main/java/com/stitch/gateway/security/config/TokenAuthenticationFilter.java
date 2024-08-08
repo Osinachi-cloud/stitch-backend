@@ -1,5 +1,7 @@
 package com.stitch.gateway.security.config;
 
+import com.stitch.commons.exception.StitchException;
+import com.stitch.user.exception.UserException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -105,7 +107,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 logger.error("Token authentication error: " + ex.getMessage());
                 SecurityContextHolder.clearContext();
                 httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());
-                return;
+                throw new UserException("Token authentication error: " + ex.getMessage());
+//                return;
             }
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);

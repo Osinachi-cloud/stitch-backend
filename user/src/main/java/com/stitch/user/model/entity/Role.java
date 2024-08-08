@@ -5,20 +5,19 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.envers.Audited;
 
 import java.util.Collection;
 
 @Entity
 @Getter
 @Setter
+@Audited
 @NoArgsConstructor
 public class Role extends BaseEntity {
 
     @Column(name = "name")
     private String name;
-
-    @OneToOne(mappedBy = "role")
-    private UserEntity customer;
 
     @Column(name = "description")
     private String description;

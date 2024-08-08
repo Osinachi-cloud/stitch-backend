@@ -6,9 +6,11 @@ import com.stitch.user.enums.IdentityType;
 import lombok.Data;
 
 import jakarta.persistence.*;
+import org.hibernate.envers.Audited;
 
 
 @Data
+@Audited
 @Entity
 @Table(name = "identity_document")
 public class IdentityDocument extends BaseEntity {

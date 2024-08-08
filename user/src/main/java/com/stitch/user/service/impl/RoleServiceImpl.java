@@ -1,7 +1,6 @@
 package com.stitch.user.service.impl;
 
 import com.stitch.user.exception.UserException;
-import com.stitch.user.model.dto.PermissionDto;
 import com.stitch.user.model.dto.RoleDto;
 import com.stitch.user.model.entity.Permission;
 import com.stitch.user.model.entity.Role;
@@ -45,12 +44,18 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role findRoleByName(String name){
+        System.out.println("in find role method");
 
         Optional<Role> optionalRole = roleRepository.findRoleByName(name);
-        if(optionalRole.isEmpty()){
+        System.out.println("in find role method 2");
+
+        if(optionalRole.isPresent()){
+            System.out.println("Role is found now");
+            log.info("optionalRole : {}", optionalRole.get());
+            return optionalRole.get();
+        }else {
             throw new UserException("Role not found");
         }
-        log.info("optionalRole : {}", optionalRole.get().getPermissions());
-        return optionalRole.get();
+
     }
 }

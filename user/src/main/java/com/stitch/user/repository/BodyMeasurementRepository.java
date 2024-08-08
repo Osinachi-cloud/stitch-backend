@@ -9,6 +9,8 @@ import java.util.Optional;
 public interface BodyMeasurementRepository extends JpaRepository<BodyMeasurement, Long> {
     Optional<BodyMeasurement> findByUserEntity(UserEntity customer);
 
+    Optional<BodyMeasurement> findBodyMeasurementByIdAndUserEntity(Long id, UserEntity customer);
+
 //    @Query("SELECT bm FROM BodyMeasurement bm WHERE bm.customer = :customer")
 //    Optional<BodyMeasurement> findByCustomer(@Param("customer") Customer customer);
 }

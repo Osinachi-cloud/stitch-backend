@@ -21,9 +21,9 @@ public interface ProductCartRepository extends JpaRepository<ProductCart, Long> 
 
     Optional<ProductCart> findByProductId(String productId);
 
-    @Query(value = "SELECT COUNT(*) FROM product_cart WHERE user_id = :userId", nativeQuery = true)
-    int getCartCount(@Param("userId") String userId);
+    @Query(value = "SELECT COUNT(*) FROM product_cart WHERE email_address = :emailAddress", nativeQuery = true)
+    int getCartCount(@Param("emailAddress") String emailAddress);
 
-    @Query(value = "SELECT SUM(pc.amount_by_quantity) FROM product_cart pc WHERE pc.user_id = :userId", nativeQuery = true)
-    BigDecimal sumAmountByQuantityByUserId(@Param("userId") String userId);
+    @Query(value = "SELECT SUM(pc.amount_by_quantity) FROM product_cart pc WHERE pc.email_address = :emailAddress", nativeQuery = true)
+    BigDecimal sumAmountByQuantityByUserId(@Param("emailAddress") String emailAddress);
 }

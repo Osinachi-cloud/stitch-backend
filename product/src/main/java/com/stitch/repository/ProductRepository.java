@@ -17,7 +17,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     Optional<Product> findByProductId(String productId);
 
 
-    Page<Product> findProductsByUserEntity(UserEntity customer, Pageable pageable);
+    Page<Product> findProductsByVendor(UserEntity customer, Pageable pageable);
 
 //    Page<Product> findAllProductsByVendorId(Pageable pageable);
 

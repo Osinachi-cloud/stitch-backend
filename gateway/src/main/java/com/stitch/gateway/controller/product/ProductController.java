@@ -4,6 +4,7 @@ package com.stitch.gateway.controller.product;
 import com.stitch.commons.exception.StitchException;
 import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.commons.model.dto.Response;
+import com.stitch.gateway.security.model.Unsecured;
 import com.stitch.model.dto.ProductDto;
 import com.stitch.model.dto.ProductFilterRequest;
 import com.stitch.model.dto.ProductRequest;
@@ -32,7 +33,6 @@ import static org.springframework.security.authorization.AuthorityAuthorizationM
 public class ProductController {
 
     private final ProductService productService;
-
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
@@ -81,6 +81,7 @@ public class ProductController {
         }
     }
 
+    @Unsecured
     @QueryMapping(value = "getProductByProductId")
     public ProductDto getProductByProductId(@Argument("productId") String productId){
         try {
@@ -120,11 +121,19 @@ public class ProductController {
         return productService.fetchAllProductsByVendor(productFilterRequest);
     }
 
+    @Unsecured
     @QueryMapping(value = "getAllProductsBy")
     public PaginatedResponse<List<ProductDto>> getAllProductsBy(
             @Argument("productFilterRequest") ProductFilterRequest productFilterRequest
     ) {
         return productService.fetchAllProductsBy(productFilterRequest);
+    }
+
+    @QueryMapping(value = "getAllProductsByAuth")
+    public PaginatedResponse<List<ProductDto>> getAllProductsByAuth(
+            @Argument("productFilterRequest") ProductFilterRequest productFilterRequest
+    ) {
+        return productService.fetchAllProductsByAuth(productFilterRequest);
     }
 
 

@@ -23,17 +23,28 @@ import com.stitch.user.service.UserService;
 import com.stitch.user.service.PasswordService;
 import com.stitch.user.service.RoleService;
 import com.stitch.user.util.UserValidationUtils;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
+import org.hibernate.envers.query.AuditEntity;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import org.springframework.data.envers.repository.support.EnversRevisionRepositoryFactoryBean;
 
 //import static com.stitch.user.util.CountryUtils.getCountryCodeFromEndpoint;
 //import static com.stitch.user.util.CountryUtils.getCountryNameFromEndpoint;
@@ -49,6 +60,8 @@ public class UserServiceImpl implements UserService {
 //    private final PushNotificationService pushNotificationService;
 //    private final InAppNotificationService inAppNotificationService;
     private final PasswordService passwordService;
+
+//    private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("your-persistence-unit");
 
     private final RoleService roleService;
 
@@ -68,18 +81,44 @@ public class UserServiceImpl implements UserService {
         this.roleService = roleService;
     }
 
+//    void get(){
+//        SessionFactory sessionFactory = null; // obtain a SessionFactory instance
+//        Session session = sessionFactory.getCurrentSession();
+//        AuditReader auditReader = AuditReaderFactory.get(session);
+//    }
+//
+//    public List<UserEntity> getUserEntityRevisions(Long userId) {
+//        EntityManager entityManager = entityManagerFactory.createEntityManager();
+//        AuditReader auditReader = AuditReaderFactory.get(entityManager);
+//
+//        List<UserEntity> revisions = auditReader.createQuery()
+//                .forRevisionsOfEntity(UserEntity.class, true, true)
+//                .add(AuditEntity.id().eq(userId))
+//                .getResultList();
+//
+//        entityManager.close();
+//        return revisions;
+//    }
+//
+//    @Override
+//    public void getAudit(){
+//        List <UserEntity> userEntities = getUserEntityRevisions(1L);
+//      log.info("list : {}", userEntities);
+//    }
+
 
     @Transactional
     @Override
-    public CustomerDto createCustomer(CustomerRequest customerRequest) {
+    public CustomerDto createCustomer(CustomerRequest customerRequest){
+        System.out.println(userRepository.findLastChangeRevision(1L));
 
-        log.debug("Creating customer with request: {}", customerRequest);
+        log.info("Creating customer with request: {}", customerRequest);
 
 //        String country = getCountryNameFromEndpoint(getCountryCodeFromEndpoint());
         String country = "NIGERIA";
         customerRequest.setCountry(country);
 
-        log.debug("Creating customer with request: {}", customerRequest);
+        log.info("Creating customer with request: {}", customerRequest);
 
         validate(customerRequest);
 
@@ -91,19 +130,32 @@ public class UserServiceImpl implements UserService {
         customer.setUsername(customerRequest.getUsername());
         customer.setPhoneNumber(customerRequest.getPhoneNumber());
         customer.setCountry(country);
+        log.info("customer obj 0 : {}", customer);
+
+        log.info("role obj 0 : {}", roleService.findRoleByName(customerRequest.getRoleName()));
+
+
+
         customer.setRole(roleService.findRoleByName(customerRequest.getRoleName()));
         customer.setPassword(passwordService.encode(customerRequest.getPassword()));
+        log.info("customer obj 1 : {}", customer);
+
         if(Objects.nonNull(customerRequest.getProfileImage())){
+            log.info("customer obj 2 : {}", customer);
+
             byte[] imageBytes = Base64.decodeBase64(customerRequest.getProfileImage());
             String base64EncodedImage = Base64.encodeBase64String(imageBytes);
             customer.setProfileImage(base64EncodedImage);
         }
 
         if (customerRequest.getDevice() != null) {
+            log.info("customer obj 3 : {}", customer);
+
             customer.setDevice(new Device(customerRequest.getDevice()));
         }
 
         try {
+            log.info("customer obj : {}", customer);
 
             UserEntity newCustomer = userRepository.save(customer);
 

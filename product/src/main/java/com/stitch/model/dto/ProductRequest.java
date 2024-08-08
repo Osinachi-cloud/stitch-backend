@@ -10,7 +10,7 @@ public class ProductRequest {
 
     private String productId;
 
-    private String vendorId;
+    private String provider;
 
     private String name;
 

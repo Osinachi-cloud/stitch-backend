@@ -24,5 +24,4 @@ public class TransactionResponse {
     private Long dateCreated;
     private Long lastUpdated;
 
-
 }

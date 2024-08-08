@@ -3,12 +3,14 @@ package com.stitch.user.model.entity;
 import com.stitch.commons.model.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 import javax.validation.constraints.*;
 
 @Entity
 @Getter
 @Setter
+@Audited
 @Table(name = "body_measurement")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -62,7 +64,11 @@ public class BodyMeasurement extends BaseEntity {
     @Column(name = "trouser_length")
     private int trouserLength;
 
-    @OneToOne(mappedBy = "bodyMeasurement")
+/*    @OneToOne(mappedBy = "bodyMeasurement")
+    private UserEntity userEntity;*/
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "email_address", referencedColumnName = "email_address")
     private UserEntity userEntity;
 
 }

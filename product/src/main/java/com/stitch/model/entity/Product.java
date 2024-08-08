@@ -68,8 +68,8 @@ public class Product extends BaseEntity {
     private String country;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private UserEntity userEntity;
+    @JoinColumn(name = "email_address", referencedColumnName = "email_address")
+    private UserEntity vendor;
 
     @Column(name = "publish_status",  nullable = false)
     @Enumerated(EnumType.STRING)

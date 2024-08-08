@@ -2,12 +2,13 @@ package com.stitch.user.repository;
 
 import com.stitch.user.model.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.history.RevisionRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
+public interface UserRepository extends RevisionRepository<UserEntity, Long, Long>, JpaRepository<UserEntity, Long> {
     boolean existsByEmailAddress(String emailAddress);
 
     Optional<UserEntity> findByEmailAddress(String emailAddress);

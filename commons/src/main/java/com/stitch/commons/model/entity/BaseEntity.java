@@ -5,13 +5,15 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.*;
+import org.hibernate.envers.Audited;
+
 import java.time.Instant;
 
 
 @Data
+@Audited
 @MappedSuperclass
 public abstract class BaseEntity {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +32,5 @@ public abstract class BaseEntity {
     @UpdateTimestamp
     @Column(name = "last_updated")
     protected Instant lastUpdated;
-
 
 }

@@ -5,8 +5,10 @@ import com.stitch.commons.model.entity.BaseEntity;
 import lombok.Data;
 
 import jakarta.persistence.*;
+import org.hibernate.envers.Audited;
 
 @Data
+@Audited
 @Entity
 @Table(name = "address")
 public class Address extends BaseEntity {

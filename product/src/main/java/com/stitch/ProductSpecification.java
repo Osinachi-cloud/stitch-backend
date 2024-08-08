@@ -43,7 +43,7 @@ public final class ProductSpecification {
 
     public static Specification<Product> vendorEqual(UserEntity vendor) {
         return (root, query, builder) ->
-                vendor != null ? builder.equal(root.get("userEntity"), vendor) : null;
+                vendor != null ? builder.equal(root.get("vendor"), vendor) : null;
     }
 
     public static Specification<Product> codeEqual(String code) {

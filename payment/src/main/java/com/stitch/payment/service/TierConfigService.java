@@ -1,6 +1,5 @@
 package com.stitch.payment.service;
 
-import com.stitch.payment.model.dto.DailyLimitRequest;
 import com.stitch.payment.model.dto.TierConfigDto;
 
 import java.util.List;
@@ -11,5 +10,5 @@ public interface TierConfigService {
 
     List<TierConfigDto> fetchAllTierConfig();
 
-    void cumulativeDailyLimits(DailyLimitRequest dailyLimitRequest);
+//    void cumulativeDailyLimits(DailyLimitRequest dailyLimitRequest);
 }

@@ -5,14 +5,15 @@ import com.stitch.commons.model.entity.BaseEntity;
 import lombok.Data;
 
 import jakarta.persistence.*;
+import org.hibernate.envers.Audited;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
 
 @Data
+@Audited
 @MappedSuperclass
 public abstract class User  extends BaseEntity {
-
 
     @Column(name = "first_name", nullable = false)
     protected String firstName;

@@ -56,12 +56,13 @@ public class CustomerController {
             CustomerDto customer = userService.createCustomer(customerRequest);
 //            walletService.createWallet(new WalletRequest(customer.getCustomerId(), customerRequest.getCurrency(), true));
             return customer;
-        } catch (StitchException exception) {
-            throw exception;
         }
+//        catch (StitchException exception) {
+//            throw exception;
+//        }
         catch (Exception e) {
             log.error("Error creating customer: {}" ,customerRequest, e);
-            throw new StitchException();
+            throw new StitchException("Error: " + e.getMessage());
         }
     }
 

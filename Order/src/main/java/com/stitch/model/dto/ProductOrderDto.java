@@ -4,6 +4,8 @@ import com.stitch.commons.model.entity.BaseEntity;
 import com.stitch.currency.model.enums.Currency;
 import com.stitch.model.enums.OrderStatus;
 import com.stitch.model.enums.PaymentMode;
+import com.stitch.user.model.dto.BodyMeasurementDto;
+import com.stitch.user.model.entity.BodyMeasurement;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,12 +26,12 @@ public class ProductOrderDto {
 
 
     private String productCategoryName;
-    private String vendorId;
+    private String vendorEmailAddress;
     private PaymentMode paymentMode;
     private BigDecimal amount;
     private String customerId;
     private String customerName;
-    private String email;
+    private String emailAddress;
     private String cardId;
     private String txRef;
     private boolean saveCard;
@@ -45,6 +47,10 @@ public class ProductOrderDto {
     //    private OrderFrequency frequency;
 //    private ScheduleStatus scheduleStatus;
     private String orderId;
+    private Long bodyMeasurementId;
+    private BodyMeasurementDto bodyMeasurementDto;
+    private BigDecimal quantity;
+
 
 //
 }

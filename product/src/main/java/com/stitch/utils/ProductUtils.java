@@ -30,5 +30,22 @@ public class ProductUtils {
         return productDtoList;
     }
 
+    public static List<ProductDto> convertProductListToDtoAndSortProductLikes(List<Product> productList, List<ProductLike> productLikes){
+
+        List<ProductDto> productDtoList = new ArrayList<>();
+
+        for(Product product: productList){
+            ProductDto productDto = new ProductDto();
+            BeanUtils.copyProperties(product, productDto);
+            for(ProductLike productLike: productLikes){
+                if(productLike.getProductId().equals(product.getProductId())){
+                    productDto.setLiked(true);
+                }
+            }
+            productDtoList.add(productDto);
+        }
+        return productDtoList;
+    }
+
 
 }

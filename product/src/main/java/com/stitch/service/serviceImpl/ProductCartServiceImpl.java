@@ -47,6 +47,7 @@ public class ProductCartServiceImpl implements ProductCartService{
 
     @Override
     public Response addToCart(String productId){
+        log.info("productId : {}", productId);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -66,21 +67,25 @@ public class ProductCartServiceImpl implements ProductCartService{
 
         Optional<ProductCart> existingProductCart = productCartRepository.findByProductId(productId);
         if(existingProductCart.isPresent()){
+            log.info("existingProductCart is present : {}", existingProductCart.get());
             ProductCart productCart = existingProductCart.get();
             productCart.setQuantity(productCart.getQuantity() + 1);
+            productCart.setProductCategoryName(existingProduct.get().getCategory().name());
+            productCart.setVendorId(existingProduct.get().getVendor().getUserId());
             productCart.setAmountByQuantity(existingProduct.get().getAmount().multiply(BigDecimal.valueOf(productCart.getQuantity())));
             productCartRepository.save(productCart);
             return ResponseUtils.createDefaultSuccessResponse();
 
         }else {
+            log.info("existingProductCart is not present");
             ProductCart productCart = new ProductCart();
             productCart.setProductId(productId);
             productCart.setUserEntity(customer);
             productCart.setQuantity(1);
+            productCart.setAmountByQuantity(existingProduct.get().getAmount().multiply(BigDecimal.valueOf(productCart.getQuantity())));
 
             productCartRepository.save(productCart);
             return ResponseUtils.createDefaultSuccessResponse();
-
         }
     }
 
@@ -138,7 +143,7 @@ public class ProductCartServiceImpl implements ProductCartService{
         Pageable pagerequest = PageRequest.of(page, size);
 
         log.info("customer id : {}", customer.getUserId());
-
+//
         Page<ProductCart> productCart = productCartRepository.findProductCartByUserEntity(customer, pagerequest);
 
         log.info("productCart : {}", productCart.getContent());
@@ -146,7 +151,7 @@ public class ProductCartServiceImpl implements ProductCartService{
         PaginatedResponse<List<CartDto>> paginatedResponse = new PaginatedResponse<>();
         paginatedResponse.setPage(productCart.getNumber());
         paginatedResponse.setSize(productCart.getSize());
-        paginatedResponse.setTotal((int) productCartRepository.getCartCount(customer.getUserId()));
+        paginatedResponse.setTotal((int) productCartRepository.getCartCount(customer.getEmailAddress()));
         paginatedResponse.setData(convertProductCartListToDto(productCart.getContent()));
         return paginatedResponse;
     }
@@ -166,7 +171,7 @@ public class ProductCartServiceImpl implements ProductCartService{
             BeanUtils.copyProperties(product, cartDto);
             cartDto.setAmountByQuantity(productCart.getAmountByQuantity());
             cartDto.setQuantity(BigDecimal.valueOf(productCart.getQuantity()));
-            cartDto.setVendorId(product.getUserEntity().getEmailAddress());
+//            cartDto.setVendorId(product.getUserEntity().getEmailAddress());
 
             productDtoList.add(cartDto);
         }
@@ -184,7 +189,7 @@ public class ProductCartServiceImpl implements ProductCartService{
         }
         UserEntity customer = customerOptional.get();
 
-       return productCartRepository.sumAmountByQuantityByUserId(customer.getUserId());
+       return productCartRepository.sumAmountByQuantityByUserId(customer.getEmailAddress());
     }
 
     @Override
@@ -202,6 +207,33 @@ public class ProductCartServiceImpl implements ProductCartService{
         log.info("customer id : {}", customer.getUserId());
 
         List<ProductCart> productCart = productCartRepository.findProductCartByUserEntity(customer);
+
+        log.info("productCart : {}", productCart);
+
+        for(ProductCart product: productCart){
+            productCartRepository.delete(product);
+        }
+
+        return ResponseUtils.createDefaultSuccessResponse();
+    }
+
+//    @Override
+    @Transactional
+    public Response moveCartToOrder() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        Optional<UserEntity> customerOptional = customerRepository.findByEmailAddress(username);
+        if(customerOptional.isEmpty()){
+            throw new StitchException("Customer with Id : " + username + " does not exist");
+        }
+        UserEntity customer = customerOptional.get();
+
+        log.info("customer id : {}", customer.getUserId());
+
+        List<ProductCart> productCart = productCartRepository.findProductCartByUserEntity(customer);
+
+
 
         log.info("productCart : {}", productCart);
 

@@ -20,21 +20,17 @@ public class TransactionDetailsDto {
 
     private String phoneNumber;
 
-    private String sourceAmount;
+    private String amount;
 
     private String sourceCurrency;
-
-    private String amount;
 
     private String currency;
 
     private String productCategoryName;
 
-    private String productProvider;
+    private String vendor;
 
     private String productPackage;
-
-    private String billersCode;
 
     private String variationCode;
 
@@ -44,6 +40,6 @@ public class TransactionDetailsDto {
 
     private String token;
 
-    private String units;
+    private String quantity;
 
 }

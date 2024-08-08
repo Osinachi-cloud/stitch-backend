@@ -15,7 +15,8 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class CustomExceptionResolver extends DataFetcherExceptionResolverAdapter {
+public class
+CustomExceptionResolver extends DataFetcherExceptionResolverAdapter {
 
     @Override
     protected GraphQLError resolveToSingleError(Throwable ex, DataFetchingEnvironment env) {

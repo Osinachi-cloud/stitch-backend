@@ -49,4 +49,6 @@ public class ProductDto {
     private BigDecimal sellingPrice;
 
     private BigDecimal amountByQuantity;
+
+    private boolean liked;
 }

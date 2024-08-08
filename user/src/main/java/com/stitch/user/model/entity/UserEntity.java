@@ -6,10 +6,13 @@ import com.stitch.user.enums.Tier;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.envers.Audited;
+
 
 
 @Getter
 @Setter
+@Audited
 @Entity
 @Table(name = "USER_ENTITY")
 public class UserEntity extends User {
@@ -45,7 +48,7 @@ public class UserEntity extends User {
     @Column(name = "enable_push")
     private boolean enablePush;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     private Role role;
 
@@ -61,8 +64,8 @@ public class UserEntity extends User {
     @JoinColumn(name = "identity_document_id", referencedColumnName = "id")
     private IdentityDocument identityDocument;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "body_measurement_id", referencedColumnName = "id")
-    private BodyMeasurement bodyMeasurement;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "body_measurement_id", referencedColumnName = "id")
+//    private BodyMeasurement bodyMeasurement;
 
 }

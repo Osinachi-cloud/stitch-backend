@@ -19,6 +19,7 @@ type Mutation{
     createBodyMeasurement(bodyMeasurementRequest: BodyMeasurementRequest) : BodyMeasurementDto
     updateBodyMeasurement(bodyMeasurementRequest: BodyMeasurementRequest): BodyMeasurementDto
     createProductOrder(productOrderRequest: ProductOrderRequest) : ProductOrderDto
+    updateProductOrder(productOrderRequest: ProductOrderRequest) : ProductOrderDto
     createProduct(productRequest:ProductRequest): ProductDto
     updateProduct(productUpdateRequest: ProductUpdateRequest, productId: String): ProductDto
     deleteProduct(productId:String): Response
@@ -32,7 +33,6 @@ type Mutation{
     clearCart: Response
     initializePayment(paymentRequest: InitializeTransactionRequest): InitializeTransactionResponse
     verifyPayment(paymentReference: String): PaymentVerificationResponse
-
 }
 
 type ProductOrderDto{
@@ -62,6 +62,8 @@ type ProductOrderDto{
     number: Int
     startTime: String
     orderId: String
+    bodyMeasurementId: BigDecimal
+
 }
 
 input ProductOrderRequest {
@@ -73,6 +75,22 @@ input ProductOrderRequest {
     currency: Currency
     amount: BigDecimal
     narration: String
+    bodyMeasurementId: BigDecimal
+    orderId: String
+    status: String
+}
+
+input UpdateOrderRequest {
+    productId: String
+    productCategoryName: String
+    vendorId: String
+    paymentMode: PaymentMode
+    currency: Currency
+    amount: BigDecimal
+    narration: String
+    bodyMeasurementId: BigDecimal
+    orderId: String
+    status: String
 }
 
 enum PaymentMode {
@@ -137,6 +155,7 @@ input InitializeTransactionRequest {
     quantity: BigDecimal
     orderId: String
     customerId: String
+    cartProductsIds: [String]
 }
 
 #input TransactionRequest {
@@ -314,6 +333,7 @@ type ProductDto {
     materialUsed:String
     readyIn:String
     sellingPrice:BigDecimal
+    liked: Boolean
 }
 
 
