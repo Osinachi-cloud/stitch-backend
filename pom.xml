@@ -17,7 +17,7 @@
         <module>commons</module>
         <module>user</module>
 <!--        <module>payment</module>-->
-        <module>wallet</module>
+<!--        <module>wallet</module>-->
         <module>currency</module>
         <module>Order</module>
         <module>product</module>

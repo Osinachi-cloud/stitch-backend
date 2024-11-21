@@ -41,4 +41,10 @@ public class ProductOrderRequest {
 
     private String narration;
 
+    private String sleeveType;
+
+    private String color;
+
+    private String bodyMeasurementTag;
+
 }

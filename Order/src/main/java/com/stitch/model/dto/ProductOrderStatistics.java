@@ -10,4 +10,6 @@ public class ProductOrderStatistics {
     private long cancelledOrdersCount;
     private long failedOrdersCount;
     private long completedOrdersCount;
+    private long InTransitOrdersCount;
+    private long paymentCompletedCount;
 }

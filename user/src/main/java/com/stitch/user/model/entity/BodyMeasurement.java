@@ -18,6 +18,9 @@ import javax.validation.constraints.*;
 public class BodyMeasurement extends BaseEntity {
 
 
+    @Column(name = "tag")
+    private String tag;
+
     @NotNull(message = "Neck length is required")
     @Min(value=1, message="neck length: positive number, min 18 is required")
     @Max(value=100, message="neck length: positive number, max 100 is required")

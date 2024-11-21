@@ -28,7 +28,7 @@ security:
   token:
     access:
       secret-key: 2023BillantedChangeAccessKey
-      expiry-length: 1800000 # millisecs (30mins)
+      expiry-length: 180000000 # millisecs (3000mins)
     refresh:
       secret-key: 2023BillantedChangeRefreshKey
       expiry-length: 43200000 #millisecs (12hrs)

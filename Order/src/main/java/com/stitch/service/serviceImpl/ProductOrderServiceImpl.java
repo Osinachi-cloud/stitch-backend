@@ -90,7 +90,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         paginatedResponse.setTotal(toIntExact(orderPage.getTotalElements()));
 
         return paginatedResponse;
-
     }
 
     @Override
@@ -112,7 +111,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         }
 
         ProductOrder productOrder = existingProductOrder.get();
-        BodyMeasurement bodyMeasurement = findBodyMeasurement(productOrder.getBodyMeasurementId(), productOrder.getEmailAddress());
+        BodyMeasurement bodyMeasurement = findBodyMeasurement(productOrder.getBodyMeasurementTag(), productOrder.getEmailAddress());
         BodyMeasurementDto bodyMeasurementDto = convertBodyMeasurementToModel(bodyMeasurement);
 
         ProductOrderDto productOrderDto = convertProductOrderToDto(existingProductOrder.get(), bodyMeasurementDto);
@@ -120,13 +119,13 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         return productOrderDto;
     }
 
-    public BodyMeasurement findBodyMeasurement(Long id, String username){
+    public BodyMeasurement findBodyMeasurement(String id, String username){
         Optional<UserEntity> existingUser = userRepository.findByEmailAddress(username);
         if(existingUser.isEmpty()){
             throw new StitchException("user does not exist");
         }
         UserEntity userEntity = existingUser.get();
-        Optional<BodyMeasurement> existingBodyMeasurement = bodyMeasurementRepository.findBodyMeasurementByIdAndUserEntity(id, userEntity);
+        Optional<BodyMeasurement> existingBodyMeasurement = bodyMeasurementRepository.findBodyMeasurementByTagAndUserEntity(id, userEntity);
         if(existingBodyMeasurement.isEmpty()){
             throw new StitchException("Body measurement does not exist");
         }
@@ -157,15 +156,20 @@ public class ProductOrderServiceImpl implements ProductOrderService {
             throw new StitchException("product order is not found");
         }
         ProductOrder order = existingProductOrder.get();
-        order.setStatus(OrderStatus.valueOf(productOrderDto.getStatus()));
-        ProductOrder savedproductOrder = productOrderRepository.save(order);
+        log.info("order : {}", order);
 
+        order.setStatus(OrderStatus.valueOf(productOrderDto.getStatus()));
+
+        log.info("order 1: {}", order);
+
+        ProductOrder savedproductOrder = productOrderRepository.save(order);
         return convertProductOrderToDto(savedproductOrder);
     }
 
-
     @Override
-    public ProductOrderStatistics getCustomerProductStat(String emailAddress){
+    public ProductOrderStatistics getCustomerProductStat(){
+        String emailAddress = SecurityContextHolder.getContext().getAuthentication().getName();
+
         List<ProductOrder> existingProductOrder = productOrderRepository.findByEmailAddress(emailAddress);
         if(existingProductOrder.isEmpty()){
             throw new StitchException("customer with : " + emailAddress + " does not exist");
@@ -177,6 +181,8 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         productOrderStatistics.setCancelledOrdersCount(productOrderRepository.countCancelledOrdersByCustomerId(emailAddress));
         productOrderStatistics.setProcessingOrdersCount(productOrderRepository.countProcessingOrdersByCustomerId(emailAddress));
         productOrderStatistics.setFailedOrdersCount(productOrderRepository.countFailedOrdersByCustomerId(emailAddress));
+        productOrderStatistics.setInTransitOrdersCount(productOrderRepository.countInTransitOrdersByCustomerId(emailAddress));
+        productOrderStatistics.setPaymentCompletedCount(productOrderRepository.countPaymentCompletedOrdersByCustomerId(emailAddress));
 
         return productOrderStatistics;
     }
@@ -196,6 +202,8 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         productOrderStatistics.setCancelledOrdersCount(productOrderRepository.countCancelledOrdersByVendorId(username));
         productOrderStatistics.setProcessingOrdersCount(productOrderRepository.countProcessingOrdersByVendorId(username));
         productOrderStatistics.setFailedOrdersCount(productOrderRepository.countFailedOrdersByVendorId(username));
+        productOrderStatistics.setInTransitOrdersCount(productOrderRepository.countInTransitOrdersByVendorId(username));
+        productOrderStatistics.setPaymentCompletedCount(productOrderRepository.countPaymentCompletedOrdersByVendorId(username));
 
         return productOrderStatistics;
     }

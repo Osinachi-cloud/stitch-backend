@@ -6,6 +6,7 @@ import com.stitch.commons.model.dto.Response;
 import com.stitch.gateway.security.model.Unsecured;
 import com.stitch.model.dto.CartDto;
 import com.stitch.model.dto.PageRequest;
+import com.stitch.model.dto.ProductVariationRequest;
 import com.stitch.payment.model.dto.PaymentVerificationResponse;
 import com.stitch.payment.model.entity.InitializeTransactionRequest;
 import com.stitch.payment.model.entity.InitializeTransactionResponse;
@@ -31,7 +32,7 @@ public class ProductCartController {
     }
 
     @MutationMapping(value = "addProductCart")
-    public Response addProductLikes(@Argument("productId") String productId){
+    public Response addProductCart(@Argument("productId") String productId){
         try {
             return productCartService.addToCart(productId);
         }catch (StitchException e){
@@ -39,8 +40,18 @@ public class ProductCartController {
         }
     }
 
+    @MutationMapping(value = "addProductCartWithVariation")
+    public Response addProductCartWithVariation(@Argument("productId") String productId, @Argument("productVariation") ProductVariationRequest productVariationDto){
+        try {
+            return productCartService.addToCart(productId, productVariationDto);
+        }catch (StitchException e){
+            throw new StitchException(e.getMessage());
+        }
+    }
+
+
     @MutationMapping(value = "deleteProductCart")
-    public Response deleteProductcart(@Argument("productId")String productId){
+    public Response deleteProductCart(@Argument("productId")String productId){
         try {
             return productCartService.removeOrReduceFromCart(productId);
         }catch (StitchException e){

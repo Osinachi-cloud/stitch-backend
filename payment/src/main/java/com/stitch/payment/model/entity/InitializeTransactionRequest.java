@@ -53,4 +53,8 @@ public class InitializeTransactionRequest {
     private String vendorId;
     private String narration;
     private String [] cartProductsIds;
+
+    private String sleeveType;
+    private String color;
+    private String bodyMeasurementTag;
 }

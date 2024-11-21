@@ -74,6 +74,11 @@ public interface ProductOrderRepository extends JpaRepository<ProductOrder, Long
 
     @Query("SELECT COUNT(p) FROM ProductOrder p WHERE p.emailAddress = :emailAddress AND p.status = 'COMPLETED'")
     long countCompletedOrdersByCustomerId(@Param("emailAddress") String emailAddress);
+    @Query("SELECT COUNT(p) FROM ProductOrder p WHERE p.emailAddress = :emailAddress AND p.status = 'IN_TRANSIT'")
+    long countInTransitOrdersByCustomerId(@Param("emailAddress") String emailAddress);
+
+    @Query("SELECT COUNT(p) FROM ProductOrder p WHERE p.emailAddress = :emailAddress AND p.status = 'PAYMENT_COMPLETED'")
+    long countPaymentCompletedOrdersByCustomerId(@Param("emailAddress") String emailAddress);
 
 
 
@@ -91,4 +96,10 @@ public interface ProductOrderRepository extends JpaRepository<ProductOrder, Long
 
     @Query("SELECT COUNT(p) FROM ProductOrder p WHERE p.vendorEmailAddress = :emailAddress AND p.status = 'COMPLETED'")
     long countCompletedOrdersByVendorId(@Param("emailAddress") String emailAddress);
+
+    @Query("SELECT COUNT(p) FROM ProductOrder p WHERE p.vendorEmailAddress = :emailAddress AND p.status = 'IN_TRANSIT'")
+    long countInTransitOrdersByVendorId(@Param("emailAddress") String emailAddress);
+
+    @Query("SELECT COUNT(p) FROM ProductOrder p WHERE p.vendorEmailAddress = :emailAddress AND p.status = 'PAYMENT_COMPLETED'")
+    long countPaymentCompletedOrdersByVendorId(@Param("emailAddress") String emailAddress);
 }

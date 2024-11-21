@@ -36,4 +36,10 @@ public class CartDto {
 
     private BigDecimal amountByQuantity;
 
+    private String color;
+
+    private String sleeveType;
+
+    private String measurementTag;
+
 }

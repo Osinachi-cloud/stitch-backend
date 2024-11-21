@@ -65,4 +65,14 @@ public class ProductOrder extends BaseEntity {
 
     @Column(name = "body_measurement_id")
     private Long bodyMeasurementId;
+
+    @Column(name = "sleeve_type")
+    private String sleeveType;
+
+    @Column(name = "color")
+    private String color;
+
+    @Column(name = "body_measurement_tag")
+    private String bodyMeasurementTag;
+
 }

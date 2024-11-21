@@ -2,16 +2,21 @@ package com.stitch.utils;
 
 import com.stitch.model.dto.ProductOrderDto;
 import com.stitch.model.dto.ProductOrderRequest;
+import com.stitch.model.dto.ProductVariationDto;
 import com.stitch.model.entity.ProductOrder;
 import com.stitch.model.enums.OrderStatus;
 import com.stitch.user.model.dto.BodyMeasurementDto;
 import com.stitch.user.model.entity.BodyMeasurement;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
+import java.math.BigDecimal;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class Utils {
 
 
@@ -33,6 +38,7 @@ public class Utils {
 
 
     public static ProductOrderDto convertProductOrderToDto(ProductOrder productOrder) {
+        log.info("productOrder : {}", productOrder);
         ProductOrderDto productOrderDto = new ProductOrderDto();
         productOrderDto.setStatus(productOrder.getStatus());
         productOrderDto.setReferenceNumber(productOrder.getOrderId());
@@ -53,6 +59,15 @@ public class Utils {
         productOrderDto.setBodyMeasurementId(productOrder.getBodyMeasurementId());
         productOrderDto.setQuantity(productOrder.getQuantity());
 
+        productOrderDto.setBodyMeasurementTag(productOrder.getBodyMeasurementTag());
+
+        ProductVariationDto productVariationDto = new ProductVariationDto();
+        productVariationDto.setColor(productOrder.getColor());
+        productVariationDto.setSleeveType(productOrder.getSleeveType());
+//        productVariationDto.setBodyMeasurementTag(productOrder.getBodyMeasurementTag());
+
+
+        productOrderDto.setProductVariationDto(productVariationDto);
         return productOrderDto;
     }
 
@@ -77,6 +92,17 @@ public class Utils {
         productOrderDto.setBodyMeasurementId(productOrder.getBodyMeasurementId());
         productOrderDto.setBodyMeasurementDto(bodyMeasurementDto);
         productOrderDto.setQuantity(productOrder.getQuantity());
+
+
+        productOrderDto.setBodyMeasurementTag(productOrder.getBodyMeasurementTag());
+
+        ProductVariationDto productVariationDto = new ProductVariationDto();
+        productVariationDto.setColor(productOrder.getColor());
+        productVariationDto.setSleeveType(productOrder.getSleeveType());
+//        productVariationDto.setBodyMeasurementTag(productOrder.getBodyMeasurementTag());
+
+
+        productOrderDto.setProductVariationDto(productVariationDto);
 
         return productOrderDto;
     }
@@ -125,6 +151,12 @@ public class Utils {
         productOrder.setNarration(productOrderRequest.getNarration());
         productOrder.setQuantity(productOrderRequest.getQuantity());
         productOrder.setCurrency(productOrderRequest.getCurrency());
+        productOrder.setColor(productOrderRequest.getColor());
+        productOrder.setSleeveType(productOrderRequest.getSleeveType());
+        productOrder.setBodyMeasurementTag(productOrderRequest.getBodyMeasurementTag());
+//        productOrder.setVendorEmailAddress(productOrderRequest.getVendorEmailAddress());
+
+        log.info("productOrder : {}",productOrder);
         return productOrder;
     }
 

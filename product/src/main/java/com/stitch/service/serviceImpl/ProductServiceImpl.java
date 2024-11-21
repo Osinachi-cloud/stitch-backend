@@ -14,9 +14,11 @@ import com.stitch.model.dto.ProductRequest;
 import com.stitch.model.dto.ProductUpdateRequest;
 import com.stitch.model.entity.Product;
 import com.stitch.model.entity.ProductLike;
+import com.stitch.model.entity.ProductVariation;
 import com.stitch.model.enums.PublishStatus;
 import com.stitch.repository.ProductLikeRepository;
 import com.stitch.repository.ProductRepository;
+import com.stitch.repository.ProductVariationRepository;
 import com.stitch.service.ProductService;
 import com.stitch.user.exception.UserException;
 import com.stitch.user.model.entity.UserEntity;
@@ -58,12 +60,15 @@ public class ProductServiceImpl implements ProductService {
 
     private final UserService userService;
 
+    private final ProductVariationRepository productVariationRepository;
 
-    public ProductServiceImpl(ProductRepository productRepository, ProductLikeRepository productLikeRepository, UserRepository userRepository, UserService userService) {
+
+    public ProductServiceImpl(ProductRepository productRepository, ProductLikeRepository productLikeRepository, UserRepository userRepository, UserService userService, ProductVariationRepository productVariationRepository) {
         this.productRepository = productRepository;
         this.productLikeRepository = productLikeRepository;
         this.userRepository = userRepository;
         this.userService = userService;
+        this.productVariationRepository = productVariationRepository;
     }
 
     @Override
@@ -85,7 +90,8 @@ public class ProductServiceImpl implements ProductService {
         UserEntity customer = customerExist.get();
 
         Product product = new Product();
-        product.setProductId(NumberUtils.generate(10));
+        String prodId = NumberUtils.generate(10);
+        product.setProductId(prodId);
         product.setProductImage(productRequest.getProductImage());
         product.setCategory(ProductCategory.valueOf(productRequest.getCategory()));
         product.setFixedPrice(productRequest.isFixedPrice());
@@ -100,6 +106,14 @@ public class ProductServiceImpl implements ProductService {
         product.setReadyIn(productRequest.getReadyIn());
         product.setDiscount(productRequest.getDiscount());
         product.setVendor(customer);
+
+        log.info("productRequest.getProductVariationDtoList() : {}" , productRequest.getProductVariation());
+
+        List<ProductVariation> productVariationList = convertProductVariationDtoListToEntity(productRequest.getProductVariation());
+        List<ProductVariation> savedProductVariationList = productVariationRepository.saveAll(productVariationList);
+
+        product.setProductVariation(savedProductVariationList);
+
         product.setPublishStatus(PublishStatus.valueOf(productRequest.getPublishStatus()));
 
         if(Objects.nonNull(productRequest.getProductImage())){

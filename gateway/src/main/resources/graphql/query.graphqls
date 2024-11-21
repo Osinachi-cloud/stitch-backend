@@ -11,7 +11,7 @@ type Query {
     verifyResetPinCode(code: String): Response
     fetchCustomerOrdersBy(productId: String, emailAddress:String , status: String, orderId: String, productCategory: String, vendorId: String, page: Int, size: Int): OrderPagination
     fetchVendorOrdersBy(productId: String, status: String, orderId: String, productCategory: String, vendorId: String, page: Int, size: Int): OrderPagination
-    getProductOrderStatsByCustomer (emailAddress: String): ProductOrderStatistics
+    getProductOrderStatsByCustomer: ProductOrderStatistics
     getProductOrderStatsByVendor: ProductOrderStatistics
     getProductByProductId(productId: String): ProductDto
     getProductsByVendorId(vendorId: String, page: Int, size: Int) : ProductPagination
@@ -22,9 +22,7 @@ type Query {
     getCart(pageRequest : ProductPageRequest): CartDtoPagination
     sumAmountByQuantityByCustomerId: BigDecimal
     getOrderByOrderId(orderId: String): Order
-
-
-
+    getBodyMeasurementByUser: [BodyMeasurementDto]
 }
 
 type ProductDtoPagination {
@@ -41,7 +39,6 @@ type CartDtoPagination {
     data: [CartDto!]
 }
 
-
 type ProductPagination {
     page: Int
     size: Int
@@ -49,13 +46,14 @@ type ProductPagination {
     data: [ProductDto!]
 }
 
-
 type ProductOrderStatistics{
     allOrdersCount: Int
     processingOrdersCount:Int
     cancelledOrdersCount:Int
     failedOrdersCount:Int
     completedOrdersCount:Int
+    inTransitOrdersCount: Int
+    paymentCompletedCount: Int
 }
 
 type OrderPagination {
@@ -76,6 +74,16 @@ type Order {
     quantity: BigDecimal
     bodyMeasurementId: BigDecimal
     bodyMeasurementDto: BodyMeasurementDto
+    bodyMeasurementTag:String
+    productVariationDto: ProductVariationDto
+}
+
+
+type ProductVariationDto {
+    color:  String
+    sleeveType: String
+    bodyMeasurementTag: String
+    bodyMeasurementId: String
 
 
 }

@@ -28,12 +28,15 @@ type Mutation{
     addProductLikes(productId : String): Response
     deleteProductLike(productId : String): Response
     addProductCart(productId : String): Response
+    addProductCartWithVariation(productId : String, productVariation: ProductVariationRequest): Response
     deleteProductCart(productId : String): Response
     removeEntireProductFromCart(productId : String): Response
     clearCart: Response
     initializePayment(paymentRequest: InitializeTransactionRequest): InitializeTransactionResponse
     verifyPayment(paymentReference: String): PaymentVerificationResponse
 }
+
+
 
 type ProductOrderDto{
 
@@ -111,6 +114,7 @@ enum Currency {
 }
 
 type BodyMeasurementDto {
+    tag:String
     neck:Int
     shoulder:Int
     chest:Int
@@ -128,6 +132,7 @@ type BodyMeasurementDto {
 }
 
 input BodyMeasurementRequest {
+    tag: String
     neck:Int
     shoulder:Int
     chest:Int
@@ -156,6 +161,9 @@ input InitializeTransactionRequest {
     orderId: String
     customerId: String
     cartProductsIds: [String]
+    sleeveType:String
+    color:String
+    bodyMeasurementTag:String
 }
 
 #input TransactionRequest {
@@ -311,6 +319,8 @@ input ProductRequest {
     materialUsed:String
     readyIn:String
     sellingPrice:BigDecimal
+    productVariation : [ProductVariationRequest]
+
 }
 
 type ProductDto {
@@ -324,7 +334,7 @@ type ProductDto {
     provider: String
     fixedPrice: Boolean
     country: String
-    vendor: String
+#    vendor: String
     publishStatus: String
     discount: BigDecimal
     productId: String
@@ -334,6 +344,20 @@ type ProductDto {
     readyIn:String
     sellingPrice:BigDecimal
     liked: Boolean
+    vendor: CustomerDto
+    productVariation : [ProductVariation]
+
+}
+
+type ProductVariation {
+    color: String
+    sleeveType: String
+}
+
+input ProductVariationRequest {
+    color: String
+    sleeveType: String
+    measurementTag: String
 }
 
 
@@ -351,7 +375,9 @@ type CartDto {
     readyIn:String
     sellingPrice:BigDecimal
     amountByQuantity: BigDecimal
-
+    color: String
+    sleeveType: String
+    measurementTag: String
 }
 
 input ProductFilterRequest {

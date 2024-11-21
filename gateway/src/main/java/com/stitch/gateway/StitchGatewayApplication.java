@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 
 
 @SpringBootApplication
@@ -29,7 +30,6 @@ public class StitchGatewayApplication {
 		LocalDateTime dateTime = LocalDateTime.parse("2024-07-16T08:03:50.533723", formatter);
 
 		System.out.println(dateTime);
-
 
 		SpringApplication.run(StitchGatewayApplication.class, args);
 	}

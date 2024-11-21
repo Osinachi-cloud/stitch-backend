@@ -50,7 +50,10 @@ public class ProductOrderDto {
     private Long bodyMeasurementId;
     private BodyMeasurementDto bodyMeasurementDto;
     private BigDecimal quantity;
+    private String bodyMeasurementTag;
+    private ProductVariationDto productVariationDto;
 
 
 //
 }
+

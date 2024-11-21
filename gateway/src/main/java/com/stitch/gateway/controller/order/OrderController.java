@@ -94,10 +94,10 @@ public class OrderController {
     }
 
     @QueryMapping(value = "getProductOrderStatsByCustomer")
-    public ProductOrderStatistics getProductOrderStatsByCustomer(@Argument("emailAddress") String emailAddress){
+    public ProductOrderStatistics getProductOrderStatsByCustomer(){
 
         try{
-            return productOrderService.getCustomerProductStat(emailAddress);
+            return productOrderService.getCustomerProductStat();
         }catch (Exception e){
             throw new RuntimeException(e.getMessage());
         }

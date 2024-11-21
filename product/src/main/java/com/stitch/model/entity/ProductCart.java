@@ -28,11 +28,18 @@ public class ProductCart extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "email_address", referencedColumnName = "email_address")
-    private UserEntity userEntity;
+    private UserEntity customer;
 
     @Column(name = "product_category_name")
     public String productCategoryName;
 
-    @Column(name = "vendor_id")
-    public String vendorId;
+    @OneToOne
+    @JoinColumn(name = "vendor_email_address", referencedColumnName = "email_address")
+    public UserEntity vendor;
+
+    private String color;
+
+    private String sleeveType;
+
+    private String measurementTag;
 }

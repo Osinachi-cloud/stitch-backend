@@ -378,7 +378,7 @@ public class PaymentServiceImpl implements PaymentService{
         }
         UserEntity customer = customerOptional.get();
 
-        List<ProductCart> productCart = productCartRepository.findProductCartByUserEntity(customer);
+        List<ProductCart> productCart = productCartRepository.findProductCartByCustomer(customer);
         String transactionId = request.getReference();
 
         for(ProductCart productCart1: productCart){
@@ -392,8 +392,12 @@ public class PaymentServiceImpl implements PaymentService{
             productOrderRequest.setProductCategoryName(productCart1.getProductCategoryName());
             productOrderRequest.setPaymentMode(PaymentMode.CARD);
             productOrderRequest.setNarration(request.getNarration());
-            productOrderRequest.setVendorEmailAddress(productCart1.getUserEntity().getEmailAddress());
+            productOrderRequest.setVendorEmailAddress(productCart1.getVendor().getEmailAddress());
             productOrderRequest.setQuantity(BigDecimal.valueOf(productCart1.getQuantity()));
+            productOrderRequest.setColor(productCart1.getColor());
+            productOrderRequest.setSleeveType(productCart1.getSleeveType());
+            productOrderRequest.setBodyMeasurementTag(productCart1.getMeasurementTag());
+
 
             ProductOrderDto productOrder = productOrderService.createProductOrder(productOrderRequest);
 

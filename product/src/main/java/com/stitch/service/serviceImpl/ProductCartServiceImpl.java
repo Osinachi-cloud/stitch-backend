@@ -5,6 +5,7 @@ import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.commons.model.dto.Response;
 import com.stitch.commons.util.ResponseUtils;
 import com.stitch.model.dto.CartDto;
+import com.stitch.model.dto.ProductVariationRequest;
 import com.stitch.model.entity.Product;
 import com.stitch.model.entity.ProductCart;
 import com.stitch.repository.ProductCartRepository;
@@ -71,7 +72,7 @@ public class ProductCartServiceImpl implements ProductCartService{
             ProductCart productCart = existingProductCart.get();
             productCart.setQuantity(productCart.getQuantity() + 1);
             productCart.setProductCategoryName(existingProduct.get().getCategory().name());
-            productCart.setVendorId(existingProduct.get().getVendor().getUserId());
+            productCart.setVendor(existingProduct.get().getVendor());
             productCart.setAmountByQuantity(existingProduct.get().getAmount().multiply(BigDecimal.valueOf(productCart.getQuantity())));
             productCartRepository.save(productCart);
             return ResponseUtils.createDefaultSuccessResponse();
@@ -80,7 +81,54 @@ public class ProductCartServiceImpl implements ProductCartService{
             log.info("existingProductCart is not present");
             ProductCart productCart = new ProductCart();
             productCart.setProductId(productId);
-            productCart.setUserEntity(customer);
+            productCart.setCustomer(customer);
+            productCart.setQuantity(1);
+            productCart.setAmountByQuantity(existingProduct.get().getAmount().multiply(BigDecimal.valueOf(productCart.getQuantity())));
+
+            productCartRepository.save(productCart);
+            return ResponseUtils.createDefaultSuccessResponse();
+        }
+    }
+
+    @Override
+    public Response addToCart(String productId, ProductVariationRequest productVariationDto){
+        log.info("productId : {}", productId);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        Optional<UserEntity> customerOptional = customerRepository.findByEmailAddress(username);
+        if(customerOptional.isEmpty()){
+            throw new StitchException("Customer with Id : " + username + " does not exist");
+        }
+
+        UserEntity customer = customerOptional.get();
+
+        Optional<Product> existingProduct = productRepository.findByProductId(productId);
+
+        if(existingProduct.isEmpty()){
+            throw new StitchException("Product with Id : " + productId + " does not exist");
+        }
+
+        Optional<ProductCart> existingProductCart = productCartRepository.findByProductId(productId);
+        if(existingProductCart.isPresent()){
+            log.info("existingProductCart is present : {}", existingProductCart.get());
+            ProductCart productCart = existingProductCart.get();
+            productCart.setQuantity(productCart.getQuantity() + 1);
+            productCart.setProductCategoryName(existingProduct.get().getCategory().name());
+            productCart.setVendor(existingProduct.get().getVendor());
+            productCart.setAmountByQuantity(existingProduct.get().getAmount().multiply(BigDecimal.valueOf(productCart.getQuantity())));
+            productCartRepository.save(productCart);
+            return ResponseUtils.createDefaultSuccessResponse();
+
+        }else {
+            log.info("existingProductCart is not present");
+            ProductCart productCart = new ProductCart();
+            productCart.setProductId(productId);
+            productCart.setColor(productVariationDto.getColor());
+            productCart.setSleeveType(productVariationDto.getSleeveType());
+            productCart.setMeasurementTag(productVariationDto.getMeasurementTag());
+            productCart.setCustomer(customer);
             productCart.setQuantity(1);
             productCart.setAmountByQuantity(existingProduct.get().getAmount().multiply(BigDecimal.valueOf(productCart.getQuantity())));
 
@@ -144,7 +192,7 @@ public class ProductCartServiceImpl implements ProductCartService{
 
         log.info("customer id : {}", customer.getUserId());
 //
-        Page<ProductCart> productCart = productCartRepository.findProductCartByUserEntity(customer, pagerequest);
+        Page<ProductCart> productCart = productCartRepository.findProductCartByCustomer(customer, pagerequest);
 
         log.info("productCart : {}", productCart.getContent());
 
@@ -171,7 +219,10 @@ public class ProductCartServiceImpl implements ProductCartService{
             BeanUtils.copyProperties(product, cartDto);
             cartDto.setAmountByQuantity(productCart.getAmountByQuantity());
             cartDto.setQuantity(BigDecimal.valueOf(productCart.getQuantity()));
-//            cartDto.setVendorId(product.getUserEntity().getEmailAddress());
+            cartDto.setColor(productCart.getColor());
+            cartDto.setMeasurementTag(productCart.getMeasurementTag());
+            cartDto.setSleeveType(productCart.getSleeveType());
+            cartDto.setVendorId(product.getVendor().getEmailAddress());
 
             productDtoList.add(cartDto);
         }
@@ -206,7 +257,7 @@ public class ProductCartServiceImpl implements ProductCartService{
 
         log.info("customer id : {}", customer.getUserId());
 
-        List<ProductCart> productCart = productCartRepository.findProductCartByUserEntity(customer);
+        List<ProductCart> productCart = productCartRepository.findProductCartByCustomer(customer);
 
         log.info("productCart : {}", productCart);
 
@@ -231,8 +282,7 @@ public class ProductCartServiceImpl implements ProductCartService{
 
         log.info("customer id : {}", customer.getUserId());
 
-        List<ProductCart> productCart = productCartRepository.findProductCartByUserEntity(customer);
-
+        List<ProductCart> productCart = productCartRepository.findProductCartByCustomer(customer);
 
 
         log.info("productCart : {}", productCart);
