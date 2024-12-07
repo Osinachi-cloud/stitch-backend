@@ -21,6 +21,8 @@ public interface ProductCartRepository extends JpaRepository<ProductCart, Long> 
 
     Optional<ProductCart> findByProductId(String productId);
 
+    Optional<ProductCart> findByProductIdAndColorAndSleeveTypeAndMeasurementTag(String productId, String color, String sleeveType, String measurementType);
+
     @Query(value = "SELECT COUNT(*) FROM product_cart WHERE email_address = :emailAddress", nativeQuery = true)
     int getCartCount(@Param("emailAddress") String emailAddress);
 

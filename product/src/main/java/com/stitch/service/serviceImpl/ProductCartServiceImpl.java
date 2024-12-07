@@ -92,7 +92,7 @@ public class ProductCartServiceImpl implements ProductCartService{
 
     @Override
     public Response addToCart(String productId, ProductVariationRequest productVariationDto){
-        log.info("productId : {}", productId);
+        log.info("productId cart: {}", productId);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -110,7 +110,12 @@ public class ProductCartServiceImpl implements ProductCartService{
             throw new StitchException("Product with Id : " + productId + " does not exist");
         }
 
-        Optional<ProductCart> existingProductCart = productCartRepository.findByProductId(productId);
+        log.info("existingProduct: {}", existingProduct.get());
+
+
+        Optional<ProductCart> existingProductCart = productCartRepository.findByProductIdAndColorAndSleeveTypeAndMeasurementTag(productId, productVariationDto.getColor(), productVariationDto.getSleeveType(), productVariationDto.getMeasurementTag());
+        existingProductCart.ifPresent(productCart -> log.info("existingProductCart: {}", productCart));
+
         if(existingProductCart.isPresent()){
             log.info("existingProductCart is present : {}", existingProductCart.get());
             ProductCart productCart = existingProductCart.get();
@@ -188,11 +193,11 @@ public class ProductCartServiceImpl implements ProductCartService{
         }
         UserEntity customer = customerOptional.get();
 
-        Pageable pagerequest = PageRequest.of(page, size);
+        Pageable pageRequest = PageRequest.of(page, size);
 
         log.info("customer id : {}", customer.getUserId());
 //
-        Page<ProductCart> productCart = productCartRepository.findProductCartByCustomer(customer, pagerequest);
+        Page<ProductCart> productCart = productCartRepository.findProductCartByCustomer(customer, pageRequest);
 
         log.info("productCart : {}", productCart.getContent());
 

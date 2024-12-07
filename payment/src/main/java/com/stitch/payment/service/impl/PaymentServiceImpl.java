@@ -379,24 +379,26 @@ public class PaymentServiceImpl implements PaymentService{
         UserEntity customer = customerOptional.get();
 
         List<ProductCart> productCart = productCartRepository.findProductCartByCustomer(customer);
+            log.info(" productCarts ---->>>: {}", productCart);
+
         String transactionId = request.getReference();
 
-        for(ProductCart productCart1: productCart){
+        for(ProductCart productItem: productCart){
             ProductOrderRequest productOrderRequest = new ProductOrderRequest();
             productOrderRequest.setStatus(OrderStatus.PROCESSING.toString());
             productOrderRequest.setEmailAddress(email);
             productOrderRequest.setTransactionId(transactionId);
-            productOrderRequest.setOrderId(NumberUtils.generate(10) + productCart1.getProductId());
-            productOrderRequest.setAmount(productCart1.getAmountByQuantity());
-            productOrderRequest.setProductId(productCart1.getProductId());
-            productOrderRequest.setProductCategoryName(productCart1.getProductCategoryName());
+            productOrderRequest.setOrderId(NumberUtils.generate(10) + productItem.getProductId());
+            productOrderRequest.setAmount(productItem.getAmountByQuantity());
+            productOrderRequest.setProductId(productItem.getProductId());
+            productOrderRequest.setProductCategoryName(productItem.getProductCategoryName());
             productOrderRequest.setPaymentMode(PaymentMode.CARD);
             productOrderRequest.setNarration(request.getNarration());
-            productOrderRequest.setVendorEmailAddress(productCart1.getVendor().getEmailAddress());
-            productOrderRequest.setQuantity(BigDecimal.valueOf(productCart1.getQuantity()));
-            productOrderRequest.setColor(productCart1.getColor());
-            productOrderRequest.setSleeveType(productCart1.getSleeveType());
-            productOrderRequest.setBodyMeasurementTag(productCart1.getMeasurementTag());
+            productOrderRequest.setVendorEmailAddress(productItem.getVendor().getEmailAddress());
+            productOrderRequest.setQuantity(BigDecimal.valueOf(productItem.getQuantity()));
+            productOrderRequest.setColor(productItem.getColor());
+            productOrderRequest.setSleeveType(productItem.getSleeveType());
+            productOrderRequest.setBodyMeasurementTag(productItem.getMeasurementTag());
 
 
             ProductOrderDto productOrder = productOrderService.createProductOrder(productOrderRequest);

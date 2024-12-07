@@ -81,7 +81,7 @@ public class Product extends BaseEntity {
     private BigDecimal discount;
 
     @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "product_id", referencedColumnName = "product_id")
+    @JoinColumn(name = "product_id", referencedColumnName = "product_id")
     private List<ProductVariation> productVariation;
 }
 

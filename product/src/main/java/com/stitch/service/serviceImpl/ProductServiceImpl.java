@@ -8,10 +8,7 @@ import com.stitch.commons.model.dto.Response;
 import com.stitch.commons.util.NumberUtils;
 import com.stitch.commons.util.ResponseUtils;
 import com.stitch.model.ProductCategory;
-import com.stitch.model.dto.ProductDto;
-import com.stitch.model.dto.ProductFilterRequest;
-import com.stitch.model.dto.ProductRequest;
-import com.stitch.model.dto.ProductUpdateRequest;
+import com.stitch.model.dto.*;
 import com.stitch.model.entity.Product;
 import com.stitch.model.entity.ProductLike;
 import com.stitch.model.entity.ProductVariation;
@@ -21,13 +18,16 @@ import com.stitch.repository.ProductRepository;
 import com.stitch.repository.ProductVariationRepository;
 import com.stitch.service.ProductService;
 import com.stitch.user.exception.UserException;
+import com.stitch.user.model.dto.UserDto;
 import com.stitch.user.model.entity.UserEntity;
 import com.stitch.user.repository.UserRepository;
 import com.stitch.user.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -39,15 +39,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.stitch.utils.ProductUtils.*;
 import static java.lang.Math.floorDiv;
 import static java.lang.Math.toIntExact;
 
 @Service
+@Slf4j
 public class ProductServiceImpl implements ProductService {
 
     private final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
@@ -334,10 +337,10 @@ public class ProductServiceImpl implements ProductService {
 
         Page<Product> products = productRepository.findAll(spec, PageRequest.of(request.getPage(), request.getSize(), Sort.by(Sort.Direction.DESC, "dateCreated")));
 
-        Pageable pagerequest = PageRequest.of(request.getPage(), request.getSize());
+        Pageable pageRequest = PageRequest.of(request.getPage(), request.getSize());
 
-        Page<ProductLike> productLikesPage = productLikeRepository.findProductLikesByUserEntity(customer.get(), pagerequest);
-
+        Page<ProductLike> productLikesPage = productLikeRepository.findProductLikesByUserEntity(customer.get(), pageRequest);
+        // to return true and a flag for every liked product
 //        log.info("products all : {}", products.getContent());
         PaginatedResponse<List<ProductDto>> paginatedResponse = new PaginatedResponse<>();
         paginatedResponse.setPage(products.getNumber());
@@ -345,6 +348,55 @@ public class ProductServiceImpl implements ProductService {
         paginatedResponse.setTotal((int) productRepository.count());
         paginatedResponse.setData(convertProductListToDtoAndSortProductLikes(products.getContent(), productLikesPage.getContent()));
         return paginatedResponse;
+    }
+
+
+    public List<ProductDto> convertProductListToDtoAndSortProductLikes(List<Product> productList, List<ProductLike> productLikes){
+
+        List<ProductDto> productDtoList = new ArrayList<>();
+
+        for(Product product: productList){
+            ProductDto productDto = convertProductToDto(product);
+//            BeanUtils.copyProperties(product, productDto);
+            for(ProductLike productLike: productLikes){
+                if(productLike.getProductId().equals(product.getProductId())){
+                    productDto.setLiked(true);
+
+                    UserDto userDto = new UserDto();
+                    userDto.setEmailAddress(product.getVendor().getEmailAddress());
+                    userDto.setLastName(product.getVendor().getLastName());
+                    userDto.setFirstName(product.getVendor().getFirstName());
+                    productDto.setVendor(userDto);
+                }
+            }
+            productDtoList.add(productDto);
+        }
+        return productDtoList;
+    }
+
+    public ProductDto convertProductToDto(Product product){
+        log.info("products id----->>>> :{}", product.getProductId());
+
+        ProductDto productDto = new ProductDto();
+
+        BeanUtils.copyProperties(product, productDto);
+        UserDto userDto = new UserDto();
+        userDto.setEmailAddress(product.getVendor().getEmailAddress());
+        userDto.setLastName(product.getVendor().getLastName());
+        userDto.setFirstName(product.getVendor().getFirstName());
+        productDto.setVendor(userDto);
+        productDto.setProductVariation(convertProductVariationListToDto(productVariationRepository.findProductVariationByProductId(product.getProductId())));
+        return productDto;
+    }
+
+    public List<ProductVariationDto> convertProductVariationListToDto(List<ProductVariation> products){
+        log.info("products var----->>>> :{}", products);
+        return products.stream().map(productVariation -> {
+            ProductVariationDto productVariationDto = new ProductVariationDto();
+            productVariationDto.setColor(productVariation.getColor());
+            productVariationDto.setSleeveType(productVariation.getSleeveType());
+            return productVariationDto;
+        }).collect(Collectors.toList());
     }
 
     @Override

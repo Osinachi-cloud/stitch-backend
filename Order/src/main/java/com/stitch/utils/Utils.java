@@ -30,10 +30,8 @@ public class Utils {
 //            BeanUtils.copyProperties(productOrder, productOrderDto);
 
             productOrderDtoList.add(convertProductOrderToDto(productOrder));
-
         }
         return productOrderDtoList;
-
     }
 
 
