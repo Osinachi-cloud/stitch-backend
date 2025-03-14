@@ -19,6 +19,7 @@ type Mutation{
     createBodyMeasurement(bodyMeasurementRequest: BodyMeasurementRequest) : BodyMeasurementDto
     updateBodyMeasurement(bodyMeasurementRequest: BodyMeasurementRequest): BodyMeasurementDto
     createProductOrder(productOrderRequest: ProductOrderRequest) : ProductOrderDto
+    updateProductOrder(productOrderRequest: ProductOrderRequest) : ProductOrderDto
     createProduct(productRequest:ProductRequest): ProductDto
     updateProduct(productUpdateRequest: ProductUpdateRequest, productId: String): ProductDto
     deleteProduct(productId:String): Response
@@ -27,13 +28,15 @@ type Mutation{
     addProductLikes(productId : String): Response
     deleteProductLike(productId : String): Response
     addProductCart(productId : String): Response
-    deleteProductCart(productId : String): Response
-    removeEntireProductFromCart(productId : String): Response
+    addProductCartWithVariation(productId : String, productVariation: ProductVariationRequest): Response
+    deleteProductCart(productId : String, productVariation: ProductVariationRequest): Response
+    removeEntireProductFromCart(productId : String, productVariation: ProductVariationRequest): Response
     clearCart: Response
     initializePayment(paymentRequest: InitializeTransactionRequest): InitializeTransactionResponse
     verifyPayment(paymentReference: String): PaymentVerificationResponse
-
 }
+
+
 
 type ProductOrderDto{
 
@@ -62,6 +65,8 @@ type ProductOrderDto{
     number: Int
     startTime: String
     orderId: String
+    bodyMeasurementId: BigDecimal
+
 }
 
 input ProductOrderRequest {
@@ -73,6 +78,22 @@ input ProductOrderRequest {
     currency: Currency
     amount: BigDecimal
     narration: String
+    bodyMeasurementId: BigDecimal
+    orderId: String
+    status: String
+}
+
+input UpdateOrderRequest {
+    productId: String
+    productCategoryName: String
+    vendorId: String
+    paymentMode: PaymentMode
+    currency: Currency
+    amount: BigDecimal
+    narration: String
+    bodyMeasurementId: BigDecimal
+    orderId: String
+    status: String
 }
 
 enum PaymentMode {
@@ -93,6 +114,7 @@ enum Currency {
 }
 
 type BodyMeasurementDto {
+    tag:String
     neck:Int
     shoulder:Int
     chest:Int
@@ -110,6 +132,7 @@ type BodyMeasurementDto {
 }
 
 input BodyMeasurementRequest {
+    tag: String
     neck:Int
     shoulder:Int
     chest:Int
@@ -137,38 +160,11 @@ input InitializeTransactionRequest {
     quantity: BigDecimal
     orderId: String
     customerId: String
+    cartProductsIds: [String]
+    sleeveType:String
+    color:String
+    bodyMeasurementTag:String
 }
-
-#input TransactionRequest {
-#    currency: String!
-#    amount: BigDecimal!
-#    walletId: String!
-#    transactionType: String
-#    description: String
-#    pin: String!
-#    cardId: String
-#}
-
-#input TransactionVerificationRequest {
-#    transactionId: String!
-#    currency: String!
-#    amount: BigDecimal!
-#    txRef: String!
-#    walletId: String!
-#    transactionType: String
-#    description: String
-#    saveCard: Boolean
-#}
-
-#type WalletTransactionRequestDto {
-#    transactionId: String
-#    walletId: String
-#    currency: String
-#    amount: BigDecimal
-#    status: String
-#    paymentId: String
-#    clientSecret: String
-#}
 
 type Response {
     code: Int
@@ -250,20 +246,6 @@ type VerificationResponse {
     message: String
 }
 
-#type CustomerDto {
-#    customerId: ID
-#    firstName: String
-#    lastName: String
-#    emailAddress: String
-#    phoneNumber: String
-#    tier: String
-#    country: String
-#    hasPin: Boolean
-#    enablePush: Boolean
-#
-#}
-
-
 input ProductUpdateRequest {
     name: String
     productImage: String
@@ -292,20 +274,21 @@ input ProductRequest {
     materialUsed:String
     readyIn:String
     sellingPrice:BigDecimal
+    productVariation : [ProductVariationRequest]
+
 }
 
 type ProductDto {
     name: String
     code: String
     productImage: String
-    amount: BigDecimal
+    price: BigDecimal
     quantity: BigDecimal
     outOfStock: Boolean
     category: String
     provider: String
     fixedPrice: Boolean
     country: String
-    vendor: String
     publishStatus: String
     discount: BigDecimal
     productId: String
@@ -314,14 +297,28 @@ type ProductDto {
     materialUsed:String
     readyIn:String
     sellingPrice:BigDecimal
+    liked: Boolean
+    vendor: CustomerDto
+    productVariation : [ProductVariation]
+
 }
 
+type ProductVariation {
+    color: String
+    sleeveType: String
+}
+
+input ProductVariationRequest {
+    color: String
+    sleeveType: String
+    measurementTag: String
+}
 
 type CartDto {
     name: String
     code: String
     productImage: String
-    amount: BigDecimal
+    price: BigDecimal
     quantity: BigDecimal
     category: String
     fixedPrice: Boolean
@@ -331,7 +328,9 @@ type CartDto {
     readyIn:String
     sellingPrice:BigDecimal
     amountByQuantity: BigDecimal
-
+    color: String
+    sleeveType: String
+    measurementTag: String
 }
 
 input ProductFilterRequest {
@@ -340,11 +339,22 @@ input ProductFilterRequest {
     name: String
     code: String
     outOfStock: Boolean
-    category: String
+    categories: [String]
     provider: String
     vendorId: String
     publishStatus: String
     productId: String
+    minPrice: Int
+    maxPrice: Int
+}
+
+input UserFilterRequest {
+    page: Int
+    size: Int
+    firstName: String
+    lastName: String
+    emailAddress: String
+    roleId: Int
 }
 
 input ProductPageRequest {

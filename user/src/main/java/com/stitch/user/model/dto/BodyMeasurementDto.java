@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class BodyMeasurementDto {
-
+    private String tag;
     private int neck;
     private int shoulder;
     private int chest;

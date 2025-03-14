@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
 @Builder
 @Configuration
 @ConfigurationProperties(prefix = "redis")
-//@RefreshScope
 public class RedisProperties {
 
     private String host;

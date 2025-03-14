@@ -5,7 +5,6 @@ import com.stitch.currency.model.enums.Currency;
 import com.stitch.model.enums.OrderStatus;
 import com.stitch.model.enums.PaymentMode;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -22,8 +21,11 @@ public class ProductOrder extends BaseEntity {
     @Column(name = "order_id", unique = true, nullable = false)
     private String orderId;
 
-    @Column(name = "user_id", nullable = false)
-    private String userId;
+    @Column(name = "transaction_id", unique = true, nullable = false)
+    private String transactionId;
+
+    @Column(name = "email_address", nullable = false)
+    private String emailAddress;
 
     @Column(name = "product_id", nullable = false)
     private String productId;
@@ -31,8 +33,8 @@ public class ProductOrder extends BaseEntity {
     @Column(name = "product_category_name")
     private String productCategoryName;
 
-    @Column(name = "vendor_id")
-    private String vendorId;
+    @Column(name = "vendor_email_address")
+    private String vendorEmailAddress;
 
     @Column(name = "product_package")
     private String productPackage;
@@ -59,5 +61,18 @@ public class ProductOrder extends BaseEntity {
     private String description;
 
     @Column(name = "quantity")
-    private String quantity;
+    private BigDecimal quantity;
+
+    @Column(name = "body_measurement_id")
+    private Long bodyMeasurementId;
+
+    @Column(name = "sleeve_type")
+    private String sleeveType;
+
+    @Column(name = "color")
+    private String color;
+
+    @Column(name = "body_measurement_tag")
+    private String bodyMeasurementTag;
+
 }

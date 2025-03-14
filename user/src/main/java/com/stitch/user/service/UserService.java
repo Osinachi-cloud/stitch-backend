@@ -1,15 +1,16 @@
 package com.stitch.user.service;
 
+import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.commons.model.dto.Response;
-//import com.stitch.notification.model.dto.InAppNotificationResponse;
-//import com.stitch.notification.model.dto.InAppNotificationStatsResponse;
 import com.stitch.user.model.dto.*;
 import com.stitch.user.model.entity.UserEntity;
+
+import java.util.List;
 
 public interface UserService {
 
 
-    CustomerDto createCustomer(CustomerRequest customerRequest);
+    CustomerDto createCustomer(CustomerRequest customerRequest) throws InterruptedException;
 
     CustomerDto updateCustomer(CustomerUpdateRequest customerRequest, String emailAddress);
 
@@ -43,13 +44,5 @@ public interface UserService {
 
     Response allowSaveCard(String customerId, Boolean saveCard);
 
-//    Response enablePushNotification(String customerId, Boolean enablePush);
-//
-//    Response addPushNotificationToken(String customerId, String pushToken);
-
-//    List<InAppNotificationResponse> customerInAppNotifications(String customerId, int page, int size);
-//
-//    Response updateReadInAppNotification(String customerId, String notificationId);
-//
-//    InAppNotificationStatsResponse inAppNotificationMessagesStats(String customerId);
+    PaginatedResponse<List<UserDto>> fetchAllUsersBy(UserFilterRequest request);
 }

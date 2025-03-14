@@ -7,12 +7,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
+import org.hibernate.envers.Audited;
 
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Audited
 @Table(name = "device")
 public class Device extends BaseEntity {
 

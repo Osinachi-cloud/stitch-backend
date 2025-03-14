@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
 @Builder
 @Configuration
 @ConfigurationProperties(prefix = "http")
-//@RefreshScope
 public class HttpProperties {
 
     private Integer maxTotal;

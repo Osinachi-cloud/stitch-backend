@@ -29,19 +29,16 @@ import java.util.Optional;
 public class PasswordServiceImpl implements PasswordService {
 
     private final UserRepository customerRepository;
-//    private final NotificationService notificationService;
     private final PasswordResetRepository passwordResetRepository;
     private final PasswordEncoder passwordEncoder;
 
 
     public PasswordServiceImpl(
             UserRepository customerRepository,
-//            NotificationService notificationService,
             PasswordResetRepository passwordResetRepository,
             PasswordEncoder passwordEncoder
     ) {
         this.customerRepository = customerRepository;
-//        this.notificationService = notificationService;
         this.passwordResetRepository = passwordResetRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -76,8 +73,6 @@ public class PasswordServiceImpl implements PasswordService {
 
             passwordReset.setExpiredOn(Instant.now().plus(15, ChronoUnit.MINUTES));
             passwordResetRepository.saveAndFlush(passwordReset);
-
-//            notificationService.resetPasswordRequest(new String[]{emailAddress}, resetCode, customer.getFirstName());
 
             log.info("Customer [{}] has requested a password reset process and reset code sent to email [{}]", customer.getUserId(), customer.getEmailAddress());
             return ResponseUtils.createSuccessResponse("Password reset code sent to email");
@@ -125,12 +120,10 @@ public class PasswordServiceImpl implements PasswordService {
 
             customer.setPassword(encode(passwordResetRequest.getNewPassword()));
             customer.setLastPasswordChange(Instant.now());
-            customerRepository.saveAndFlush(customer);
+            customerRepository.save(customer);
 
             passwordReset.setVerified(true);
-            passwordResetRepository.saveAndFlush(passwordReset);
-
-//            notificationService.resetPasswordSuccess(new String[]{customer.getEmailAddress()}, customer.getFirstName());
+            passwordResetRepository.save(passwordReset);
 
             log.info("Customer [{}] password reset successfully", customer.getUserId());
             return ResponseUtils.createDefaultSuccessResponse();

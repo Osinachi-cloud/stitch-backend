@@ -4,6 +4,7 @@ package com.stitch.gateway.controller.product;
 import com.stitch.commons.exception.StitchException;
 import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.commons.model.dto.Response;
+import com.stitch.gateway.security.model.Unsecured;
 import com.stitch.model.dto.ProductDto;
 import com.stitch.model.dto.ProductFilterRequest;
 import com.stitch.model.dto.ProductRequest;
@@ -14,8 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,24 +24,17 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasAuthority;
-
 @Slf4j
 @Controller
 public class ProductController {
 
     private final ProductService productService;
-
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
     @MutationMapping(value = "createProduct")
     public ProductDto createProduct(@Argument("productRequest")ProductRequest productRequest){
-        System.out.println("===========");
-        System.out.println(hasAuthority("VENDOR"));
-        System.out.println("===========");
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         log.info("Authorities: {}", authorities);
@@ -81,6 +73,7 @@ public class ProductController {
         }
     }
 
+    @Unsecured
     @QueryMapping(value = "getProductByProductId")
     public ProductDto getProductByProductId(@Argument("productId") String productId){
         try {
@@ -120,6 +113,7 @@ public class ProductController {
         return productService.fetchAllProductsByVendor(productFilterRequest);
     }
 
+    @Unsecured
     @QueryMapping(value = "getAllProductsBy")
     public PaginatedResponse<List<ProductDto>> getAllProductsBy(
             @Argument("productFilterRequest") ProductFilterRequest productFilterRequest
@@ -127,26 +121,10 @@ public class ProductController {
         return productService.fetchAllProductsBy(productFilterRequest);
     }
 
-
-
-//    @QueryMapping(value = "getAllProductCategories")
-//    public List<ProductCategoryDto> getProductCategories() {
-//        return productService.getAllProductCategories();
-//    }
-
-//    @QueryMapping(value = "getActiveProductCategories")
-//    public List<ProductCategoryDto> getActiveProductCategories() {
-//        return productService.getActiveProductCategories();
-//    }
-//
-//    @QueryMapping(value = "getAllProviders")
-//    public List<ProviderDto> getProviders(@Argument("categoryName") String categoryName) {
-//        return productService.getAllProvidersByCategoryName(categoryName);
-//    }
-//
-//    @QueryMapping(value = "getActiveProviders")
-//    public List<ProviderDto> getActiveProviders(@Argument("categoryName") String categoryName) {
-//        return productService.getActiveProvidersByCategoryName(categoryName);
-//    }
-
+    @QueryMapping(value = "getAllProductsByAuth")
+    public PaginatedResponse<List<ProductDto>> getAllProductsByAuth(
+            @Argument("productFilterRequest") ProductFilterRequest productFilterRequest
+    ) {
+        return productService.fetchAllProductsByAuth(productFilterRequest);
+    }
 }

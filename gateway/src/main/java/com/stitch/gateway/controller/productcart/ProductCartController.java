@@ -5,16 +5,13 @@ import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.commons.model.dto.Response;
 import com.stitch.model.dto.CartDto;
 import com.stitch.model.dto.PageRequest;
-import com.stitch.payment.model.dto.PaymentVerificationResponse;
-import com.stitch.payment.model.entity.InitializeTransactionRequest;
-import com.stitch.payment.model.entity.InitializeTransactionResponse;
+import com.stitch.model.dto.ProductVariationRequest;
 import com.stitch.payment.service.PaymentService;
 import com.stitch.service.ProductCartService;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -30,7 +27,7 @@ public class ProductCartController {
     }
 
     @MutationMapping(value = "addProductCart")
-    public Response addProductLikes(@Argument("productId") String productId){
+    public Response addProductCart(@Argument("productId") String productId){
         try {
             return productCartService.addToCart(productId);
         }catch (StitchException e){
@@ -38,19 +35,29 @@ public class ProductCartController {
         }
     }
 
-    @MutationMapping(value = "deleteProductCart")
-    public Response deleteProductcart(@Argument("productId")String productId){
+    @MutationMapping(value = "addProductCartWithVariation")
+    public Response addProductCartWithVariation(@Argument("productId") String productId, @Argument("productVariation") ProductVariationRequest productVariationDto){
         try {
-            return productCartService.removeOrReduceFromCart(productId);
+            return productCartService.addToCart(productId, productVariationDto);
+        }catch (StitchException e){
+            throw new StitchException(e.getMessage());
+        }
+    }
+
+    @MutationMapping(value = "deleteProductCart")
+    public Response deleteProductCart(@Argument("productId")String productId, @Argument("productVariation") ProductVariationRequest productVariationDto){
+        try {
+            return productCartService.removeOrReduceFromCart(productId, productVariationDto);
+//            return productCartService.removeProductFromCart(productId, productVariationDto);
         }catch (StitchException e){
             throw new StitchException(e.getMessage());
         }
     }
 
     @MutationMapping(value = "removeEntireProductFromCart")
-    public Response removeEntireProductFromCart(@Argument("productId")String productId){
+    public Response removeEntireProductFromCart(@Argument("productId")String productId, @Argument("productVariation") ProductVariationRequest productVariationDto){
         try {
-            return productCartService.removeProductFromCart(productId);
+            return productCartService.removeProductFromCart(productId, productVariationDto);
         }catch (StitchException e){
             throw new StitchException(e.getMessage());
         }
@@ -64,8 +71,6 @@ public class ProductCartController {
             throw new StitchException(e.getMessage());
         }
     }
-
-
 
     @QueryMapping(value = "getCart")
     public PaginatedResponse<List<CartDto>> getCart(@Argument("pageRequest") PageRequest pageRequest){

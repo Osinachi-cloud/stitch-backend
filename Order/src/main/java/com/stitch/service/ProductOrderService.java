@@ -13,13 +13,19 @@ public interface ProductOrderService {
 
     PaginatedResponse<List<ProductOrderDto>> fetchCustomerOrdersBy(String productId, String userId, String status, String orderId, String productCategory, PageRequest pr);
 
+    PaginatedResponse<List<ProductOrderDto>> fetchVendorOrdersBy(String productId, String status, String orderId, String productCategory, PageRequest pr);
 
     ProductOrderDto getProductOrder(String productOrderId);
 
-    ProductOrder getOrderByOrderId(String productOrderId);
+    ProductOrderDto getOrderByOrderId(String productOrderId);
+
+    List<ProductOrder> getOrdersByTransactionId(String orderId);
 
     ProductOrderDto createProductOrder(ProductOrderRequest productOrderDto);
 
+    ProductOrderDto updateProductOrder(ProductOrderRequest productOrderDto);
 
-    ProductOrderStatistics getCustomerProductStat(String customerId);
+    ProductOrderStatistics getCustomerProductStat();
+
+    ProductOrderStatistics getVendorProductStat();
 }

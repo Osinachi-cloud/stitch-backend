@@ -53,11 +53,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmailAddress(), loginRequest.getPassword()));
-
-            System.out.println(" troubleshooting login");
             CustomerDto user = getUser(authentication);
-
-//            CustomerDto customerDto = customerService.getCustomerByEmail(user.getEmailAddress());
 
             Token token = tokenUtils.generateAccessAndRefreshToken(user);
 
@@ -83,47 +79,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new StitchException(e.getMessage() != null ? e.getMessage() : "Error processing request");
         }
     }
-
-
-//    @Override
-//    public LoginResponse authenticateVendor(LoginRequest loginRequest) {
-//
-//        try {
-//            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmailAddress(), loginRequest.getPassword()));
-//
-//            System.out.println("+++++++++++++++++++++++++++++++++");
-//            System.out.println(authentication.isAuthenticated());
-//            System.out.println("=================================");
-//
-//            VendorDto user = getVendor(authentication);
-//
-////            CustomerDto customerDto = customerService.getCustomerByEmail(user.getEmailAddress());
-//
-//            Token token = tokenUtils.generateVendorAccessAndRefreshToken(user);
-//
-//            LoginResponse loginResponse = new LoginResponse(user, token);
-//
-//            onSuccessfulVendorAuthentication(user);
-//            return loginResponse;
-//        } catch (BadCredentialsException e) {
-//            log.error("Bad login credentials: " + loginRequest.getEmailAddress(), e);
-//            onFailedVendorAuthentication(loginRequest.getEmailAddress(), e);
-//            throw new BadCredentialsException("Incorrect email address or password");
-//        } catch (AuthenticationException e) {
-//            log.error("Authentication error for user: " + loginRequest.getEmailAddress(), e);
-//            onFailedVendorAuthentication(loginRequest.getEmailAddress(), e);
-//            if (e.getCause() != null) {
-//                Throwable cause = e.getCause();
-//                if (cause.getCause() != null) {
-//                    Throwable initialCause = cause.getCause();
-//                    throw new StitchException(initialCause.getMessage() != null ? initialCause.getMessage() : "Error processing request");
-//                }
-//                throw new StitchException(cause.getMessage() != null ? cause.getMessage() : "Error processing request");
-//            }
-//            throw new StitchException(e.getMessage() != null ? e.getMessage() : "Error processing request");
-//        }
-//    }
-
 
     private void onFailedAuthentication(String emailAddress, Throwable e) {
         userService.updateLoginAttempts(emailAddress);

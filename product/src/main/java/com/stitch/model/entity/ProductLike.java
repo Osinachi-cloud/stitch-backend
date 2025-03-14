@@ -17,6 +17,6 @@ public class ProductLike extends BaseEntity {
     private String productId;
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "email_address", referencedColumnName = "email_address")
     private UserEntity userEntity;
 }

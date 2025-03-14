@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class BodyMeasurementRequest {
+    private String tag;
     private int neck;
     private int shoulder;
     private int chest;

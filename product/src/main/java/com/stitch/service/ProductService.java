@@ -29,5 +29,7 @@ public interface ProductService {
 
     PaginatedResponse<List<ProductDto>> fetchAllProductsBy(ProductFilterRequest request);
 
+    PaginatedResponse<List<ProductDto>> fetchAllProductsByAuth(ProductFilterRequest request);
+
     boolean togglePublishProduct(String productId);
 }

@@ -8,6 +8,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.envers.Audited;
 
 import java.util.Collection;
 
@@ -15,6 +16,7 @@ import java.util.Collection;
 @Getter
 @Setter
 @NoArgsConstructor
+@Audited
 @Table(name = "permission")
 public class Permission extends BaseEntity {
 
@@ -36,3 +38,5 @@ public class Permission extends BaseEntity {
         this.category = category;
     }
 }
+
+

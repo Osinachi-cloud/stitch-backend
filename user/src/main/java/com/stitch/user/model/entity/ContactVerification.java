@@ -1,13 +1,13 @@
 package com.stitch.user.model.entity;
 
 import com.stitch.commons.model.entity.BaseEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
-
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 @Entity
 @Data

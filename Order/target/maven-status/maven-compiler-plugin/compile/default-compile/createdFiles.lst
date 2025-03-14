@@ -5,6 +5,7 @@ com/stitch/utils/Utils.class
 com/stitch/model/dto/ProductOrderRequest.class
 com/stitch/model/enums/PaymentMode.class
 com/stitch/model/enums/OrderStatus.class
+com/stitch/model/dto/ProductVariationDto.class
 com/stitch/model/dto/ProductOrderRequestDto.class
 com/stitch/model/dto/ProductOrderStatistics.class
 com/stitch/service/ProductOrderService.class

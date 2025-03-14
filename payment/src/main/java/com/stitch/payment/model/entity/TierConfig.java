@@ -4,7 +4,6 @@ import com.stitch.commons.model.entity.BaseEntity;
 import com.stitch.currency.model.enums.Currency;
 import com.stitch.payment.model.enums.TierActionType;
 import lombok.*;
-
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 

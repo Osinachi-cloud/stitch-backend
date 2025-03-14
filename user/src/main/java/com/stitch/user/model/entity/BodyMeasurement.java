@@ -3,18 +3,22 @@ package com.stitch.user.model.entity;
 import com.stitch.commons.model.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 import javax.validation.constraints.*;
 
 @Entity
 @Getter
 @Setter
+@Audited
 @Table(name = "body_measurement")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class BodyMeasurement extends BaseEntity {
 
+    @Column(name = "tag")
+    private String tag;
 
     @NotNull(message = "Neck length is required")
     @Min(value=1, message="neck length: positive number, min 18 is required")
@@ -62,7 +66,8 @@ public class BodyMeasurement extends BaseEntity {
     @Column(name = "trouser_length")
     private int trouserLength;
 
-    @OneToOne(mappedBy = "bodyMeasurement")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "email_address", referencedColumnName = "email_address")
     private UserEntity userEntity;
 
 }

@@ -3,6 +3,7 @@ package com.stitch.model.dto;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 
 @Data
@@ -10,7 +11,7 @@ public class ProductRequest {
 
     private String productId;
 
-    private String vendorId;
+    private String provider;
 
     private String name;
 
@@ -18,7 +19,7 @@ public class ProductRequest {
 
     private String productImage;
 
-    private BigDecimal amount;
+    private BigDecimal price;
 
     private BigDecimal quantity;
 
@@ -41,4 +42,5 @@ public class ProductRequest {
 
     private String readyIn;
 
+    List<ProductVariationDto> productVariation;
 }

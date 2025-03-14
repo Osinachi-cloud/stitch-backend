@@ -6,10 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
-
 @Data
 @Builder
 @AllArgsConstructor
@@ -27,4 +23,8 @@ public class UserDto {
     protected boolean enabled;
     protected Integer loginAttempts;
     protected String nationality;
+    protected String role;
+    protected String profileImage;
+    private String shortBio;
+
 }

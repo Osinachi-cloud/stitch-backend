@@ -16,7 +16,6 @@ import static com.stitch.user.util.DtoMapper.mapToCollectionOfPermissionDto;
 public class RoleDto {
 
     private String name;
-//    private RoleName name;
 
     private String description;
 
@@ -34,8 +33,5 @@ public class RoleDto {
         this.dateCreated = role.getDateCreated().toString();
         this.lastUpdated = role.getLastUpdated().toString();
         this.permissionsDto = mapToCollectionOfPermissionDto(role.getPermissions());
-
-        System.out.println("+++++++++++++++++++++++");
-        System.out.println(this.permissionsDto);
     }
 }

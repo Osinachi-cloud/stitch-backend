@@ -16,7 +16,7 @@ public class CartDto {
 
     private String productImage;
 
-    private BigDecimal amount;
+    private BigDecimal price;
 
     private BigDecimal quantity;
 
@@ -35,5 +35,11 @@ public class CartDto {
     private BigDecimal sellingPrice;
 
     private BigDecimal amountByQuantity;
+
+    private String color;
+
+    private String sleeveType;
+
+    private String measurementTag;
 
 }

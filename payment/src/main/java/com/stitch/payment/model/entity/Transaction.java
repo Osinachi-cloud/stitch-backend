@@ -1,14 +1,12 @@
 package com.stitch.payment.model.entity;
 
 import com.stitch.commons.model.entity.BaseEntity;
-import com.stitch.currency.model.enums.Currency;
 import com.stitch.payment.model.enums.PaymentMode;
-import com.stitch.payment.model.enums.Status;
 import com.stitch.payment.model.enums.TransactionStatus;
 import com.stitch.payment.model.enums.TransactionType;
+import jakarta.persistence.*;
 import lombok.*;
 
-import jakarta.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
@@ -20,11 +18,6 @@ import java.math.BigDecimal;
 @Table(name = "transaction")
 @ToString
 public class Transaction extends BaseEntity {
-
-
-//    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "user_id")
-//    private String user;
 
     @Column(name = "reference")
     private String reference;

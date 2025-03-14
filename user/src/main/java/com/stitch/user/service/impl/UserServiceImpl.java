@@ -2,41 +2,40 @@ package com.stitch.user.service.impl;
 
 import com.stitch.commons.enums.ResponseStatus;
 import com.stitch.commons.exception.StitchException;
+import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.commons.model.dto.Response;
 import com.stitch.commons.util.NumberUtils;
 import com.stitch.commons.util.ResponseUtils;
-//import com.stitch.notification.model.dto.InAppNotificationResponse;
-//import com.stitch.notification.model.dto.InAppNotificationStatsResponse;
-//import com.stitch.notification.service.InAppNotificationService;
-//import com.stitch.notification.service.NotificationService;
-//import com.stitch.notification.service.PushNotificationService;
 import com.stitch.user.exception.ContactVerificationException;
 import com.stitch.user.exception.UserException;
 import com.stitch.user.exception.UserNotFoundException;
 import com.stitch.user.model.dto.*;
 import com.stitch.user.model.entity.ContactVerification;
-import com.stitch.user.model.entity.UserEntity;
 import com.stitch.user.model.entity.Device;
+import com.stitch.user.model.entity.UserEntity;
 import com.stitch.user.repository.ContactVerificationRepository;
 import com.stitch.user.repository.UserRepository;
-import com.stitch.user.service.UserService;
 import com.stitch.user.service.PasswordService;
 import com.stitch.user.service.RoleService;
+import com.stitch.user.service.UserService;
+import com.stitch.user.specification.UserSpecification;
 import com.stitch.user.util.UserValidationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.Instant;
-
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-//import static com.stitch.user.util.CountryUtils.getCountryCodeFromEndpoint;
-//import static com.stitch.user.util.CountryUtils.getCountryNameFromEndpoint;
+import static com.stitch.user.util.DtoMapper.convertUserListToDto;
 
 
 @Service
@@ -45,9 +44,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final ContactVerificationRepository verificationRepository;
-//    private final NotificationService notificationService;
-//    private final PushNotificationService pushNotificationService;
-//    private final InAppNotificationService inAppNotificationService;
     private final PasswordService passwordService;
 
     private final RoleService roleService;
@@ -55,31 +51,23 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(
             UserRepository userRepository,
             ContactVerificationRepository verificationRepository,
-//            NotificationService notificationService,
-//            PushNotificationService pushNotificationService,
-//            InAppNotificationService inAppNotificationService,
             PasswordService passwordService, RoleService roleService) {
         this.userRepository = userRepository;
         this.verificationRepository = verificationRepository;
-//        this.notificationService = notificationService;
-//        this.pushNotificationService = pushNotificationService;
-//        this.inAppNotificationService = inAppNotificationService;
         this.passwordService = passwordService;
         this.roleService = roleService;
     }
 
-
     @Transactional
     @Override
-    public CustomerDto createCustomer(CustomerRequest customerRequest) {
+    public CustomerDto createCustomer(CustomerRequest customerRequest){
+        System.out.println(userRepository.findLastChangeRevision(1L));
 
-        log.debug("Creating customer with request: {}", customerRequest);
-
-//        String country = getCountryNameFromEndpoint(getCountryCodeFromEndpoint());
+        log.info("Creating customer with request: {}", customerRequest);
         String country = "NIGERIA";
         customerRequest.setCountry(country);
 
-        log.debug("Creating customer with request: {}", customerRequest);
+        log.info("Creating customer with request: {}", customerRequest);
 
         validate(customerRequest);
 
@@ -91,28 +79,41 @@ public class UserServiceImpl implements UserService {
         customer.setUsername(customerRequest.getUsername());
         customer.setPhoneNumber(customerRequest.getPhoneNumber());
         customer.setCountry(country);
+        customer.setShortBio(customerRequest.getShortBio());
+
+        log.info("customer obj 0 : {}", customer);
+
+        log.info("role obj 0 : {}", roleService.findRoleByName(customerRequest.getRoleName()));
+
+
+
         customer.setRole(roleService.findRoleByName(customerRequest.getRoleName()));
         customer.setPassword(passwordService.encode(customerRequest.getPassword()));
+        log.info("customer obj 1 : {}", customer);
+
         if(Objects.nonNull(customerRequest.getProfileImage())){
+            log.info("customer obj 2 : {}", customer);
+
             byte[] imageBytes = Base64.decodeBase64(customerRequest.getProfileImage());
             String base64EncodedImage = Base64.encodeBase64String(imageBytes);
             customer.setProfileImage(base64EncodedImage);
         }
 
         if (customerRequest.getDevice() != null) {
+            log.info("customer obj 3 : {}", customer);
+
             customer.setDevice(new Device(customerRequest.getDevice()));
         }
 
         try {
+            log.info("customer obj : {}", customer);
 
             UserEntity newCustomer = userRepository.save(customer);
 
             log.info("Created new customer with ID: {}", newCustomer.getUserId());
 
-            //            notificationService.welcome(new String[]{customer.getEmailAddress()}, customer.getFirstName());
-
             return new CustomerDto(newCustomer);
-        } catch (Exception e){
+        } catch (StitchException e){
             log.error("Error creating customer", e);
             throw new UserException("Failed to create customer", e);
         }
@@ -146,49 +147,9 @@ public class UserServiceImpl implements UserService {
 
     }
 
-//    @Override
-//    public Response updateCustomerProfileImage(String profileImage, String emailAddress) {
-//        log.info("email address value: {}", emailAddress);
-//
-//        log.info("profileImage: {}", profileImage);
-//
-//        Optional<Customer> existingCustomer = customerRepository.findByEmailAddress(emailAddress);
-//
-//        if (existingCustomer.isEmpty()) {
-//            throw new StitchException("customer does not exist");
-//        }
-//        log.info("existingCustomer: {}", existingCustomer.get().getFirstName());
-//
-//
-//        Customer customer = existingCustomer.get();
-//
-//        if(profileImage != null && !profileImage.isEmpty()){
-//            byte[] imageBytes = Base64.decodeBase64(profileImage);
-//            String base64EncodedImage = Base64.encodeBase64String(imageBytes);
-//            customer.setProfileImage(base64EncodedImage);
-//        }else {
-//            throw new StitchException("image field can not be empty");
-//        }
-//
-//        try {
-//
-//            Customer newCustomer = customerRepository.saveAndFlush(customer);
-//
-//            log.info("Updated customer with ID: {}", newCustomer.getCustomerId());
-//
-//            return ResponseUtils.createSuccessResponse("profile image updated successfully");
-//        } catch (Exception e){
-//            log.error("Error creating customer", e);
-//            throw new UserException("Failed to create customer", e);
-//        }
-//
-//    }
-
-
     @Override
     public Response updateCustomerProfileImage(String profileImage, String emailAddress) {
         log.info("email address value: {}", emailAddress);
-//        log.info("profileImage: {}", profileImage)
             Optional<UserEntity> existingCustomer = userRepository.findByEmailAddress(emailAddress);
 
             if (existingCustomer.isEmpty()) {
@@ -207,14 +168,10 @@ public class UserServiceImpl implements UserService {
                 log.info("Updated customer with ID: {}", newCustomer.getUserId());
 
                 return ResponseUtils.createSuccessResponse("profile image updated successfully");
-
-
             } else {
                 throw new StitchException("image field can not be empty");
             }
     }
-
-
 
     private void validate(CustomerRequest customerRequest) {
         if (StringUtils.isBlank(customerRequest.getFirstName()) ||
@@ -290,7 +247,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUserId(customerId).orElseThrow(() -> new UserNotFoundException(String.format("Customer [%s] not found", customerId)));
     }
 
-//    @Cacheable(value = "customerCache")
     @Override
     public CustomerDto getCustomerByEmail(String emailAddress) {
 
@@ -327,7 +283,7 @@ public class UserServiceImpl implements UserService {
         UserEntity customer = getCustomerEntity(user.getUserId());
         customer.setLastLogin(Instant.now());
         customer.setLoginAttempts(0);
-        userRepository.saveAndFlush(customer);
+        userRepository.save(customer);
         log.info("Updated customer [{}] last login", customer.getUserId());
     }
 
@@ -341,7 +297,7 @@ public class UserServiceImpl implements UserService {
         UserEntity customer = optionalCustomer.get();
         int loginAttempts = customer.getLoginAttempts() + 1;
         customer.setLoginAttempts(loginAttempts);
-        userRepository.saveAndFlush(customer);
+        userRepository.save(customer);
         log.info("Updated customer [{}] login attempts to {}", customer.getEmailAddress(), loginAttempts);
 
     }
@@ -429,8 +385,6 @@ public class UserServiceImpl implements UserService {
             contactVerification.setExpiredOn(Instant.now().plus(15, ChronoUnit.MINUTES));
             verificationRepository.saveAndFlush(contactVerification);
 
-//            notificationService.resetPin(new String[]{contactVerification.getEmailAddress()}, verificationCode, customer.getFirstName());
-
             log.info("Email address [{}] successfully added for verification", contactVerification.getEmailAddress());
         } catch (Exception e) {
             log.error("Failed to send email to [{}] for reset pin", customer.getEmailAddress(), e);
@@ -486,7 +440,6 @@ public class UserServiceImpl implements UserService {
         return ResponseUtils.createDefaultSuccessResponse();
     }
 
-
     @Override
     public Response allowSaveCard(String customerId, Boolean saveCard) {
         UserEntity customer = getCustomerEntity(customerId);
@@ -495,33 +448,23 @@ public class UserServiceImpl implements UserService {
         return ResponseUtils.createDefaultSuccessResponse();
     }
 
-//    @Override
-//    public Response enablePushNotification(String customerId, Boolean enablePush) {
-//        Customer customer = getCustomerEntity(customerId);
-//        customer.setEnablePush(enablePush);
-//        customerRepository.saveAndFlush(customer);
-//        return ResponseUtils.createDefaultSuccessResponse();
-//    }
-//
-//    @Override
-//    public Response addPushNotificationToken(String customerId, String pushToken) {
-//        pushNotificationService.saveCustomerToken(customerId, pushToken);
-//        return ResponseUtils.createDefaultSuccessResponse();
-//    }
+    @Override
+    public PaginatedResponse<List<UserDto>> fetchAllUsersBy(UserFilterRequest request) {
 
-//    @Override
-//    public List<InAppNotificationResponse> customerInAppNotifications(String customerId, int page, int size) {
-//        return inAppNotificationService.fetchAllCustomerNotification(customerId, page, size);
-//    }
-//
-//    @Override
-//    public Response updateReadInAppNotification(String customerId, String notificationId) {
-//        inAppNotificationService.updateReadInAppNotification(notificationId, customerId);
-//        return ResponseUtils.createDefaultSuccessResponse();
-//    }
-//
-//    @Override
-//    public InAppNotificationStatsResponse inAppNotificationMessagesStats(String customerId) {
-//        return inAppNotificationService.customerInAppNotificationStats(customerId);
-//    }
+        Specification<UserEntity> spec = Specification.where(
+                        UserSpecification.firstNameEqual(request.getFirstName()))
+                .and(UserSpecification.lastNameEqual(request.getLastName()))
+                .and(UserSpecification.roleIdEqual(request.getRoleId()))
+                .and(UserSpecification.emailEqual(request.getEmailAddress()));
+
+        Page<UserEntity> users = userRepository.findAll(spec, PageRequest.of(request.getPage(), request.getSize(), Sort.by(Sort.Direction.DESC, "dateCreated")));
+
+        PaginatedResponse<List<UserDto>> paginatedResponse = new PaginatedResponse<>();
+        paginatedResponse.setPage(users.getNumber());
+        paginatedResponse.setSize(users.getSize());
+        paginatedResponse.setTotal((int) userRepository.count());
+        paginatedResponse.setData(convertUserListToDto(users.getContent()));
+        return paginatedResponse;
+    }
+
 }

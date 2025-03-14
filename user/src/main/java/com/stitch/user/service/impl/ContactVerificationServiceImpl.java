@@ -2,7 +2,6 @@ package com.stitch.user.service.impl;
 
 import com.stitch.commons.enums.ResponseStatus;
 import com.stitch.commons.util.NumberUtils;
-//import com.stitch.notification.service.NotificationService;
 import com.stitch.user.exception.ContactVerificationException;
 import com.stitch.user.model.dto.EmailVerificationRequest;
 import com.stitch.user.model.dto.VerificationResponse;
@@ -23,16 +22,13 @@ public class ContactVerificationServiceImpl implements ContactVerificationServic
 
     private final ContactVerificationRepository verificationRepository;
     private final UserRepository customerRepository;
-//    private final NotificationService notificationService;
 
     public ContactVerificationServiceImpl(
             ContactVerificationRepository verificationRepository,
             UserRepository customerRepository
-//            ,NotificationService notificationService
     ) {
         this.verificationRepository = verificationRepository;
         this.customerRepository = customerRepository;
-//        this.notificationService = notificationService;
     }
 
     @Override
@@ -64,8 +60,6 @@ public class ContactVerificationServiceImpl implements ContactVerificationServic
 
             contactVerification.setExpiredOn(Instant.now().plus(15, ChronoUnit.MINUTES));
             verificationRepository.saveAndFlush(contactVerification);
-
-//            notificationService.emailVerification(new String[]{contactVerification.getEmailAddress()}, verificationCode);
 
             VerificationResponse verificationResponse = new VerificationResponse();
             verificationResponse.setCode(0);

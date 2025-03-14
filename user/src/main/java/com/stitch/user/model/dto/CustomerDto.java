@@ -51,7 +51,6 @@ public class CustomerDto implements Serializable {
         this.profileImage = customer.getProfileImage();
         this.role = mapRoleToDto(customer.getRole());
         this.roleName = customer.getRole().getName();
-//        this.adminRole = mapRoleToDtoLoginResponse(customer.getRole());
     }
 
 

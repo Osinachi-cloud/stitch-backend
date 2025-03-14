@@ -3,6 +3,7 @@ package com.stitch.payment.exception;
 public class PaymentFailedException extends PaymentException {
 
     public PaymentFailedException() {
+
     }
 
     public PaymentFailedException(String message) {

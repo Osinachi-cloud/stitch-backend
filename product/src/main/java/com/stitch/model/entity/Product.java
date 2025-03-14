@@ -9,6 +9,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Min;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @Entity
@@ -43,9 +44,9 @@ public class Product extends BaseEntity {
     @Column(name = "product_image")
     private String productImage;
 
-    @Column(name = "amount")
+    @Column(name = "price")
     @Min(value = 0, message = "Value cannot be negative")
-    private BigDecimal amount;
+    private BigDecimal price;
 
     @Column(name = "quantity")
     @Min(value = 0, message = "Value cannot be negative")
@@ -68,8 +69,8 @@ public class Product extends BaseEntity {
     private String country;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private UserEntity userEntity;
+    @JoinColumn(name = "email_address", referencedColumnName = "email_address")
+    private UserEntity vendor;
 
     @Column(name = "publish_status",  nullable = false)
     @Enumerated(EnumType.STRING)
@@ -79,5 +80,8 @@ public class Product extends BaseEntity {
     @Min(value = 0, message = "Value cannot be negative")
     private BigDecimal discount;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id", referencedColumnName = "product_id")
+    private List<ProductVariation> productVariation;
 }
 

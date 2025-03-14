@@ -2,9 +2,11 @@ package com.stitch.model.dto;
 
 import com.stitch.model.ProductCategory;
 import com.stitch.model.enums.PublishStatus;
+import com.stitch.user.model.dto.UserDto;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 
 @Data
@@ -16,7 +18,7 @@ public class ProductDto {
 
     private String productImage;
 
-    private BigDecimal amount;
+    private BigDecimal price;
 
     private BigDecimal quantity;
 
@@ -30,7 +32,7 @@ public class ProductDto {
 
     private String country;
 
-    private String vendor;
+//    private String vendor;
 
     private PublishStatus publishStatus;
 
@@ -49,4 +51,10 @@ public class ProductDto {
     private BigDecimal sellingPrice;
 
     private BigDecimal amountByQuantity;
+
+    private boolean liked;
+
+    private UserDto vendor;
+
+    List<ProductVariationDto> productVariation;
 }

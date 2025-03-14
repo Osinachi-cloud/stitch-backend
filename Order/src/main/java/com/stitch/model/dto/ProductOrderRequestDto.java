@@ -28,8 +28,6 @@ public class ProductOrderRequestDto {
     private boolean saveBeneficiary;
     private Integer number;
     private String startTime;
-//    private OrderFrequency frequency;
-//    private ScheduleStatus scheduleStatus;
     private String orderId;
 
 }

@@ -1,17 +1,15 @@
 package com.stitch.model.dto;
 
-import com.stitch.commons.model.entity.BaseEntity;
 import com.stitch.currency.model.enums.Currency;
 import com.stitch.model.enums.OrderStatus;
 import com.stitch.model.enums.PaymentMode;
+import com.stitch.user.model.dto.BodyMeasurementDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Data
-//@Builder(toBuilder = true)
 @NoArgsConstructor
 public class ProductOrderDto {
 
@@ -21,15 +19,13 @@ public class ProductOrderDto {
     private String message;
     private String clientSecret;
     private String paymentId;
-
-
     private String productCategoryName;
-    private String vendorId;
+    private String vendorEmailAddress;
     private PaymentMode paymentMode;
     private BigDecimal amount;
     private String customerId;
     private String customerName;
-    private String email;
+    private String emailAddress;
     private String cardId;
     private String txRef;
     private boolean saveCard;
@@ -42,9 +38,11 @@ public class ProductOrderDto {
     private Integer number;
     private String startTime;
     private String dateCreated;
-    //    private OrderFrequency frequency;
-//    private ScheduleStatus scheduleStatus;
     private String orderId;
-
-//
+    private Long bodyMeasurementId;
+    private BodyMeasurementDto bodyMeasurementDto;
+    private BigDecimal quantity;
+    private String bodyMeasurementTag;
+    private ProductVariationDto productVariationDto;
 }
+
