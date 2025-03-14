@@ -55,14 +55,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         log.info("productOrderList ====>>>  : {}", productOrderList);
         List<ProductOrderDto> productOrderDtoList = orderListToDto(productOrderList);
 
-        //        for(OrderDto orderDto: orderDtoList){
-//            List<Wallet> walletList = walletRepository.findByCustomerId(customerDto.getCustomerId());
-//
-//            if (!walletList.isEmpty()){
-//                customerDto.setWalletBalance(walletList.get(0).getBalance());
-//            };
-//            customerDtoListRes.add(customerDto);
-//        }
         PaginatedResponse<List<ProductOrderDto>> paginatedResponse = new PaginatedResponse<>();
         paginatedResponse.setPage(orderPage.getNumber());
         paginatedResponse.setData(productOrderDtoList);
@@ -136,8 +128,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     public List<ProductOrder> getOrdersByTransactionId(String orderId){
         return productOrderRepository.findProductOrdersByTransactionId(orderId);
     }
-
-
 
     @Override
     @PreAuthorize("hasAuthority('CUSTOMER')")

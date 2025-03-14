@@ -42,6 +42,9 @@ public class UserEntity extends User {
     @Column(name = "referred_by")
     private String referredBy;
 
+    @Column(name = "short_bio")
+    private String shortBio;
+
     @Column(name = "save_card")
     private boolean saveCard;
 
@@ -59,13 +62,5 @@ public class UserEntity extends User {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "identity_document_id", referencedColumnName = "id")
-    private IdentityDocument identityDocument;
-
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "body_measurement_id", referencedColumnName = "id")
-//    private BodyMeasurement bodyMeasurement;
 
 }

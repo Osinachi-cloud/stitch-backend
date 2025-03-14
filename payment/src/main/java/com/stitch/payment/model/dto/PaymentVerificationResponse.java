@@ -24,7 +24,6 @@ public class PaymentVerificationResponse {
     @JsonProperty("data")
     private Data data;
 
-
     @Getter
     @Setter
     @AllArgsConstructor
@@ -179,10 +178,7 @@ public class PaymentVerificationResponse {
 
             public class Subaccount {
             }
-
     }
-
-
 }
 
 

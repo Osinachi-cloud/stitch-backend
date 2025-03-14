@@ -19,7 +19,7 @@ public class ProductRequest {
 
     private String productImage;
 
-    private BigDecimal amount;
+    private BigDecimal price;
 
     private BigDecimal quantity;
 

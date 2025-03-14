@@ -18,9 +18,6 @@ public interface ProductLikeRepository extends JpaRepository<ProductLike, Long> 
 
     Optional<ProductLike> findByProductIdAndUserEntity(String productId, UserEntity customer);
 
-//    @Query(value = "SELECT COUNT(*) FROM product_like WHERE user_id = :userId", nativeQuery = true)
-//    int getLikeCount(@Param("userId") String userId);
-
     @Query(value = "SELECT COUNT(*) FROM product_like WHERE email_address = :emailAddress", nativeQuery = true)
     int getLikeCount(@Param("emailAddress") String emailAddress);
 }

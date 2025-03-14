@@ -19,8 +19,6 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
         this.currencyDetailsRepository = currencyDetailsRepository;
     }
 
-
-
     @Override
     public BigDecimal getExchangeRate(String currency){
         CurrencyDetails currencyDetails = currencyDetailsRepository.findByCurrencyCode(currency);

@@ -9,7 +9,6 @@ import java.util.List;
 
 @Data
 public class LoginResponse {
-
     private String customerId;
     private String vendorId;
     private String tier;

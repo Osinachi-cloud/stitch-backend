@@ -16,7 +16,7 @@ public class CartDto {
 
     private String productImage;
 
-    private BigDecimal amount;
+    private BigDecimal price;
 
     private BigDecimal quantity;
 

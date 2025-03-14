@@ -17,8 +17,6 @@ import java.util.Optional;
 public interface ProductCartRepository extends JpaRepository<ProductCart, Long> {
     Page<ProductCart> findProductCartByCustomer(UserEntity customer, Pageable pageable);
     List<ProductCart> findProductCartByCustomer(UserEntity customer);
-
-
     Optional<ProductCart> findByProductId(String productId);
 
     Optional<ProductCart> findByProductIdAndColorAndSleeveTypeAndMeasurementTag(String productId, String color, String sleeveType, String measurementType);

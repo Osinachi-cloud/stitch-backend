@@ -1,12 +1,10 @@
 package com.stitch.user.util;
 
-import com.stitch.user.model.dto.BodyMeasurementDto;
-import com.stitch.user.model.dto.BodyMeasurementRequest;
-import com.stitch.user.model.dto.PermissionDto;
-import com.stitch.user.model.dto.RoleDto;
+import com.stitch.user.model.dto.*;
 import com.stitch.user.model.entity.BodyMeasurement;
 import com.stitch.user.model.entity.Permission;
 import com.stitch.user.model.entity.Role;
+import com.stitch.user.model.entity.UserEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 
@@ -104,5 +102,21 @@ public class DtoMapper {
         System.out.println("================= string list");
         System.out.println(stringList);
         return stringList;
+    }
+
+    public static List<UserDto> convertUserListToDto(List<UserEntity> userEntityList) {
+
+        return userEntityList.stream().map(userEntity -> {
+            UserDto userDto = new UserDto();
+            userDto.setFirstName(userEntity.getFirstName());
+            userDto.setLastName(userEntity.getLastName());
+            userDto.setEmailAddress(userEntity.getEmailAddress());
+            userDto.setPhoneNumber(userEntity.getPhoneNumber());
+            userDto.setRole(userEntity.getRole().getName());
+            userDto.setProfileImage(userEntity.getProfileImage());
+            userDto.setShortBio(userEntity.getShortBio());
+           return  userDto;
+        }).toList();
+
     }
 }

@@ -7,9 +7,6 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
-
-
-
 @Data
 
 public class ProductOrderRequest {
@@ -36,7 +33,6 @@ public class ProductOrderRequest {
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
-//    @Enumerated(EnumType.STRING)
     private String status;
 
     private String narration;

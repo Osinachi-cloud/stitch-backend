@@ -22,7 +22,6 @@ import com.stitch.user.model.dto.UserDto;
 import com.stitch.user.model.entity.UserEntity;
 import com.stitch.user.repository.UserRepository;
 import com.stitch.user.service.UserService;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -45,12 +44,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.stitch.utils.ProductUtils.*;
-import static java.lang.Math.floorDiv;
+import static com.stitch.utils.ProductUtils.convertProductListToDto;
+import static com.stitch.utils.ProductUtils.convertProductVariationDtoListToEntity;
 import static java.lang.Math.toIntExact;
 
 @Service
-@Slf4j
 public class ProductServiceImpl implements ProductService {
 
     private final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
@@ -64,7 +62,6 @@ public class ProductServiceImpl implements ProductService {
     private final UserService userService;
 
     private final ProductVariationRepository productVariationRepository;
-
 
     public ProductServiceImpl(ProductRepository productRepository, ProductLikeRepository productLikeRepository, UserRepository userRepository, UserService userService, ProductVariationRepository productVariationRepository) {
         this.productRepository = productRepository;
@@ -99,12 +96,12 @@ public class ProductServiceImpl implements ProductService {
         product.setCategory(ProductCategory.valueOf(productRequest.getCategory()));
         product.setFixedPrice(productRequest.isFixedPrice());
         product.setQuantity(productRequest.getQuantity());
-        product.setAmount(productRequest.getAmount());
+        product.setPrice(productRequest.getPrice());
         product.setName(productRequest.getName());
         product.setCode(productRequest.getCode());
         product.setShortDescription(productRequest.getShortDescription());
         product.setLongDescription(productRequest.getLongDescription());
-        product.setSellingPrice(productRequest.getAmount().subtract( productRequest.getAmount().multiply(productRequest.getDiscount()).divide(BigDecimal.valueOf(100))));
+        product.setSellingPrice(productRequest.getPrice().subtract( productRequest.getPrice().multiply(productRequest.getDiscount()).divide(BigDecimal.valueOf(100))));
         product.setMaterialUsed(productRequest.getMaterialUsed());
         product.setReadyIn(productRequest.getReadyIn());
         product.setDiscount(productRequest.getDiscount());
@@ -133,8 +130,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-
-
     public  void validateProductRequest(ProductRequest productRequest){
 
         if(!Objects.nonNull(productRequest)){
@@ -147,16 +142,6 @@ public class ProductServiceImpl implements ProductService {
             throw new UserException(ResponseStatus.EMPTY_FIELD_VALUES);
         }
 
-//        for(ProductCategory val : ProductCategory.values()){
-//            if(!val.toString().equals(productRequest.getCategory())){
-//                System.out.println("=====================");
-//                System.out.println(productRequest.getCategory());
-//                System.out.println("=====================");
-//
-//                throw new UserException("Invalid category type");
-//
-//            }
-//        }
     }
 
     @Override
@@ -169,7 +154,7 @@ public class ProductServiceImpl implements ProductService {
         product.setCategory(ProductCategory.valueOf(productRequest.getCategory()));
         product.setFixedPrice(productRequest.isFixedPrice());
         product.setQuantity(productRequest.getQuantity());
-        product.setAmount(productRequest.getAmount());
+        product.setPrice(productRequest.getAmount());
         product.setName(productRequest.getName());
         product.setCode(productRequest.getCode());
 
@@ -232,39 +217,6 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteByProductId(productId);
     }
 
-
-//    public class DelayedPrinter {
-//        public static void main(String[] args) {
-//            printWordsWithDelay("Hello", "World");
-//        }
-//
-//        public static void printWordsWithDelay(String word1, String word2) {
-//            Thread thread1 = new Thread(() -> {
-//                try {
-//                    Thread.sleep(2000); // Delay for 2 seconds
-//                    System.out.println(word1);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            });
-//
-//            Thread thread2 = new Thread(() -> {
-//                try {
-//                    Thread.sleep(4000); // Delay for 4 seconds
-//                    System.out.println(word2);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            });
-//
-//            thread1.start();
-//            thread2.start();
-//        }
-//    }
-
-
-
-
     @Override
     @PreAuthorize("hasAuthority('VENDOR')")
     public PaginatedResponse<List<ProductDto>> fetchAllProductsByVendor(ProductFilterRequest request) {
@@ -278,15 +230,13 @@ public class ProductServiceImpl implements ProductService {
 
         Specification<Product> spec = Specification.where(
                         ProductSpecification.nameEqual(request.getName()))
-                .and(ProductSpecification.categoryEqual(request.getCategory()))
+                .and(ProductSpecification.categoryIn(request.getCategories()))
                 .and(ProductSpecification.codeEqual(request.getCode()))
                 .and(ProductSpecification.productIdEqual(request.getProductId()))
-                .and(ProductSpecification.vendorEqual(vendorExists.get()))
-                ;
+                .and(ProductSpecification.vendorEqual(vendorExists.get()));
 
         Page<Product> products = productRepository.findAll(spec, PageRequest.of(request.getPage(), request.getSize(), Sort.by(Sort.Direction.DESC, "dateCreated")));
 
-//        log.info("products all : {}", products.getContent());
         PaginatedResponse<List<ProductDto>> paginatedResponse = new PaginatedResponse<>();
         paginatedResponse.setPage(products.getNumber());
         paginatedResponse.setSize(products.getSize());
@@ -297,17 +247,17 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-//    @PreAuthorize("hasAuthority('VENDOR')")
+    @PreAuthorize("hasAuthority('VENDOR')")
     public PaginatedResponse<List<ProductDto>> fetchAllProductsBy(ProductFilterRequest request) {
         Specification<Product> spec = Specification.where(
                         ProductSpecification.nameEqual(request.getName()))
-                .and(ProductSpecification.categoryEqual(request.getCategory()))
+                .and(ProductSpecification.categoryIn(request.getCategories())) // Use categoryIn for multiple categories
                 .and(ProductSpecification.codeEqual(request.getCode()))
-                .and(ProductSpecification.productIdEqual(request.getProductId()));
+                .and(ProductSpecification.productIdEqual(request.getProductId()))
+                .and(ProductSpecification.priceBetween(request.getMinPrice(), request.getMaxPrice())); // Add price range filter
 
         Page<Product> products = productRepository.findAll(spec, PageRequest.of(request.getPage(), request.getSize(), Sort.by(Sort.Direction.DESC, "dateCreated")));
 
-//        log.info("products all : {}", products.getContent());
         PaginatedResponse<List<ProductDto>> paginatedResponse = new PaginatedResponse<>();
         paginatedResponse.setPage(products.getNumber());
         paginatedResponse.setSize(products.getSize());
@@ -331,7 +281,7 @@ public class ProductServiceImpl implements ProductService {
 
         Specification<Product> spec = Specification.where(
                         ProductSpecification.nameEqual(request.getName()))
-                .and(ProductSpecification.categoryEqual(request.getCategory()))
+                .and(ProductSpecification.categoryIn(request.getCategories()))
                 .and(ProductSpecification.codeEqual(request.getCode()))
                 .and(ProductSpecification.productIdEqual(request.getProductId()));
 
@@ -341,7 +291,6 @@ public class ProductServiceImpl implements ProductService {
 
         Page<ProductLike> productLikesPage = productLikeRepository.findProductLikesByUserEntity(customer.get(), pageRequest);
         // to return true and a flag for every liked product
-//        log.info("products all : {}", products.getContent());
         PaginatedResponse<List<ProductDto>> paginatedResponse = new PaginatedResponse<>();
         paginatedResponse.setPage(products.getNumber());
         paginatedResponse.setSize(products.getSize());
@@ -357,7 +306,6 @@ public class ProductServiceImpl implements ProductService {
 
         for(Product product: productList){
             ProductDto productDto = convertProductToDto(product);
-//            BeanUtils.copyProperties(product, productDto);
             for(ProductLike productLike: productLikes){
                 if(productLike.getProductId().equals(product.getProductId())){
                     productDto.setLiked(true);

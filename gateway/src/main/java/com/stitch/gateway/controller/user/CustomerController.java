@@ -2,6 +2,7 @@ package com.stitch.gateway.controller.user;
 
 
 import com.stitch.commons.exception.StitchException;
+import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.commons.model.dto.Response;
 import com.stitch.commons.service.CountryService;
 import com.stitch.gateway.model.LoginRequest;
@@ -52,16 +53,22 @@ public class CustomerController {
     @MutationMapping(value = "createCustomer")
     public CustomerDto createCustomer(@Argument("customerRequest") CustomerRequest customerRequest) {
         try {
-//            String currency = countryService.getCurrencyByCountryName(customerRequest.getCountry());
-            CustomerDto customer = userService.createCustomer(customerRequest);
-//            walletService.createWallet(new WalletRequest(customer.getCustomerId(), customerRequest.getCurrency(), true));
-            return customer;
+            return userService.createCustomer(customerRequest);
         }
-//        catch (StitchException exception) {
-//            throw exception;
-//        }
-        catch (Exception e) {
+        catch (StitchException | InterruptedException e) {
             log.error("Error creating customer: {}" ,customerRequest, e);
+            throw new StitchException("Error: " + e.getMessage());
+        }
+    }
+
+    @Unsecured
+    @QueryMapping(value = "getUsers")
+    public PaginatedResponse<List<UserDto>> getUsers(@Argument("userFilterRequest") UserFilterRequest request) {
+        try {
+            return userService.fetchAllUsersBy(request);
+        }
+        catch (StitchException e) {
+            log.error("Error creating customer: {}" ,request, e);
             throw new StitchException("Error: " + e.getMessage());
         }
     }
@@ -106,40 +113,9 @@ public class CustomerController {
         return userService.validatePasswordResetCode(passwordResetRequest);
     }
 
-//    @Unsecured
-//    @MutationMapping(value = "vendorLogin")
-//    public LoginResponse vendorLogin(@Argument("loginRequest") LoginRequest loginRequest) {
-//        return authenticationService.authenticateVendor(loginRequest);
-//    }
-
     @Unsecured
     @MutationMapping(value = "customerLogin")
     public LoginResponse customerLogin(@Argument("loginRequest") LoginRequest loginRequest) {
-//        Collection<? extends GrantedAuthority> permission = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-//        System.out.println("testing authorities");
-//        System.out.println(permission);
-//        System.out.println("testing authorities");
-//
-//        Collection<SimpleGrantedAuthority> oldAuthorities = (Collection<SimpleGrantedAuthority>)SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-//
-//        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_VENDOR");
-//        List<SimpleGrantedAuthority> updatedAuthorities = new ArrayList<SimpleGrantedAuthority>();
-////        updatedAuthorities.remove();
-//        updatedAuthorities.add(authority);
-//        updatedAuthorities.addAll(oldAuthorities);
-//
-//        SecurityContextHolder.getContext().setAuthentication(
-//                new UsernamePasswordAuthenticationToken(
-//                        SecurityContextHolder.getContext().getAuthentication().getPrincipal(),
-//                        SecurityContextHolder.getContext().getAuthentication().getCredentials(),
-//                        updatedAuthorities));
-//
-//        Collection<? extends GrantedAuthority> permission2 = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-//
-//        System.out.println("testing authorities 2 =====");
-//        System.out.println(permission2);
-//        System.out.println("testing authorities 2 =====");
-
         return authenticationService.authenticate(loginRequest);
     }
 
@@ -210,34 +186,4 @@ public class CustomerController {
         CustomerDto user = authenticationService.getAuthenticatedUser();
         return userService.allowSaveCard(user.getUserId(), savedCard);
     }
-
-//    @MutationMapping(value = "enablePushNotification")
-//    public Response enablePushNotification(@Argument("enablePush") Boolean enablePush) {
-//        CustomerDto user = authenticationService.getAuthenticatedUser();
-//        return customerService.enablePushNotification(user.getCustomerId(), enablePush);
-//    }
-//
-//    @MutationMapping(value = "addPushNotificationToken")
-//    public Response addPushNotificationToken(@Argument("pushToken") String pushToken) {
-//        CustomerDto user = authenticationService.getAuthenticatedUser();
-//        return customerService.addPushNotificationToken(user.getCustomerId(), pushToken);
-//    }
-
-//    @QueryMapping(value = "inAppNotificationMessages")
-//    public List<InAppNotificationResponse> inAppNotificationMessages(@Argument("inAppRequest") InAppRequest inAppRequest) {
-//        CustomerDto user = authenticationService.getAuthenticatedUser();
-//        return customerService.customerInAppNotifications(user.getCustomerId(), inAppRequest.getPage(), inAppRequest.getSize());
-//    }
-//
-//    @QueryMapping(value = "inAppNotificationMessagesStats")
-//    public InAppNotificationStatsResponse inAppNotificationMessagesStats() {
-//        CustomerDto user = authenticationService.getAuthenticatedUser();
-//        return customerService.inAppNotificationMessagesStats(user.getCustomerId());
-//    }
-//
-//    @MutationMapping(value = "updateReadInAppMessage")
-//    public Response updateReadInAppMessage(@Argument("notificationId") String notificationId) {
-//        CustomerDto user = authenticationService.getAuthenticatedUser();
-//        return customerService.updateReadInAppNotification(user.getCustomerId(), notificationId);
-//    }
 }

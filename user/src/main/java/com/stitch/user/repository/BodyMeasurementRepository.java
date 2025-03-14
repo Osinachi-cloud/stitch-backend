@@ -16,7 +16,4 @@ public interface BodyMeasurementRepository extends JpaRepository<BodyMeasurement
 
     Optional<BodyMeasurement> findBodyMeasurementByTag(String tag);
 
-
-//    @Query("SELECT bm FROM BodyMeasurement bm WHERE bm.customer = :customer")
-//    Optional<BodyMeasurement> findByCustomer(@Param("customer") Customer customer);
 }

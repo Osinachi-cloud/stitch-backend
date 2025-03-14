@@ -66,7 +66,6 @@ public class BodyMeasurementServiceImpl implements BodyMeasurementService {
             throw new StitchException("Body measurement has not been created :" + customerEmailAddress);
         }
         BodyMeasurement bodyMeasurement = existingBodyMeasurement.get();
-//                DtoMapper.bodyMeasurementRequestToEntity(bodyMeasurementRequest);
         bodyMeasurement.setKnee(bodyMeasurementRequest.getKnee());
         bodyMeasurement.setAnkle(bodyMeasurementRequest.getAnkle());
         bodyMeasurement.setNeck(bodyMeasurementRequest.getNeck());

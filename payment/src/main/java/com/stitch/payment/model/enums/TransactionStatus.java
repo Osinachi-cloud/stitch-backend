@@ -1,10 +1,6 @@
 package com.stitch.payment.model.enums;
 
 public enum TransactionStatus {
-//    C("Completed"),
-//    P("Pending"),
-//    F("Failed");
-
     PROCESSING("PROCESSING"),
     COMPLETED("COMPLETED"),
     FAILED("FAILED"),

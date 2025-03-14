@@ -5,7 +5,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 public class CustomUserDetails implements UserDetails {
@@ -18,9 +17,7 @@ public class CustomUserDetails implements UserDetails {
     public CustomUserDetails(CustomerDto user, Set<GrantedAuthority> grantedAuthorities) {
         System.out.println("entered CustomUserDetails constructor");
         this.user = user;
-//        System.out.println(user?.getProfileImage().length());
         this.authorities = grantedAuthorities;
-        System.out.println(grantedAuthorities);
     }
 
     @Override
@@ -48,8 +45,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-
-//        return !user.isAccountLocked();
         return true;
     }
 
@@ -60,8 +55,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-
-//        return user.isEnabled();
         return true;
     }
 

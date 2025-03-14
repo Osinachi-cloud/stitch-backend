@@ -22,9 +22,6 @@ public class InitializeTransactionResponse {
     @JsonProperty("data")
     private Data data;
 
-//    @JsonProperty("reference")
-//    private String reference;
-
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
     @lombok.Data

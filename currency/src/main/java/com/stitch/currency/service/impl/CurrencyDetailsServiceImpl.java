@@ -16,9 +16,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CurrencyDetailsServiceImpl implements CurrencyDetailsService {
 
-
     private final CurrencyDetailsRepository currencyDetailsRepository;
-
 
     public CurrencyDetailsServiceImpl(CurrencyDetailsRepository currencyDetailsRepository) {
         this.currencyDetailsRepository = currencyDetailsRepository;

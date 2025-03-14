@@ -14,7 +14,6 @@ import com.stitch.payment.model.entity.Transaction;
 import com.stitch.payment.model.dto.PaymentVerificationResponse;
 import com.stitch.payment.model.entity.InitializeTransactionRequest;
 import com.stitch.payment.model.entity.InitializeTransactionResponse;
-//import com.stitch.payment.model.entity.Transaction;
 import com.stitch.payment.model.enums.TransactionStatus;
 import com.stitch.payment.service.PaymentService;
 import com.stitch.payment.service.TransactionService;
@@ -399,7 +398,6 @@ public class PaymentServiceImpl implements PaymentService{
             productOrderRequest.setColor(productItem.getColor());
             productOrderRequest.setSleeveType(productItem.getSleeveType());
             productOrderRequest.setBodyMeasurementTag(productItem.getMeasurementTag());
-
 
             ProductOrderDto productOrder = productOrderService.createProductOrder(productOrderRequest);
 

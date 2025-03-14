@@ -23,7 +23,9 @@ type Query {
     sumAmountByQuantityByCustomerId: BigDecimal
     getOrderByOrderId(orderId: String): Order
     getBodyMeasurementByUser: [BodyMeasurementDto]
+    getUsers(userFilterRequest : UserFilterRequest): UserDtoPagination
 }
+
 
 type ProductDtoPagination {
     page: Int
@@ -37,6 +39,13 @@ type CartDtoPagination {
     size: Int
     total: Int
     data: [CartDto!]
+}
+
+type UserDtoPagination {
+    page: Int
+    size: Int
+    total: Int
+    data: [UserDto!]
 }
 
 type ProductPagination {
@@ -137,6 +146,23 @@ type CustomerDto {
     role: String!
 }
 
+type UserDto {
+    customerId: ID
+    firstName: String
+    lastName: String
+    emailAddress: String
+    username:String
+    phoneNumber: String
+    tier: String
+    country: String
+    hasPin: Boolean
+    enablePush: Boolean
+    profileImage:String
+    role: String!
+    shortBio: String
+
+}
+
 type WalletDto {
     walletId: String
     name: String
@@ -203,13 +229,6 @@ type Customer {
     riskAction: String
     internationalFormatPhone: String
 }
-
-
-#type PlanObject {
-#}
-#
-#type Subaccount {
-#}
 
 type InitializeTransactionResponse {
     status: Boolean

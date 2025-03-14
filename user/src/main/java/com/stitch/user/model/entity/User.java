@@ -6,7 +6,6 @@ import lombok.Data;
 
 import jakarta.persistence.*;
 import org.hibernate.envers.Audited;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
 

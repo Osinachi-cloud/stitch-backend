@@ -15,7 +15,6 @@ public interface ProductOrderService {
 
     PaginatedResponse<List<ProductOrderDto>> fetchVendorOrdersBy(String productId, String status, String orderId, String productCategory, PageRequest pr);
 
-
     ProductOrderDto getProductOrder(String productOrderId);
 
     ProductOrderDto getOrderByOrderId(String productOrderId);
@@ -23,7 +22,6 @@ public interface ProductOrderService {
     List<ProductOrder> getOrdersByTransactionId(String orderId);
 
     ProductOrderDto createProductOrder(ProductOrderRequest productOrderDto);
-
 
     ProductOrderDto updateProductOrder(ProductOrderRequest productOrderDto);
 

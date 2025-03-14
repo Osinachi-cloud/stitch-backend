@@ -18,7 +18,7 @@ public class ProductDto {
 
     private String productImage;
 
-    private BigDecimal amount;
+    private BigDecimal price;
 
     private BigDecimal quantity;
 

@@ -24,36 +24,23 @@ public class InitializeTransactionRequest {
 
     @Digits(integer = 9, fraction = 0)
     private BigDecimal amount;
-
     private String email;
-
     private String plan;
-
     private String reference;
-
     private String subaccount;
-
     private String callback_url;
-
     private BigDecimal quantity;
-
     private Integer invoice_limit;
-
     /**
      * Extra information to be saved with this transaction
      */
-//    private MetaData metadata;
-
     private Integer transaction_charge;
-
     private List<String> channel;
-
     private String productId;
     private String productCategoryName;
     private String vendorId;
     private String narration;
     private String [] cartProductsIds;
-
     private String sleeveType;
     private String color;
     private String bodyMeasurementTag;

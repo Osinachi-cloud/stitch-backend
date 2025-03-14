@@ -28,19 +28,14 @@ public class BodyMeasurementController {
     public BodyMeasurementDto createBodyMeasurement(@Argument("bodyMeasurementRequest")BodyMeasurementRequest bodyMeasurementRequest){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-
         return bodyMeasurementService.createBodyMeasurement(bodyMeasurementRequest, customUserDetails.getUsername());
     }
 
     @MutationMapping(value = "updateBodyMeasurement")
     public BodyMeasurementDto updateBodyMeasurement(@Argument("bodyMeasurementRequest")BodyMeasurementRequest bodyMeasurementRequest){
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-
         return bodyMeasurementService.upDateBodyMeasurement(bodyMeasurementRequest, customUserDetails.getUsername());
     }
 

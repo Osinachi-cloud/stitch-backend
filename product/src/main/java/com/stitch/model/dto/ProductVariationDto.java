@@ -1,6 +1,5 @@
 package com.stitch.model.dto;
 
-import com.stitch.commons.model.entity.BaseEntity;
 import lombok.Data;
 
 @Data

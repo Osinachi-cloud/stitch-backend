@@ -14,16 +14,6 @@ public class GraphQLConfig {
         return ExtendedScalars.GraphQLBigDecimal;
     }
 
-//    @Bean
-//    public graphql.schema.GraphQLScalarType extendedscalarlong() {
-//        return ExtendedScalars.GraphQLBigDecimal;
-//    }
-
-//    @Bean
-//    public RuntimeWiringConfigurer runtimeWiringConfigurer() {
-//        return wiringBuilder -> wiringBuilder.scalar(ExtendedScalars.GraphQLBigDecimal);
-//    }
-
     @Bean
     public RuntimeWiringConfigurer runtimeWiringConfigurer(){
         return  wiringBuilder -> wiringBuilder.scalar(ExtendedScalars.GraphQLBigDecimal)

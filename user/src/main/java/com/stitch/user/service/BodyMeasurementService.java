@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface BodyMeasurementService {
     BodyMeasurementDto createBodyMeasurement(BodyMeasurementRequest bodyMeasurementRequest, String customerEmailAddress);
-
     BodyMeasurementDto upDateBodyMeasurement(BodyMeasurementRequest bodyMeasurementRequest, String customerEmailAddress);
-
     List<BodyMeasurementDto> getBodyMeasurementByUser();
 }

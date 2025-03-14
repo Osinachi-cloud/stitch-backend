@@ -4,7 +4,6 @@ import com.stitch.commons.exception.StitchException;
 import com.stitch.model.dto.ProductDto;
 import com.stitch.model.dto.ProductVariationDto;
 import com.stitch.model.entity.Product;
-import com.stitch.model.entity.ProductLike;
 import com.stitch.model.entity.ProductVariation;
 import com.stitch.repository.ProductVariationRepository;
 import com.stitch.user.model.dto.UserDto;
@@ -30,10 +29,6 @@ public class ProductUtils {
         userDto.setFirstName(product.getVendor().getFirstName());
         productDto.setVendor(userDto);
         productDto.setProductVariation(convertProductVariationListToDto(product.getProductVariation()));
-
-
-//        productDto.setColor(product.getProductVariation().getColor());
-//        productDto.setSleeveStyle(product.getProductVariation().getSleeveStyle());
         return productDto;
     }
 
@@ -64,7 +59,6 @@ public class ProductUtils {
     }
 
     public static List<ProductVariationDto> convertProductVariationListToDto(List<ProductVariation> products){
-//        log.info("products :{}", products);
         return products.stream().map(productVariation -> {
             ProductVariationDto productVariationDto = new ProductVariationDto();
             productVariationDto.setColor(productVariation.getColor());
@@ -83,29 +77,5 @@ public class ProductUtils {
         }
         return productDtoList;
     }
-
-//    public static List<ProductDto> convertProductListToDtoAndSortProductLikes(List<Product> productList, List<ProductLike> productLikes){
-//
-//        List<ProductDto> productDtoList = new ArrayList<>();
-//
-//        for(Product product: productList){
-//            ProductDto productDto = new ProductDto();
-//            BeanUtils.copyProperties(product, productDto);
-//            for(ProductLike productLike: productLikes){
-//                if(productLike.getProductId().equals(product.getProductId())){
-//                    productDto.setLiked(true);
-//
-//                    UserDto userDto = new UserDto();
-//                    userDto.setEmailAddress(product.getVendor().getEmailAddress());
-//                    userDto.setLastName(product.getVendor().getLastName());
-//                    userDto.setFirstName(product.getVendor().getFirstName());
-//                    productDto.setVendor(userDto);
-//                }
-//            }
-//            productDtoList.add(productDto);
-//        }
-//        return productDtoList;
-//    }
-
 
 }

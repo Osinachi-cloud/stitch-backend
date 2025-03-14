@@ -17,7 +17,6 @@ import javax.validation.constraints.*;
 @Builder
 public class BodyMeasurement extends BaseEntity {
 
-
     @Column(name = "tag")
     private String tag;
 
@@ -66,9 +65,6 @@ public class BodyMeasurement extends BaseEntity {
 
     @Column(name = "trouser_length")
     private int trouserLength;
-
-/*    @OneToOne(mappedBy = "bodyMeasurement")
-    private UserEntity userEntity;*/
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "email_address", referencedColumnName = "email_address")

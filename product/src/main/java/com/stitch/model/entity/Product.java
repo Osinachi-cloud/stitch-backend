@@ -44,9 +44,9 @@ public class Product extends BaseEntity {
     @Column(name = "product_image")
     private String productImage;
 
-    @Column(name = "amount")
+    @Column(name = "price")
     @Min(value = 0, message = "Value cannot be negative")
-    private BigDecimal amount;
+    private BigDecimal price;
 
     @Column(name = "quantity")
     @Min(value = 0, message = "Value cannot be negative")

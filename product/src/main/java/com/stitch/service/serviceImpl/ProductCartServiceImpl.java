@@ -73,7 +73,7 @@ public class ProductCartServiceImpl implements ProductCartService{
             productCart.setQuantity(productCart.getQuantity() + 1);
             productCart.setProductCategoryName(existingProduct.get().getCategory().name());
             productCart.setVendor(existingProduct.get().getVendor());
-            productCart.setAmountByQuantity(existingProduct.get().getAmount().multiply(BigDecimal.valueOf(productCart.getQuantity())));
+            productCart.setAmountByQuantity(existingProduct.get().getPrice().multiply(BigDecimal.valueOf(productCart.getQuantity())));
             productCartRepository.save(productCart);
             return ResponseUtils.createDefaultSuccessResponse();
 
@@ -83,7 +83,7 @@ public class ProductCartServiceImpl implements ProductCartService{
             productCart.setProductId(productId);
             productCart.setCustomer(customer);
             productCart.setQuantity(1);
-            productCart.setAmountByQuantity(existingProduct.get().getAmount().multiply(BigDecimal.valueOf(productCart.getQuantity())));
+            productCart.setAmountByQuantity(existingProduct.get().getPrice().multiply(BigDecimal.valueOf(productCart.getQuantity())));
 
             productCartRepository.save(productCart);
             return ResponseUtils.createDefaultSuccessResponse();
@@ -122,7 +122,7 @@ public class ProductCartServiceImpl implements ProductCartService{
             productCart.setQuantity(productCart.getQuantity() + 1);
             productCart.setProductCategoryName(existingProduct.get().getCategory().name());
             productCart.setVendor(existingProduct.get().getVendor());
-            productCart.setAmountByQuantity(existingProduct.get().getAmount().multiply(BigDecimal.valueOf(productCart.getQuantity())));
+            productCart.setAmountByQuantity(existingProduct.get().getPrice().multiply(BigDecimal.valueOf(productCart.getQuantity())));
             productCartRepository.save(productCart);
             return ResponseUtils.createDefaultSuccessResponse();
 
@@ -135,7 +135,7 @@ public class ProductCartServiceImpl implements ProductCartService{
             productCart.setMeasurementTag(productVariationDto.getMeasurementTag());
             productCart.setCustomer(customer);
             productCart.setQuantity(1);
-            productCart.setAmountByQuantity(existingProduct.get().getAmount().multiply(BigDecimal.valueOf(productCart.getQuantity())));
+            productCart.setAmountByQuantity(existingProduct.get().getPrice().multiply(BigDecimal.valueOf(productCart.getQuantity())));
 
             productCartRepository.save(productCart);
             return ResponseUtils.createDefaultSuccessResponse();
@@ -143,7 +143,7 @@ public class ProductCartServiceImpl implements ProductCartService{
     }
 
     @Override
-    public Response removeOrReduceFromCart(String productId){
+    public Response removeOrReduceFromCart(String productId, ProductVariationRequest productVariationDto){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
@@ -153,13 +153,14 @@ public class ProductCartServiceImpl implements ProductCartService{
             throw new StitchException("Product with Id : " + productId + " does not exist");
         }
 
-        Optional<ProductCart> existingProductCart = productCartRepository.findByProductId(productId);
+        Optional<ProductCart> existingProductCart = productCartRepository.findByProductIdAndColorAndSleeveTypeAndMeasurementTag(productId, productVariationDto.getColor(), productVariationDto.getSleeveType(), productVariationDto.getMeasurementTag());
+
         if(existingProductCart.isEmpty()){
             throw new StitchException("Product in cart with Id : " + productId + " does not exist");
         }else if(existingProductCart.get().getQuantity() > 1){
             ProductCart productCart = existingProductCart.get();
             productCart.setQuantity(productCart.getQuantity() - 1);
-            productCart.setAmountByQuantity(existingProduct.get().getAmount().multiply(BigDecimal.valueOf(productCart.getQuantity())));
+            productCart.setAmountByQuantity(existingProduct.get().getPrice().multiply(BigDecimal.valueOf(productCart.getQuantity())));
             productCartRepository.save(productCart);
         }else {
             productCartRepository.delete(existingProductCart.get());
@@ -168,11 +169,11 @@ public class ProductCartServiceImpl implements ProductCartService{
     }
 
     @Override
-    public Response removeProductFromCart(String productId){
+    public Response removeProductFromCart(String productId, ProductVariationRequest productVariationDto){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
-        Optional<ProductCart> existingProductCart = productCartRepository.findByProductId(productId);
+        Optional<ProductCart> existingProductCart =  productCartRepository.findByProductIdAndColorAndSleeveTypeAndMeasurementTag(productId, productVariationDto.getColor(), productVariationDto.getSleeveType(), productVariationDto.getMeasurementTag());
         if(existingProductCart.isEmpty()){
             throw new StitchException("Product in cart with Id : " + productId + " does not exist");
         }
@@ -196,7 +197,6 @@ public class ProductCartServiceImpl implements ProductCartService{
         Pageable pageRequest = PageRequest.of(page, size);
 
         log.info("customer id : {}", customer.getUserId());
-//
         Page<ProductCart> productCart = productCartRepository.findProductCartByCustomer(customer, pageRequest);
 
         log.info("productCart : {}", productCart.getContent());
@@ -273,7 +273,6 @@ public class ProductCartServiceImpl implements ProductCartService{
         return ResponseUtils.createDefaultSuccessResponse();
     }
 
-//    @Override
     @Transactional
     public Response moveCartToOrder() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -288,7 +287,6 @@ public class ProductCartServiceImpl implements ProductCartService{
         log.info("customer id : {}", customer.getUserId());
 
         List<ProductCart> productCart = productCartRepository.findProductCartByCustomer(customer);
-
 
         log.info("productCart : {}", productCart);
 

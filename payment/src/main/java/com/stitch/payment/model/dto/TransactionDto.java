@@ -11,8 +11,6 @@ import java.math.BigDecimal;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-//@Entity
-//@Table(name= "transaction")
 public class TransactionDto {
 
 
@@ -48,12 +46,4 @@ public class TransactionDto {
     @Column(name = "ip_address")
     private String ipAddress;
 
-//    @Column(name = "pricing_plan_type", nullable = false)
-//    @Enumerated(EnumType.STRING)
-//    private pricing plan type PlanType = PricingPlanType BASIC;
-
-//    @CreationTimestamp
-//    @Temporal(TemporalType.TIMESTAMP)
-//    @Column(name = "created_on", updatable = false, nullable = false)
-//    private String createdOn;
 }

@@ -7,11 +7,10 @@ import com.stitch.model.entity.ProductOrder;
 import com.stitch.model.enums.OrderStatus;
 import com.stitch.user.model.dto.BodyMeasurementDto;
 import com.stitch.user.model.entity.BodyMeasurement;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-
-import java.math.BigDecimal;
-import java.time.*;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +24,6 @@ public class Utils {
         List<ProductOrderDto> productOrderDtoList = new ArrayList<>();
 
         for(ProductOrder productOrder : productOrderList){
-//            ProductOrderDto productOrderDto = new ProductOrderDto();
-
-//            BeanUtils.copyProperties(productOrder, productOrderDto);
-
             productOrderDtoList.add(convertProductOrderToDto(productOrder));
         }
         return productOrderDtoList;
@@ -40,10 +35,6 @@ public class Utils {
         ProductOrderDto productOrderDto = new ProductOrderDto();
         productOrderDto.setStatus(productOrder.getStatus());
         productOrderDto.setReferenceNumber(productOrder.getOrderId());
-//        productOrderDto.setTransactionId(productOrder.getTransactionId());
-//        productOrderDto.setMessage(productOrder.getMessage());
-//        productOrderDto.setClientSecret(productOrder.getClientSecret());
-//        productOrderDto.setPaymentId(productOrder.getPaymentId());
         productOrderDto.setProductCategoryName(productOrder.getProductCategoryName());
         productOrderDto.setVendorEmailAddress(productOrder.getVendorEmailAddress());
         productOrderDto.setOrderId(productOrder.getOrderId());
@@ -56,14 +47,11 @@ public class Utils {
         productOrderDto.setCurrency(productOrder.getCurrency());
         productOrderDto.setBodyMeasurementId(productOrder.getBodyMeasurementId());
         productOrderDto.setQuantity(productOrder.getQuantity());
-
         productOrderDto.setBodyMeasurementTag(productOrder.getBodyMeasurementTag());
 
         ProductVariationDto productVariationDto = new ProductVariationDto();
         productVariationDto.setColor(productOrder.getColor());
         productVariationDto.setSleeveType(productOrder.getSleeveType());
-//        productVariationDto.setBodyMeasurementTag(productOrder.getBodyMeasurementTag());
-
 
         productOrderDto.setProductVariationDto(productVariationDto);
         return productOrderDto;
@@ -73,10 +61,6 @@ public class Utils {
         ProductOrderDto productOrderDto = new ProductOrderDto();
         productOrderDto.setStatus(productOrder.getStatus());
         productOrderDto.setReferenceNumber(productOrder.getOrderId());
-//        productOrderDto.setTransactionId(productOrder.getTransactionId());
-//        productOrderDto.setMessage(productOrder.getMessage());
-//        productOrderDto.setClientSecret(productOrder.getClientSecret());
-//        productOrderDto.setPaymentId(productOrder.getPaymentId());
         productOrderDto.setProductCategoryName(productOrder.getProductCategoryName());
         productOrderDto.setVendorEmailAddress(productOrder.getVendorEmailAddress());
         productOrderDto.setOrderId(productOrder.getOrderId());
@@ -90,16 +74,11 @@ public class Utils {
         productOrderDto.setBodyMeasurementId(productOrder.getBodyMeasurementId());
         productOrderDto.setBodyMeasurementDto(bodyMeasurementDto);
         productOrderDto.setQuantity(productOrder.getQuantity());
-
-
         productOrderDto.setBodyMeasurementTag(productOrder.getBodyMeasurementTag());
 
         ProductVariationDto productVariationDto = new ProductVariationDto();
         productVariationDto.setColor(productOrder.getColor());
         productVariationDto.setSleeveType(productOrder.getSleeveType());
-//        productVariationDto.setBodyMeasurementTag(productOrder.getBodyMeasurementTag());
-
-
         productOrderDto.setProductVariationDto(productVariationDto);
 
         return productOrderDto;
@@ -121,16 +100,11 @@ public class Utils {
         ProductOrder productOrder = new ProductOrder();
         productOrder.setStatus(productOrderDto.getStatus());
         productOrder.setOrderId(productOrderDto.getReferenceNumber());
-//        productOrder.setTransactionId(productOrderDto.getTransactionId());
-//        productOrder.setMessage(productOrderDto.getMessage());
-//        productOrder.setClientSecret(productOrderDto.getClientSecret());
-//        productOrder.setPaymentId(productOrderDto.getPaymentId());
         productOrder.setProductCategoryName(productOrderDto.getProductCategoryName());
         productOrder.setVendorEmailAddress(productOrderDto.getVendorEmailAddress());
         productOrder.setPaymentMode(productOrderDto.getPaymentMode());
         productOrder.setAmount(productOrderDto.getAmount());
         productOrder.setEmailAddress(productOrderDto.getCustomerId());
-        // Set other fields accordingly
         return productOrder;
     }
 
@@ -152,7 +126,6 @@ public class Utils {
         productOrder.setColor(productOrderRequest.getColor());
         productOrder.setSleeveType(productOrderRequest.getSleeveType());
         productOrder.setBodyMeasurementTag(productOrderRequest.getBodyMeasurementTag());
-//        productOrder.setVendorEmailAddress(productOrderRequest.getVendorEmailAddress());
 
         log.info("productOrder : {}",productOrder);
         return productOrder;

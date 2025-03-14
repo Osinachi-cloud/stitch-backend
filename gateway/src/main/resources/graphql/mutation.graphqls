@@ -29,8 +29,8 @@ type Mutation{
     deleteProductLike(productId : String): Response
     addProductCart(productId : String): Response
     addProductCartWithVariation(productId : String, productVariation: ProductVariationRequest): Response
-    deleteProductCart(productId : String): Response
-    removeEntireProductFromCart(productId : String): Response
+    deleteProductCart(productId : String, productVariation: ProductVariationRequest): Response
+    removeEntireProductFromCart(productId : String, productVariation: ProductVariationRequest): Response
     clearCart: Response
     initializePayment(paymentRequest: InitializeTransactionRequest): InitializeTransactionResponse
     verifyPayment(paymentReference: String): PaymentVerificationResponse
@@ -166,37 +166,6 @@ input InitializeTransactionRequest {
     bodyMeasurementTag:String
 }
 
-#input TransactionRequest {
-#    currency: String!
-#    amount: BigDecimal!
-#    walletId: String!
-#    transactionType: String
-#    description: String
-#    pin: String!
-#    cardId: String
-#}
-
-#input TransactionVerificationRequest {
-#    transactionId: String!
-#    currency: String!
-#    amount: BigDecimal!
-#    txRef: String!
-#    walletId: String!
-#    transactionType: String
-#    description: String
-#    saveCard: Boolean
-#}
-
-#type WalletTransactionRequestDto {
-#    transactionId: String
-#    walletId: String
-#    currency: String
-#    amount: BigDecimal
-#    status: String
-#    paymentId: String
-#    clientSecret: String
-#}
-
 type Response {
     code: Int
     message: String
@@ -277,20 +246,6 @@ type VerificationResponse {
     message: String
 }
 
-#type CustomerDto {
-#    customerId: ID
-#    firstName: String
-#    lastName: String
-#    emailAddress: String
-#    phoneNumber: String
-#    tier: String
-#    country: String
-#    hasPin: Boolean
-#    enablePush: Boolean
-#
-#}
-
-
 input ProductUpdateRequest {
     name: String
     productImage: String
@@ -327,14 +282,13 @@ type ProductDto {
     name: String
     code: String
     productImage: String
-    amount: BigDecimal
+    price: BigDecimal
     quantity: BigDecimal
     outOfStock: Boolean
     category: String
     provider: String
     fixedPrice: Boolean
     country: String
-#    vendor: String
     publishStatus: String
     discount: BigDecimal
     productId: String
@@ -360,12 +314,11 @@ input ProductVariationRequest {
     measurementTag: String
 }
 
-
 type CartDto {
     name: String
     code: String
     productImage: String
-    amount: BigDecimal
+    price: BigDecimal
     quantity: BigDecimal
     category: String
     fixedPrice: Boolean
@@ -386,11 +339,22 @@ input ProductFilterRequest {
     name: String
     code: String
     outOfStock: Boolean
-    category: String
+    categories: [String]
     provider: String
     vendorId: String
     publishStatus: String
     productId: String
+    minPrice: Int
+    maxPrice: Int
+}
+
+input UserFilterRequest {
+    page: Int
+    size: Int
+    firstName: String
+    lastName: String
+    emailAddress: String
+    roleId: Int
 }
 
 input ProductPageRequest {

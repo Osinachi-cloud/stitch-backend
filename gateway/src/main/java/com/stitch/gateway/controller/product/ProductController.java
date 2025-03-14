@@ -15,8 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,8 +23,6 @@ import org.springframework.stereotype.Controller;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-
-import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasAuthority;
 
 @Slf4j
 @Controller
@@ -39,10 +35,6 @@ public class ProductController {
 
     @MutationMapping(value = "createProduct")
     public ProductDto createProduct(@Argument("productRequest")ProductRequest productRequest){
-        System.out.println("===========");
-        System.out.println(hasAuthority("VENDOR"));
-        System.out.println("===========");
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         log.info("Authorities: {}", authorities);
@@ -135,28 +127,4 @@ public class ProductController {
     ) {
         return productService.fetchAllProductsByAuth(productFilterRequest);
     }
-
-
-
-//    @QueryMapping(value = "getAllProductCategories")
-//    public List<ProductCategoryDto> getProductCategories() {
-//        return productService.getAllProductCategories();
-//    }
-
-//    @QueryMapping(value = "getActiveProductCategories")
-//    public List<ProductCategoryDto> getActiveProductCategories() {
-//        return productService.getActiveProductCategories();
-//    }
-//
-//    @QueryMapping(value = "getAllProviders")
-//    public List<ProviderDto> getProviders(@Argument("categoryName") String categoryName) {
-//        return productService.getAllProvidersByCategoryName(categoryName);
-//    }
-//
-//    @QueryMapping(value = "getActiveProviders")
-//    public List<ProviderDto> getActiveProviders(@Argument("categoryName") String categoryName) {
-//        return productService.getActiveProvidersByCategoryName(categoryName);
-//    }
-
-
 }

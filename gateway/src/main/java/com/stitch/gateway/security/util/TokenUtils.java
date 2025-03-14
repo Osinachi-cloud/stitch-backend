@@ -39,12 +39,10 @@ public class TokenUtils {
 
         log.info("Inside generate token method 2");
 
-
         Date now = new Date();
         Date accessTokenExpiration = new Date(now.getTime() + accessTokenExpiryInMilliseconds);
 
         log.info("Inside generate token method 3");
-
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -52,7 +50,6 @@ public class TokenUtils {
                 .setExpiration(accessTokenExpiration)
                 .signWith(SignatureAlgorithm.HS512, accessTokenSecretKey)
                 .compact();
-
     }
 
 
@@ -93,7 +90,6 @@ public class TokenUtils {
         }
         return claims;
     }
-
 
     public Claims validateRefreshToken(String token) {
 

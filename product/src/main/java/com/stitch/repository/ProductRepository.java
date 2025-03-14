@@ -13,17 +13,8 @@ import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
-
     Optional<Product> findByProductId(String productId);
-
-
     Page<Product> findProductsByVendor(UserEntity customer, Pageable pageable);
 
-//    Page<Product> findAllProductsByVendorId(Pageable pageable);
-
-
     void deleteByProductId(String productId);
-
-
-//    Page<Product> findAll(Specification<Product> spec, PageRequest dateCreated);
 }

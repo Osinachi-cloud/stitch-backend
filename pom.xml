@@ -9,21 +9,14 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-
-
     <modules>
         <module>gateway</module>
-<!--        <module>notification</module>-->
         <module>commons</module>
         <module>user</module>
-<!--        <module>payment</module>-->
-<!--        <module>wallet</module>-->
         <module>currency</module>
         <module>Order</module>
         <module>product</module>
         <module>Payment</module>
-        <!--        <module>psp</module>-->
-<!--        <module>billers</module>-->
     </modules>
 
     <parent>
@@ -39,8 +32,6 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-
 
     <dependencies>
 
@@ -66,13 +57,6 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-envers</artifactId>
         </dependency>
-
-        <!--        <dependency>-->
-<!--            <groupId>org.springframework.data</groupId>-->
-<!--            <artifactId>spring-data-jpa</artifactId>-->
-<!--            <version>2.7.17</version>-->
-<!--            <scope>compile</scope>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -86,27 +70,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-<!--            <version>6.0.1</version>-->
         </dependency>
-
          <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
-<!--            <version>3.2.1</version>-->
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>jakarta.persistence</groupId>-->
-<!--            <artifactId>jakarta.persistence-api</artifactId>-->
-<!--            <version>3.0.0</version>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>javax.persistence</groupId>-->
-<!--            <artifactId>javax.persistence-api</artifactId>-->
-<!--            <version>2.2</version> -->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -123,12 +91,7 @@
             <artifactId>json</artifactId>
             <version>20180130</version>
         </dependency>
-
-
-
-
     </dependencies>
-
     <build>
         <finalName>stitch</finalName>
         <pluginManagement>
@@ -136,17 +99,6 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-<!--                    <configuration>-->
-<!--                        <image>-->
-<!--                            <builder>paketobuildpacks/builder-jammy-base:latest</builder>-->
-<!--                        </image>-->
-<!--                        <excludes>-->
-<!--                            <exclude>-->
-<!--                                <groupId>org.projectlombok</groupId>-->
-<!--                                <artifactId>lombok</artifactId>-->
-<!--                            </exclude>-->
-<!--                        </excludes>-->
-<!--                    </configuration>-->
                 </plugin>
             </plugins>
         </pluginManagement>

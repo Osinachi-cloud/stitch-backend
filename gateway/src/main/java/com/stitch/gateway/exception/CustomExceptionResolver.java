@@ -1,6 +1,5 @@
 package com.stitch.gateway.exception;
 
-//import com.stitch.payment.exception.TransVolumeException;
 import com.stitch.user.exception.UserException;
 import com.stitch.commons.exception.StitchException;
 import graphql.GraphQLError;
@@ -43,14 +42,6 @@ CustomExceptionResolver extends DataFetcherExceptionResolverAdapter {
                     .location(env.getField().getSourceLocation())
                     .build();
         }
-//        else if (ex instanceof TransVolumeException) {
-//            return GraphqlErrorBuilder.newError()
-//                .errorType(ErrorType.BAD_REQUEST)
-//                .message(ex.getMessage())
-//                .path(env.getExecutionStepInfo().getPath())
-//                .location(env.getField().getSourceLocation())
-//                .build();
-//        }
         else {
             return GraphqlErrorBuilder.newError()
                     .errorType(ErrorType.INTERNAL_ERROR)
