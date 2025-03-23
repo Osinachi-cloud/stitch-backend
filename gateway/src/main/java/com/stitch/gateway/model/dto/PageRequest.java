@@ -1,4 +1,4 @@
-package com.stitch.model.dto;
+package com.stitch.gateway.model.dto;
 
 import lombok.Data;
 

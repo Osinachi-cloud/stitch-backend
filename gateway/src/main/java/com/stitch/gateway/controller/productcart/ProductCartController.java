@@ -4,7 +4,7 @@ import com.stitch.commons.exception.StitchException;
 import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.commons.model.dto.Response;
 import com.stitch.model.dto.CartDto;
-import com.stitch.model.dto.PageRequest;
+import com.stitch.gateway.model.dto.PageRequest;
 import com.stitch.model.dto.ProductVariationRequest;
 import com.stitch.payment.service.PaymentService;
 import com.stitch.service.ProductCartService;

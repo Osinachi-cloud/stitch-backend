@@ -1,4 +1,4 @@
-package com.stitch.gateway.model;
+package com.stitch.gateway.model.request;
 
 import lombok.Data;
 

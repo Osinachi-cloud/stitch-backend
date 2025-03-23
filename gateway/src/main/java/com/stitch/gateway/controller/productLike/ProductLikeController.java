@@ -3,6 +3,7 @@ package com.stitch.gateway.controller.productLike;
 import com.stitch.commons.exception.StitchException;
 import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.commons.model.dto.Response;
+import com.stitch.gateway.model.dto.PageRequest;
 import com.stitch.model.dto.*;
 import com.stitch.service.ProductLikeService;
 import org.springframework.graphql.data.method.annotation.Argument;

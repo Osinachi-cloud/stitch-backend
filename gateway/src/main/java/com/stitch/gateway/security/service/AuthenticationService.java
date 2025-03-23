@@ -1,7 +1,7 @@
 package com.stitch.gateway.security.service;
 
-import com.stitch.gateway.model.LoginRequest;
-import com.stitch.gateway.model.LoginResponse;
+import com.stitch.gateway.model.request.LoginRequest;
+import com.stitch.gateway.model.response.LoginResponse;
 import com.stitch.gateway.security.model.Token;
 import com.stitch.user.model.dto.CustomerDto;
 
