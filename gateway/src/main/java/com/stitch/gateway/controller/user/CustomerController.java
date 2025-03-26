@@ -4,24 +4,19 @@ package com.stitch.gateway.controller.user;
 import com.stitch.commons.exception.StitchException;
 import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.commons.model.dto.Response;
-import com.stitch.commons.service.CountryService;
 import com.stitch.gateway.model.request.LoginRequest;
 import com.stitch.gateway.model.response.LoginResponse;
 import com.stitch.gateway.security.model.Token;
 import com.stitch.gateway.security.model.Unsecured;
 import com.stitch.gateway.security.service.AuthenticationService;
-//import com.stitch.notification.model.dto.InAppNotificationResponse;
-//import com.stitch.notification.model.dto.InAppNotificationStatsResponse;
 import com.stitch.user.model.dto.*;
 import com.stitch.user.service.ContactVerificationService;
 import com.stitch.user.service.UserService;
-import com.stitch.wallet.model.dto.WalletDto;
-import com.stitch.wallet.service.WalletService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -32,22 +27,14 @@ import java.util.List;
 @Slf4j
 @Controller
 @CrossOrigin(origins = "http://localhost:4200/login")
+@RequiredArgsConstructor
 public class CustomerController {
 
     private final UserService userService;
     private final AuthenticationService authenticationService;
     private final ContactVerificationService verificationService;
-    private final WalletService walletService;
 
-    private final CountryService countryService;
 
-    public CustomerController(UserService userService, AuthenticationService authenticationService, ContactVerificationService verificationService, WalletService walletService, CountryService countryService) {
-        this.userService = userService;
-        this.authenticationService = authenticationService;
-        this.verificationService = verificationService;
-        this.walletService = walletService;
-        this.countryService = countryService;
-    }
 
     @Unsecured
     @MutationMapping(value = "createCustomer")
@@ -119,11 +106,7 @@ public class CustomerController {
         return authenticationService.authenticate(loginRequest);
     }
 
-    @Unsecured
-    @SchemaMapping(typeName = "LoginResponse")
-    public List<WalletDto> wallets(LoginResponse loginResponse) {
-        return walletService.getAllWallets(loginResponse.getCustomerId());
-    }
+
 
     @Unsecured
     @MutationMapping(value = "requestToken")

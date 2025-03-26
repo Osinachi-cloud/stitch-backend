@@ -8,12 +8,18 @@ import com.stitch.model.enums.OrderStatus;
 import com.stitch.user.model.dto.BodyMeasurementDto;
 import com.stitch.user.model.entity.BodyMeasurement;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 public class Utils {
@@ -148,6 +154,23 @@ public class Utils {
         bodyMeasurementDto.setTummy(bodyMeasurement.getTummy());
         bodyMeasurementDto.setWaist(bodyMeasurement.getWaist());
         return bodyMeasurementDto;
+    }
+
+
+    public static Optional<String> getLoggedInUser() {
+        try {
+            SecurityContext context = SecurityContextHolder.getContext();
+            if(Objects.nonNull(context)){
+                Authentication authentication= context.getAuthentication();
+                String loggedInUser = authentication.getName();
+                System.err.println("logged in user --> "+loggedInUser);
+                return Optional.ofNullable(loggedInUser);
+            }
+            return Optional.empty();
+        }catch (Exception e){
+            log.error("Exception occurred while fetching logged in user ==> {}",e.getMessage());
+            return Optional.empty();
+        }
     }
 
 }

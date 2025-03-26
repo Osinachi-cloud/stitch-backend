@@ -1,7 +1,7 @@
 package com.stitch.gateway.model.response;
 
 import com.stitch.user.model.dto.CustomerDto;
-import com.stitch.wallet.model.dto.WalletDto;
+
 import com.stitch.gateway.security.model.Token;
 import lombok.Data;
 
@@ -25,7 +25,6 @@ public class LoginResponse {
     private String accessToken;
     private String refreshToken;
     private String profileImage;
-    private List<WalletDto> wallets;
 
     public LoginResponse(CustomerDto customer, Token token) {
         this.customerId = customer.getUserId();

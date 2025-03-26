@@ -1,7 +1,7 @@
-package com.stitch.gateway.exception;
+package com.stitch.exception;
 
 
-import com.stitch.gateway.model.response.ErrorResponse;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.stitch.commons.util.Constants.FAILED;
 import static com.stitch.commons.util.Constants.status;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
@@ -23,19 +22,10 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class AppExceptionHandler {
 
 
-    @ExceptionHandler
-    protected ResponseEntity<ErrorResponse> handleException(Throwable e) {
-        log.error(e.getMessage(), e);
 
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setCode(2);
-        errorResponse.setMessage("Error processing request");
 
-        return ResponseEntity.badRequest().body(errorResponse);
-    }
-
-    @ExceptionHandler(ApiException.class)
-    public ResponseEntity<Map<String, String>> handleApiExceptions(ApiException ex) {
+    @ExceptionHandler(OrderException.class)
+    public ResponseEntity<Map<String, String>> handleApiExceptions(OrderException ex) {
         return new ResponseEntity<>(Map.of("error", ex.getMessage()), status(ex.getCode()));
     }
 

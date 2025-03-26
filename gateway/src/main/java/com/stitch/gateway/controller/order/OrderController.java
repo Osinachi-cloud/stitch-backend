@@ -1,117 +1,76 @@
 package com.stitch.gateway.controller.order;
 
-import com.stitch.commons.exception.StitchException;
 import com.stitch.commons.model.dto.PaginatedResponse;
-import com.stitch.commons.util.NumberUtils;
-import com.stitch.gateway.security.model.CustomUserDetails;
 import com.stitch.model.dto.ProductOrderDto;
 import com.stitch.model.dto.ProductOrderRequest;
 import com.stitch.model.dto.ProductOrderStatistics;
 import com.stitch.service.ProductOrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.graphql.data.method.annotation.MutationMapping;
-import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
+import static com.stitch.gateway.util.Constants.BASE_URL;
 
 
-@Controller
+@RestController
+@RequestMapping(BASE_URL)
 @Slf4j
 @RequiredArgsConstructor
 public class OrderController {
 
     private final ProductOrderService productOrderService;
 
-    @QueryMapping(value = "fetchCustomerOrdersBy")
-    public PaginatedResponse<List<ProductOrderDto>> fetchCustomerOrdersBy(
-            @Argument Optional<String> productId,
-            @Argument Optional<String> emailAddress,
-            @Argument Optional<String> status,
-            @Argument Optional<String> orderId,
-            @Argument Optional<String> productCategory,
-            @Argument Optional<Integer> page,
-            @Argument Optional<Integer> size) {
 
-        PageRequest pr = PageRequest.of(page.orElse(0), size.orElse(10));
-        return productOrderService.fetchCustomerOrdersBy(productId.orElse(null), emailAddress.orElse(null), status.orElse(null), orderId.orElse(null), productCategory.orElse(null), pr);
+    @GetMapping("/fetch-customer-orders")
+    public ResponseEntity<PaginatedResponse<List<ProductOrderDto>>> fetchCustomerOrders(@RequestParam(required = false) String productId,
+                                                                                        @RequestParam(required = false) String emailAddress, @RequestParam(required = false) String status,
+                                                                                        @RequestParam(required = false) String orderId, @RequestParam(required = false) String productCategory,
+                                                                                        @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(productOrderService.fetchCustomerOrders(productId, emailAddress, status, orderId, productCategory, page, size));
+
     }
 
-    @QueryMapping(value = "fetchVendorOrdersBy")
-//    @PreAuthorize("hasAuthority('VENDOR')")
-    public PaginatedResponse<List<ProductOrderDto>> fetchVendorOrdersBy(
-            @Argument Optional<String> productId,
-            @Argument Optional<String> status,
-            @Argument Optional<String> orderId,
-            @Argument Optional<String> productCategory,
-            @Argument Optional<Integer> page,
-            @Argument Optional<Integer> size) {
 
-        PageRequest pr = PageRequest.of(page.orElse(0), size.orElse(10));
-        return productOrderService.fetchVendorOrdersBy(productId.orElse(null), status.orElse(null), orderId.orElse(null), productCategory.orElse(null), pr);
+    @GetMapping("/fetch-vendor-orders")
+    public ResponseEntity<PaginatedResponse<List<ProductOrderDto>>> fetchVendorOrders(@RequestParam(required = false) String productId,
+                                                                                      @RequestParam(required = false) String emailAddress, @RequestParam(required = false) String status,
+                                                                                      @RequestParam(required = false) String orderId, @RequestParam(required = false) String productCategory,
+                                                                                      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(productOrderService.fetchVendorOrders(productId, emailAddress, status, orderId, productCategory, page, size));
+
     }
 
-    @MutationMapping(value = "createProductOrder")
-    public ProductOrderDto createProductOrder(@Argument("productOrderRequest") ProductOrderRequest productOrderDto) {
-        try {
+    @PostMapping("/create product -order")
+    public ResponseEntity<ProductOrderDto> createProductOrder(@RequestBody ProductOrderRequest productOrderDto) {
+        return ResponseEntity.ok(productOrderService.createProductOrder(productOrderDto));
 
-            log.info("productOrderDto : {}", productOrderDto);
-
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            CustomUserDetails customer = (CustomUserDetails) authentication.getPrincipal();
-            String userId = customer.getUser().getUserId();
-//        productOrderDto.setCustomerId(userId);
-            productOrderDto.setStatus("PROCESSING");
-            productOrderDto.setOrderId(NumberUtils.generate(10));
-            log.info("productOrderDto 2: {}", productOrderDto);
-
-            return productOrderService.createProductOrder(productOrderDto);
-        } catch (Exception e) {
-            throw new StitchException("product could not be created");
-        }
     }
 
-    @MutationMapping(value = "updateProductOrder")
-    public ProductOrderDto updateProductOrder(@Argument("productOrderRequest") ProductOrderRequest productOrderDto) {
-        log.info("productOrderDto 00: {}", productOrderDto);
-        try {
-            return productOrderService.updateProductOrder(productOrderDto);
-        } catch (Exception e) {
-            throw new StitchException("product could not be updated");
-        }
+
+    @PostMapping("/update-order-status/{orderId}")
+    public ResponseEntity<ProductOrderDto> updateProductOrderStatus(@PathVariable String orderId, @RequestParam(required = false) String orderStatus) {
+        return ResponseEntity.ok(productOrderService.updateProductOrder(orderId, orderStatus));
     }
 
-    @QueryMapping(value = "getProductOrderStatsByCustomer")
-    public ProductOrderStatistics getProductOrderStatsByCustomer() {
-
-        try {
-            return productOrderService.getCustomerProductStat();
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
+    @GetMapping("/order-stats-for-customer")
+    public ResponseEntity<ProductOrderStatistics> getProductOrderStatsByCustomer() {
+        return ResponseEntity.ok(productOrderService.getCustomerProductStat());
     }
 
-    @QueryMapping(value = "getProductOrderStatsByVendor")
+    @GetMapping("/order-stats-for-vendor")
     @PreAuthorize("hasAuthority('VENDOR')")
-    public ProductOrderStatistics getProductOrderStatsByVendor() {
+    public ResponseEntity<ProductOrderStatistics> getProductOrderStatsByVendor() {
+            return ResponseEntity.ok(productOrderService.getVendorProductStat());
 
-        try {
-            return productOrderService.getVendorProductStat();
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
     }
 
-    @QueryMapping(value = "getOrderByOrderId")
+    @GetMapping(value = "getOrderByOrderId")
     @PreAuthorize("hasAuthority('VENDOR')")
-    public ProductOrderDto getOrderByOrderId(@Argument("orderId") String orderId) {
+    public ProductOrderDto getOrderByOrderId(@RequestParam("orderId") String orderId) {
 
         try {
             return productOrderService.getOrderByOrderId(orderId);
