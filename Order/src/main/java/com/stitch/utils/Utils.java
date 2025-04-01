@@ -156,21 +156,4 @@ public class Utils {
         return bodyMeasurementDto;
     }
 
-
-    public static Optional<String> getLoggedInUser() {
-        try {
-            SecurityContext context = SecurityContextHolder.getContext();
-            if(Objects.nonNull(context)){
-                Authentication authentication= context.getAuthentication();
-                String loggedInUser = authentication.getName();
-                System.err.println("logged in user --> "+loggedInUser);
-                return Optional.ofNullable(loggedInUser);
-            }
-            return Optional.empty();
-        }catch (Exception e){
-            log.error("Exception occurred while fetching logged in user ==> {}",e.getMessage());
-            return Optional.empty();
-        }
-    }
-
 }

@@ -1,19 +1,19 @@
 package com.stitch.gateway.controller.payment;
 
-import com.stitch.commons.exception.StitchException;
 import com.stitch.payment.model.dto.PaymentVerificationResponse;
 import com.stitch.payment.model.entity.InitializeTransactionRequest;
 import com.stitch.payment.model.entity.InitializeTransactionResponse;
 import com.stitch.payment.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+
+import static com.stitch.gateway.util.Constants.BASE_URL;
 
 
-@Controller
+@RestController
+@RequestMapping(BASE_URL)
 @Slf4j
 public class PaymentController {
     private final PaymentService paymentService;
@@ -23,32 +23,17 @@ public class PaymentController {
     }
 
 
-    @MutationMapping(value = "initializePayment")
-    @Transactional
+    @PostMapping("/initialize-payment")
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    public InitializeTransactionResponse initializePayment(@Argument("paymentRequest") InitializeTransactionRequest paymentRequest){
-        log.info("paymentRequest : {}", paymentRequest);
-
-        try {
-            return paymentService.initTransaction(paymentRequest);
-        }catch (StitchException e){
-            throw new StitchException(e.getMessage());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public ResponseEntity<InitializeTransactionResponse> initializePayment(@RequestBody InitializeTransactionRequest paymentRequest) {
+        return ResponseEntity.ok(paymentService.initTransaction(paymentRequest));
     }
 
-    @MutationMapping(value = "verifyPayment")
-    @Transactional
+    @PostMapping( "/verify-payment")
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    public PaymentVerificationResponse verifyPayment(@Argument("paymentReference") String paymentReference){
-        try {
-            return paymentService.paymentVerification(paymentReference);
-        }catch (StitchException e){
-            throw new StitchException(e.getMessage());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public ResponseEntity<PaymentVerificationResponse> verifyPayment(@RequestParam(required = false, name = "reference") String paymentReference) {
+            return ResponseEntity.ok(paymentService.paymentVerification(paymentReference));
+
     }
 
 }

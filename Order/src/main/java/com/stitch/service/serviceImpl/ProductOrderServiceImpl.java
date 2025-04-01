@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.stitch.commons.util.Mapper.convertModelToDto;
+import static com.stitch.commons.util.SharedUtils.getLoggedInUser;
 import static com.stitch.utils.Utils.*;
 import static java.lang.Math.toIntExact;
 
@@ -111,18 +112,22 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 
     @Override
     public ProductOrderDto getOrderByOrderId(String orderId) {
-        Optional<ProductOrder> existingProductOrder = productOrderRepository.findByOrderId(orderId);
-        if (existingProductOrder.isEmpty()) {
-            throw new StitchException("product order does not exist " + orderId);
+        try {
+            ProductOrder productOrder = productOrderRepository.findByOrderId(orderId)
+                    .orElseThrow(() -> new OrderException("product order does not exist " + orderId, 404));
+            BodyMeasurement bodyMeasurement = findBodyMeasurement(productOrder.getBodyMeasurementTag(), productOrder.getEmailAddress());
+            BodyMeasurementDto bodyMeasurementDto = convertBodyMeasurementToModel(bodyMeasurement);
+            ProductOrderDto productOrderDto = convertProductOrderToDto(productOrder, bodyMeasurementDto);
+            log.info("productOrderDto :{}", productOrderDto);
+            return productOrderDto;
+        }catch (OrderException e){
+            log.error("A custom error occurred while getting order by id : {} :: {}", orderId, e.getMessage());
+            throw new OrderException(e.getMessage(), e.getCode());
+
+        }catch (Exception e){
+            log.error("An error occurred while getting product order by order Id : {} : {}", orderId, e.getMessage());
+            throw new OrderException("Failed to get product Order with id : " + orderId, 417);
         }
-
-        ProductOrder productOrder = existingProductOrder.get();
-        BodyMeasurement bodyMeasurement = findBodyMeasurement(productOrder.getBodyMeasurementTag(), productOrder.getEmailAddress());
-        BodyMeasurementDto bodyMeasurementDto = convertBodyMeasurementToModel(bodyMeasurement);
-
-        ProductOrderDto productOrderDto = convertProductOrderToDto(existingProductOrder.get(), bodyMeasurementDto);
-        log.info("productOrderDto :{}", productOrderDto);
-        return productOrderDto;
     }
 
     public BodyMeasurement findBodyMeasurement(String id, String username) {
@@ -136,6 +141,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
             throw new StitchException("Body measurement does not exist");
         }
         return existingBodyMeasurement.get();
+
     }
 
     @Override

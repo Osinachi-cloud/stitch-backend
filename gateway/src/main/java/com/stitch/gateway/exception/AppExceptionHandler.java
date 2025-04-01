@@ -1,7 +1,9 @@
 package com.stitch.gateway.exception;
 
 
+import com.stitch.exception.OrderException;
 import com.stitch.gateway.model.response.ErrorResponse;
+import com.stitch.payment.exception.PaymentException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -36,6 +38,15 @@ public class AppExceptionHandler {
 
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<Map<String, String>> handleApiExceptions(ApiException ex) {
+        return new ResponseEntity<>(Map.of("error", ex.getMessage()), status(ex.getCode()));
+    }
+    @ExceptionHandler(OrderException.class)
+    public ResponseEntity<Map<String, String>> handleOrderException(OrderException ex) {
+        return new ResponseEntity<>(Map.of("error", ex.getMessage()), status(ex.getCode()));
+    }
+
+    @ExceptionHandler(PaymentException.class)
+    public ResponseEntity<Map<String, String>> handlePaymentException(PaymentException ex) {
         return new ResponseEntity<>(Map.of("error", ex.getMessage()), status(ex.getCode()));
     }
 

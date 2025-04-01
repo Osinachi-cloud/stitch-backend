@@ -64,18 +64,13 @@ public class OrderController {
     @GetMapping("/order-stats-for-vendor")
     @PreAuthorize("hasAuthority('VENDOR')")
     public ResponseEntity<ProductOrderStatistics> getProductOrderStatsByVendor() {
-            return ResponseEntity.ok(productOrderService.getVendorProductStat());
-
+        return ResponseEntity.ok(productOrderService.getVendorProductStat());
     }
 
-    @GetMapping(value = "getOrderByOrderId")
+    @GetMapping("/get-order-by-orderId")
     @PreAuthorize("hasAuthority('VENDOR')")
-    public ProductOrderDto getOrderByOrderId(@RequestParam("orderId") String orderId) {
+    public ResponseEntity<ProductOrderDto> getOrderByOrderId(@RequestParam("orderId") String orderId) {
+        return ResponseEntity.ok(productOrderService.getOrderByOrderId(orderId));
 
-        try {
-            return productOrderService.getOrderByOrderId(orderId);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
     }
 }
