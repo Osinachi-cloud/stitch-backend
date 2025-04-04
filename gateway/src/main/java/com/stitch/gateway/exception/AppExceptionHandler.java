@@ -2,6 +2,7 @@ package com.stitch.gateway.exception;
 
 
 import com.stitch.exception.OrderException;
+import com.stitch.exception.ProductException;
 import com.stitch.gateway.model.response.ErrorResponse;
 import com.stitch.payment.exception.PaymentException;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.stitch.commons.util.Constants.FAILED;
 import static com.stitch.commons.util.Constants.status;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
@@ -42,6 +42,10 @@ public class AppExceptionHandler {
     }
     @ExceptionHandler(OrderException.class)
     public ResponseEntity<Map<String, String>> handleOrderException(OrderException ex) {
+        return new ResponseEntity<>(Map.of("error", ex.getMessage()), status(ex.getCode()));
+    }
+    @ExceptionHandler(ProductException.class)
+    public ResponseEntity<Map<String, String>> handleProductException(ProductException ex) {
         return new ResponseEntity<>(Map.of("error", ex.getMessage()), status(ex.getCode()));
     }
 

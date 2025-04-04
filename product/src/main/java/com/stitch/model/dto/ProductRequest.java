@@ -42,5 +42,5 @@ public class ProductRequest {
 
     private String readyIn;
 
-    List<ProductVariationDto> productVariation;
+    private List<ProductVariationDto> productVariation;
 }

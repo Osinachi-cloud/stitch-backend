@@ -6,9 +6,9 @@ import com.stitch.model.dto.ProductDto;
 import com.stitch.model.dto.ProductFilterRequest;
 import com.stitch.model.dto.ProductRequest;
 import com.stitch.model.dto.ProductUpdateRequest;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ProductService {
 
@@ -20,9 +20,9 @@ public interface ProductService {
 
     ProductDto getProductByProductId(String productId);
 
-    PaginatedResponse<List<ProductDto>> getProductByVendor(String vendorId, Pageable pageable) ;
+    PaginatedResponse<List<ProductDto>> getProductByVendor(String vendorId, int page, int size) ;
 
-    void deleteProduct(String productId);
+    Map<String,String> deleteProduct(String productId);
 
 
     PaginatedResponse<List<ProductDto>> fetchAllProductsByVendor(ProductFilterRequest request);
