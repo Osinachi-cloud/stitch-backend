@@ -1,19 +1,19 @@
 package com.stitch.gateway.controller.productLike;
 
-import com.stitch.commons.exception.StitchException;
 import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.commons.model.dto.Response;
 import com.stitch.gateway.model.dto.PageRequest;
 import com.stitch.model.dto.*;
 import com.stitch.service.ProductLikeService;
-import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.graphql.data.method.annotation.MutationMapping;
-import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+import static com.stitch.gateway.util.Constants.BASE_URL;
+
+@RestController
+@RequestMapping(BASE_URL)
 public class ProductLikeController {
     private final ProductLikeService productLikeService;
 
@@ -21,31 +21,19 @@ public class ProductLikeController {
         this.productLikeService = productLikeService;
     }
 
-    @MutationMapping(value = "addProductLikes")
-    public Response addProductLikes(@Argument("productId") String productId){
-        try {
-            return productLikeService.addToLikes(productId);
-        }catch (StitchException e){
-            throw new StitchException(e.getMessage());
-        }
+    @PostMapping("/add-product-likes/{productId}")
+    public ResponseEntity<Response> addProductLikes(@PathVariable String productId) {
+        return ResponseEntity.ok(productLikeService.addToLikes(productId));
     }
 
-    @MutationMapping(value = "deleteProductLike")
-    public Response deleteProductLike(@Argument("productId")String productId){
-        try {
-            return productLikeService.removeFromLikes(productId);
-        }catch (StitchException e){
-            throw new StitchException(e.getMessage());
-        }
+    @DeleteMapping("/delete-product-like/{productId}")
+    public ResponseEntity<Response> deleteProductLike(@PathVariable String productId) {
+        return ResponseEntity.ok(productLikeService.removeFromLikes(productId));
     }
 
-    @QueryMapping(value = "getAllProductLikes")
-    public PaginatedResponse<List<ProductDto>> getAllProductLikes(@Argument("pageRequest") PageRequest pageRequest){
-        try {
-            return productLikeService.getAllLikes(pageRequest.getPage(), pageRequest.getSize());
-        }catch (StitchException e){
-            throw new StitchException(e.getMessage());
-        }
+    @GetMapping("/get-all-product-likes")
+    public ResponseEntity<PaginatedResponse<List<ProductDto>>> getAllProductLikes(@RequestBody PageRequest pageRequest) {
+        return ResponseEntity.ok(productLikeService.getAllLikes(pageRequest.getPage(), pageRequest.getSize()));
     }
 
 }
