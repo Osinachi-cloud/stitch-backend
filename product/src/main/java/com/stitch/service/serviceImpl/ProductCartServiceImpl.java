@@ -18,9 +18,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -261,18 +258,18 @@ public class ProductCartServiceImpl implements ProductCartService {
     }
 
     @Override
-    public Map<String,BigDecimal> sumAmountByQuantityByCustomerId() {
+    public Map<String, BigDecimal> sumAmountByQuantityByCustomerId() {
         try {
             String username = getLoggedInUser()
                     .orElseThrow(() -> new CartException("Failed to authenticate user", 403));
             UserEntity customer = customerRepository.findByEmailAddress(username)
                     .orElseThrow(() -> new CartException("Customer with Id : " + username + " does not exist", 404));
-            BigDecimal sum =  productCartRepository.sumAmountByQuantityByUserId(customer.getEmailAddress());
-            return Map.of("sum",sum);
-        }catch (CartException e){
+            BigDecimal sum = productCartRepository.sumAmountByQuantityByUserId(customer.getEmailAddress());
+            return Map.of("sum", sum);
+        } catch (CartException e) {
             log.error("Custom error getting sum :: {}", e.getMessage());
             throw new CartException(e.getMessage(), e.getCode());
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("Exception getting sum :: {}", e.getMessage());
             throw new CartException(e.getMessage(), 400);
         }
@@ -306,25 +303,23 @@ public class ProductCartServiceImpl implements ProductCartService {
 
     @Transactional
     public Response moveCartToOrder() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+        try {
+            String username = getLoggedInUser()
+                    .orElseThrow(() -> new CartException("Failed to authenticate user", 403));
+            UserEntity customer = customerRepository.findByEmailAddress(username)
+                    .orElseThrow(() -> new CartException("Customer with username : " + username + " does not exist", 404));
+            log.info("customer id for move to cart : {}", customer.getUserId());
 
-        Optional<UserEntity> customerOptional = customerRepository.findByEmailAddress(username);
-        if (customerOptional.isEmpty()) {
-            throw new StitchException("Customer with Id : " + username + " does not exist");
+            List<ProductCart> productCart = productCartRepository.findProductCartByCustomer(customer);
+            log.info("productCart : {}", productCart);
+            productCartRepository.deleteAll(productCart);
+            return createDefaultSuccessResponse();
+        } catch (CartException e) {
+            log.error("Custom error moving cart to order :: {}", e.getMessage());
+            throw new CartException(e.getMessage(), e.getCode());
+        } catch (Exception e) {
+            log.error("Error occurred while moving cart to order :: {}", e.getMessage());
+            throw new CartException(e.getMessage(), 400);
         }
-        UserEntity customer = customerOptional.get();
-
-        log.info("customer id : {}", customer.getUserId());
-
-        List<ProductCart> productCart = productCartRepository.findProductCartByCustomer(customer);
-
-        log.info("productCart : {}", productCart);
-
-        for (ProductCart product : productCart) {
-            productCartRepository.delete(product);
-        }
-
-        return createDefaultSuccessResponse();
     }
 }
