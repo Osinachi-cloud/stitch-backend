@@ -7,10 +7,11 @@ import com.stitch.model.dto.ProductVariationRequest;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 public interface ProductCartService {
-    Response addToCart(String productId, ProductVariationRequest productVariationDto);
     Response addToCart(String productId);
+    Response addToCart(String productId, ProductVariationRequest productVariationDto);
 
     Response removeOrReduceFromCart(String productId, ProductVariationRequest productVariationDto);
 
@@ -18,7 +19,7 @@ public interface ProductCartService {
 
     PaginatedResponse<List<CartDto>> getCart(int page, int size);
 
-    BigDecimal sumAmountByQuantityByCustomerId();
+    Map<String,BigDecimal> sumAmountByQuantityByCustomerId();
 
     Response clearCart();
 }

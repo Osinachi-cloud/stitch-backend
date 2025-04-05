@@ -1,6 +1,7 @@
 package com.stitch.gateway.exception;
 
 
+import com.stitch.exception.CartException;
 import com.stitch.exception.OrderException;
 import com.stitch.exception.ProductException;
 import com.stitch.gateway.model.response.ErrorResponse;
@@ -51,6 +52,11 @@ public class AppExceptionHandler {
 
     @ExceptionHandler(PaymentException.class)
     public ResponseEntity<Map<String, String>> handlePaymentException(PaymentException ex) {
+        return new ResponseEntity<>(Map.of("error", ex.getMessage()), status(ex.getCode()));
+    }
+
+    @ExceptionHandler(CartException.class)
+    public ResponseEntity<Map<String, String>> handleCartException(CartException ex) {
         return new ResponseEntity<>(Map.of("error", ex.getMessage()), status(ex.getCode()));
     }
 

@@ -2,11 +2,14 @@ package com.stitch.commons.util;
 
 import org.springframework.http.HttpStatus;
 
+import java.util.Objects;
+
 public final class Constants {
 
     private Constants() {}
 
     public static final String FAILED = "FAILED";
+    public static final String EMPTY = "";
 
     public static HttpStatus status(int code){
         return (switch (code) {
@@ -21,5 +24,11 @@ public final class Constants {
             case 503, 504  -> HttpStatus.SERVICE_UNAVAILABLE;
             default -> HttpStatus.INTERNAL_SERVER_ERROR;
         });
+    }
+
+    public static String getStr(String value){
+        if (Objects.isNull(value) || value.trim().isEmpty()) return EMPTY;
+        return value.trim();
+
     }
 }
