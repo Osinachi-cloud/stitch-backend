@@ -9,7 +9,6 @@ import com.stitch.user.repository.BodyMeasurementRepository;
 import com.stitch.user.repository.UserRepository;
 import com.stitch.user.service.BodyMeasurementService;
 import com.stitch.user.util.DtoMapper;
-import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -121,10 +120,5 @@ public class BodyMeasurementServiceImpl implements BodyMeasurementService {
         }
     }
 
-//    @PostConstruct
-//    public void getThis(){
-//        List<BodyMeasurement> list =  bodyMeasurementRepository.findAll();
-//        log.info("list : >>>>>>>>> : {}", list);
-//    }
 
 }
