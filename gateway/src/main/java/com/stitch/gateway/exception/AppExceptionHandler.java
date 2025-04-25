@@ -1,11 +1,13 @@
 package com.stitch.gateway.exception;
 
 
+import com.stitch.commons.exception.StitchException;
 import com.stitch.exception.CartException;
 import com.stitch.exception.OrderException;
 import com.stitch.exception.ProductException;
 import com.stitch.gateway.model.response.ErrorResponse;
 import com.stitch.payment.exception.PaymentException;
+import com.stitch.user.exception.UserException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -58,6 +60,15 @@ public class AppExceptionHandler {
     @ExceptionHandler(CartException.class)
     public ResponseEntity<Map<String, String>> handleCartException(CartException ex) {
         return new ResponseEntity<>(Map.of("error", ex.getMessage()), status(ex.getCode()));
+    }
+    @ExceptionHandler(UserException.class)
+    public ResponseEntity<Map<String, String>> handleUserException(UserException ex) {
+        return new ResponseEntity<>(Map.of("error", ex.getMessage()), status(ex.getCode()));
+    }
+
+    @ExceptionHandler(StitchException.class)
+    public ResponseEntity<Map<String, String>> handleStitchException(StitchException ex) {
+        return new ResponseEntity<>(Map.of("error", ex.getMessage()), BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

@@ -78,7 +78,7 @@ public class ProductServiceImpl implements ProductService {
 
             Optional<UserEntity> customerExist = userRepository.findByEmailAddress(email);
             if (customerExist.isEmpty()) {
-                throw new UserException("Vendor with : " + email + " does not exist");
+                throw new ProductException("Vendor with : " + email + " does not exist", 404);
             }
 
             UserEntity customer = customerExist.get();

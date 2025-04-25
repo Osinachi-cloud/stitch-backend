@@ -10,6 +10,7 @@ public final class Constants {
 
     public static final String FAILED = "FAILED";
     public static final String EMPTY = "";
+    public static final String NIGERIA = "NIGERIA";
 
     public static HttpStatus status(int code){
         return (switch (code) {

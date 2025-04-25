@@ -2,10 +2,13 @@ package com.stitch.user.model.entity;
 
 import com.stitch.commons.model.entity.BaseEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.envers.Audited;
 
-import javax.validation.constraints.*;
+
 
 @Entity
 @Getter

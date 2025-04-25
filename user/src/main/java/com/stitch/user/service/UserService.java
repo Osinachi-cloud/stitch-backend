@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserService {
 
 
-    CustomerDto createCustomer(CustomerRequest customerRequest) throws InterruptedException;
+    CustomerDto createCustomer(CustomerRequest customerRequest);
 
     CustomerDto updateCustomer(CustomerUpdateRequest customerRequest, String emailAddress);
 

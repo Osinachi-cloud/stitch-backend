@@ -1,5 +1,6 @@
 package com.stitch.user.model.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Data
@@ -18,7 +19,6 @@ public class CustomerRequest {
     private String profileImage;
     private String currency;
     private String roleName;
-    @NonNull
     private String username;
     private String shortBio;
 }

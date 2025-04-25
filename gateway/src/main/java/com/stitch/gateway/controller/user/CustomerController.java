@@ -1,12 +1,8 @@
 package com.stitch.gateway.controller.user;
 
 
-import com.stitch.commons.exception.StitchException;
 import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.commons.model.dto.Response;
-import com.stitch.gateway.model.request.LoginRequest;
-import com.stitch.gateway.model.response.LoginResponse;
-import com.stitch.gateway.security.model.Token;
 import com.stitch.gateway.security.model.Unsecured;
 import com.stitch.gateway.security.service.AuthenticationService;
 import com.stitch.user.model.dto.*;
@@ -14,20 +10,20 @@ import com.stitch.user.service.ContactVerificationService;
 import com.stitch.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.graphql.data.method.annotation.MutationMapping;
-import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.stitch.gateway.util.Constants.BASE_URL;
+import static org.springframework.http.HttpStatus.CREATED;
+
+
 @Slf4j
-@Controller
 @CrossOrigin(origins = "http://localhost:4200/login")
 @RequiredArgsConstructor
+@RestController
+@RequestMapping(BASE_URL)
 public class CustomerController {
 
     private final UserService userService;
@@ -35,137 +31,76 @@ public class CustomerController {
     private final ContactVerificationService verificationService;
 
 
-
     @Unsecured
-    @MutationMapping(value = "createCustomer")
-    public CustomerDto createCustomer(@Argument("customerRequest") CustomerRequest customerRequest) {
-        try {
-            return userService.createCustomer(customerRequest);
-        }
-        catch (StitchException | InterruptedException e) {
-            log.error("Error creating customer: {}" ,customerRequest, e);
-            throw new StitchException("Error: " + e.getMessage());
-        }
+    @PostMapping("/create-customer")
+    public ResponseEntity<CustomerDto> createCustomer(@RequestBody CustomerRequest customerRequest) {
+        return new ResponseEntity<>(userService.createCustomer(customerRequest), CREATED);
     }
 
     @Unsecured
-    @QueryMapping(value = "getUsers")
-    public PaginatedResponse<List<UserDto>> getUsers(@Argument("userFilterRequest") UserFilterRequest request) {
-        try {
-            return userService.fetchAllUsersBy(request);
-        }
-        catch (StitchException e) {
-            log.error("Error creating customer: {}" ,request, e);
-            throw new StitchException("Error: " + e.getMessage());
-        }
+    @GetMapping("/get-users")
+    public ResponseEntity<PaginatedResponse<List<UserDto>>> getUsers(@RequestBody UserFilterRequest request) {
+            return ResponseEntity.ok(userService.fetchAllUsersBy(request));
+
     }
 
-    @MutationMapping(value = "updateCustomer")
-    public CustomerDto updateCustomer(@Argument("customerRequest") CustomerUpdateRequest customerRequest,
-                                      @Argument("emailAddress") String emailAddress) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    @PutMapping("/update-customer")
+    public ResponseEntity<CustomerDto> updateCustomer(@RequestBody CustomerUpdateRequest customerRequest,
+                                      @RequestParam("emailAddress") String emailAddress) {
+            return ResponseEntity.ok(userService.updateCustomer(customerRequest, emailAddress));
 
-        try {
-            return userService.updateCustomer(customerRequest, emailAddress);
-        }
-        catch (Exception e) {
-            log.error("Error updating customer: {}" ,customerRequest, e);
-            throw new StitchException();
-        }
     }
 
-    @MutationMapping(value = "updateCustomerProfileImage")
-    public Response updateCustomerProfileImage(@Argument("profileImage") String profileImage,
-                                      @Argument("emailAddress") String emailAddress) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    @PostMapping(value = "/update-customer-profile-image")
+    public ResponseEntity<Response> updateCustomerProfileImage(@RequestParam("profileImage") String profileImage,
+                                               @RequestParam("emailAddress") String emailAddress) {
 
-            return userService.updateCustomerProfileImage(profileImage, emailAddress);
+        return ResponseEntity.ok(userService.updateCustomerProfileImage(profileImage, emailAddress));
     }
 
     @Unsecured
-    @MutationMapping(value = "requestPasswordReset")
-    public Response requestPasswordReset(@Argument("emailAddress") String emailAddress) {
-        return userService.requestPasswordReset(emailAddress);
+    @PostMapping("/request-password-reset")
+    public ResponseEntity<Response> requestPasswordReset(@RequestParam("emailAddress") String emailAddress) {
+        return ResponseEntity.ok(userService.requestPasswordReset(emailAddress));
     }
 
     @Unsecured
-    @MutationMapping(value = "resetPassword")
-    public Response resetPassword(@Argument("passwordResetRequest") PasswordResetRequest passwordResetRequest) {
-        return userService.resetPassword(passwordResetRequest);
+    @PostMapping("/reset-password")
+    public ResponseEntity<Response> resetPassword(@RequestBody PasswordResetRequest passwordResetRequest) {
+        return ResponseEntity.ok(userService.resetPassword(passwordResetRequest));
     }
 
     @Unsecured
-    @MutationMapping(value = "validateResetCode")
-    public Response validatePasswordResetCode(@Argument("resetCodeValidationRequest") PasswordResetRequest passwordResetRequest) {
-        return userService.validatePasswordResetCode(passwordResetRequest);
+    @PostMapping(value = "validate-reset-code")
+    public ResponseEntity<Response> validatePasswordResetCode(@RequestBody PasswordResetRequest passwordResetRequest) {
+        return ResponseEntity.ok(userService.validatePasswordResetCode(passwordResetRequest));
     }
 
-    @Unsecured
-    @MutationMapping(value = "customerLogin")
-    public LoginResponse customerLogin(@Argument("loginRequest") LoginRequest loginRequest) {
-        return authenticationService.authenticate(loginRequest);
+    @GetMapping(value = "/customer")
+    public ResponseEntity<CustomerDto> getCustomer(@RequestParam("customerId") String customerId) {
+        return ResponseEntity.ok(userService.getCustomer(customerId));
     }
 
-
-
-    @Unsecured
-    @MutationMapping(value = "requestToken")
-    public Token requestToken(@Argument("refreshToken") String refreshToken) {
-        return authenticationService.refreshAccessToken(refreshToken);
-    }
-
-
-    @QueryMapping(value = "customer")
-    public CustomerDto getCustomer(@Argument("customerId") String customerId) {
-        return userService.getCustomer(customerId);
-    }
-
-    @QueryMapping(value = "customerDetails")
-    public CustomerDto getCustomerByEmailAddress(@Argument("emailAddress") String emailAddress) {
-        return userService.getCustomerByEmail(emailAddress);
+    @GetMapping("/customer-details")
+    public ResponseEntity<CustomerDto> getCustomerByEmailAddress(@RequestParam("emailAddress") String emailAddress) {
+        return ResponseEntity.ok(userService.getCustomerByEmail(emailAddress));
     }
 
 
     @Unsecured
-    @MutationMapping(value = "verifyEmail")
-    public VerificationResponse verifyEmail(@Argument("emailAddress") String emailAddress) {
-        return verificationService.addEmailAddressForVerification(emailAddress);
+    @PostMapping(value = "verify-email")
+    public ResponseEntity<VerificationResponse> verifyEmail(@RequestParam("emailAddress") String emailAddress) {
+        return ResponseEntity.ok(verificationService.addEmailAddressForVerification(emailAddress));
     }
 
     @Unsecured
-    @MutationMapping(value = "validateEmailCode")
-    public VerificationResponse validateEmailCode(@Argument("verificationRequest") EmailVerificationRequest verificationRequest) {
+    @PostMapping(value = "validateEmailCode")
+    public VerificationResponse validateEmailCode(@RequestBody EmailVerificationRequest verificationRequest) {
         return verificationService.verifyEmailAddress(verificationRequest);
     }
 
-
-    @MutationMapping(value = "createPin")
-    public Response createPin(@Argument("pin") String pin) {
-        CustomerDto user = authenticationService.getAuthenticatedUser();
-        return userService.createPin(user.getUserId(), pin.trim());
-    }
-
-
-    @MutationMapping(value = "resetPinInitiateEmail")
-    public Response resetPinInitiateEmail(@Argument("phoneNumber") String phoneNumber) {
-        CustomerDto user = authenticationService.getAuthenticatedUser();
-        return userService.resetPinInitiateEmail(user.getUserId(), phoneNumber.trim());
-    }
-
-    @QueryMapping(value = "verifyResetPinCode")
-    public Response verifyResetPinCode(@Argument("code") String code) {
-        CustomerDto user = authenticationService.getAuthenticatedUser();
-        return userService.verifyResetPinCode(user.getUserId(), code.trim());
-    }
-
-    @MutationMapping(value = "resetPin")
-    public Response resetPin(@Argument("pin") String pin) {
-        CustomerDto user = authenticationService.getAuthenticatedUser();
-        return userService.resetPin(user.getUserId(), pin.trim());
-    }
-
-    @MutationMapping(value = "allowSaveCard")
-    public Response allowSaveCard(@Argument("savedCard") Boolean savedCard) {
+    @PostMapping(value = "allowSaveCard")
+    public Response allowSaveCard(@RequestParam("savedCard") Boolean savedCard) {
         CustomerDto user = authenticationService.getAuthenticatedUser();
         return userService.allowSaveCard(user.getUserId(), savedCard);
     }

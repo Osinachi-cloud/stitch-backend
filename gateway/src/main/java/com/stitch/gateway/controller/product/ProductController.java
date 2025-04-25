@@ -58,7 +58,7 @@ public class ProductController {
     }
 
     @Unsecured
-    @GetMapping(value = "get-product-by-id")
+    @GetMapping("/get-product-by-id")
     public ResponseEntity<ProductDto> getProductByProductId(@RequestParam(value = "productId") String productId) {
         return ResponseEntity.ok(productService.getProductByProductId(productId));
     }

@@ -1,5 +1,6 @@
 package com.stitch.commons.util;
 
+import com.stitch.commons.exception.StitchException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -26,6 +27,12 @@ public class SharedUtils {
         }catch (Exception e){
             log.error("Exception occurred while fetching logged in user ==> {}",e.getMessage());
             return Optional.empty();
+        }
+    }
+
+    public static void validateField(String value, String type) {
+        if (Objects.isNull(value) || value.trim().isEmpty()) {
+            throw new StitchException(String.format("%s is required", type));
         }
     }
 }
