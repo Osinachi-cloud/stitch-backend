@@ -16,13 +16,13 @@ import java.util.Date;
 @Component
 public class TokenUtils {
 
-    @Value("{security.token.access.secret-key}")
+    @Value("${security.token.access.secret-key}")
     private String accessTokenSecretKey;
 
     @Value("${security.token.access.expiry-length}")
     private long accessTokenExpiryInMilliseconds;
 
-    @Value("{security.token.refresh.secret-key}")
+    @Value("${security.token.refresh.secret-key}")
     private String refreshTokenSecretKey;
 
     @Value("${security.token.refresh.expiry-length}")

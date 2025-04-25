@@ -27,23 +27,12 @@
             <version>0.7.0</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-config</artifactId>
-            <version>5.7.11</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.28</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
-            <version>6.0.1</version>
-            <scope>compile</scope>
-        </dependency>
+
         <dependency>
             <groupId>com.stitch</groupId>
             <artifactId>user</artifactId>
@@ -62,16 +51,6 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-config</artifactId>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.graphql</groupId>-->
-<!--            <artifactId>spring-graphql</artifactId>-->
-<!--            <version>1.1.1</version>-->
-<!--            <scope>compile</scope>-->
-<!--        </dependency>-->
-        <dependency>
             <groupId>com.stitch</groupId>
             <artifactId>Order</artifactId>
             <version>1.0-SNAPSHOT</version>
@@ -84,6 +63,7 @@
 
     </dependencies>
     <build>
+        <finalName>stitch</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -25,7 +25,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Slf4j
 @ControllerAdvice
-public class AppExceptionHandler {
+public class GatewayCustomExceptionHandler {
 
 
     @ExceptionHandler

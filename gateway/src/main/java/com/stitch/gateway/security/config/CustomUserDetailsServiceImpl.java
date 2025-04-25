@@ -29,7 +29,7 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
         Optional<UserEntity> customer = customerRepository.findByEmailAddress(username);
         log.info(" email val {} :", customer);
 
-        if (!customer.isPresent()) {
+        if (customer.isEmpty()) {
             throw new UsernameNotFoundException(String.format("customer not found for email address=%s", username));
         }
 

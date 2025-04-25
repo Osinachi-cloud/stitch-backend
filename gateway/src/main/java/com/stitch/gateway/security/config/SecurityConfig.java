@@ -21,16 +21,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity()
 public class SecurityConfig {
     private final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
-
-    @Autowired
-    private TokenAuthenticationProvider tokenAuthenticationProvider;
 
     @Autowired
     private  TokenAuthenticationFilter tokenAuthenticationFilter;
@@ -39,10 +35,6 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    @Autowired
-    @Qualifier("handlerExceptionResolver")
-    private HandlerExceptionResolver exceptionResolver;
 
     @Autowired
     @Qualifier("customUserDetailsService")

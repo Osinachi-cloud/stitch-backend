@@ -62,12 +62,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             onSuccessfulAuthentication(user);
             return loginResponse;
         } catch (BadCredentialsException e) {
-            log.error("Bad login credentials: " + loginRequest.getEmailAddress(), e);
-            onFailedAuthentication(loginRequest.getEmailAddress(), e);
+            log.error("Bad login credentials for user : {} : {}", loginRequest.getEmailAddress(), e.getMessage());
+            onFailedAuthentication(loginRequest.getEmailAddress());
             throw new BadCredentialsException("Incorrect email address or password");
         } catch (AuthenticationException e) {
-            log.error("Authentication error for user: " + loginRequest.getEmailAddress(), e);
-            onFailedAuthentication(loginRequest.getEmailAddress(), e);
+            log.error("Authentication error for user: {} : {}", loginRequest.getEmailAddress(), e.getMessage());
+            onFailedAuthentication(loginRequest.getEmailAddress());
             if (e.getCause() != null) {
                 Throwable cause = e.getCause();
                 if (cause.getCause() != null) {
@@ -80,12 +80,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    private void onFailedAuthentication(String emailAddress, Throwable e) {
+    private void onFailedAuthentication(String emailAddress) {
         userService.updateLoginAttempts(emailAddress);
     }
 
     private void onSuccessfulAuthentication(CustomerDto user) {
-        log.debug("Successful authentication for user: " + user.getUserId());
+        log.debug("Successful authentication for user: {}", user.getUserId());
         userService.updateLastLogin(user);
     }
 
