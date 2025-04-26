@@ -24,6 +24,9 @@ import com.stitch.user.util.UserValidationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -31,8 +34,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.beans.PropertyDescriptor;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -68,7 +73,11 @@ public class UserServiceImpl implements UserService {
 
         log.info("Creating customer with request: {}", customerRequest);
         try {
-            System.out.println(userRepository.findLastChangeRevision(1L));
+            try {
+                System.out.println(userRepository.findLastChangeRevision(1L));
+            }catch (Exception e) {
+                log.error("Error ==> {}",e.getMessage());
+            }
 
             customerRequest.setCountry(NIGERIA);
 
@@ -88,7 +97,10 @@ public class UserServiceImpl implements UserService {
 
             log.info("customer obj : {}", customer);
 
-            Role role = roleService.findRoleByName(customerRequest.getRoleName());
+            Optional<Role> optionalRole = roleService.findRoleByName(customerRequest.getRoleName());
+
+            Role role;
+            role = optionalRole.orElseGet(() -> roleService.createUserRole(new RoleDto("ROLE_CUSTOMER", "ROLE CUSTOMER")));
             log.info("role obj 0 : {}", role);
 
 
@@ -121,6 +133,9 @@ public class UserServiceImpl implements UserService {
             throw e;
         } catch (Exception e) {
             log.error("An Exception occurred in customer creation :: {}", e.getMessage());
+            if (e.getMessage().contains("JDBC exception")){
+                throw new StitchException("Error inserting user in DB");
+            }
             throw new StitchException(e.getMessage());
         }
 
@@ -132,10 +147,7 @@ public class UserServiceImpl implements UserService {
         try {
             UserEntity customer = userRepository.findByEmailAddress(emailAddress)
                     .orElseThrow(() -> new UserException(ResponseStatus.EMAIL_ADDRESS_NOT_FOUND));
-
-            customer.setFirstName(customerRequest.getFirstName());
-            customer.setLastName(customerRequest.getLastName());
-            customer.setCountry(customerRequest.getCountry());
+            BeanUtils.copyProperties(customerRequest, customer, getNullPropertyNames(customerRequest));
             UserEntity newCustomer = userRepository.saveAndFlush(customer);
 
             log.info("Updated customer with ID: {}", newCustomer.getUserId());
@@ -148,6 +160,20 @@ public class UserServiceImpl implements UserService {
             throw new UserException("Failed to create customer", 500);
         }
 
+    }
+
+    private String[] getNullPropertyNames(Object source){
+        System.err.println("I entered in here ...");
+        final BeanWrapper wrapper = new BeanWrapperImpl(source);
+        PropertyDescriptor[] descriptors = wrapper.getPropertyDescriptors();
+        List<String> nullProperties = new ArrayList<>();
+        for (PropertyDescriptor descriptor: descriptors) {
+            Object propertyValue = wrapper.getPropertyValue(descriptor.getName());
+            if (propertyValue == null || (propertyValue instanceof String && ((String) propertyValue).trim().isEmpty())) {
+                nullProperties.add(descriptor.getName());
+            }
+        }
+        return nullProperties.toArray(new String[0]);
     }
 
     @Override
@@ -177,6 +203,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void validate(CustomerRequest customerRequest) {
+
         if (StringUtils.isBlank(customerRequest.getFirstName()) ||
                 StringUtils.isBlank(customerRequest.getLastName()) ||
                 StringUtils.isBlank(customerRequest.getEmailAddress()) ||
@@ -194,6 +221,7 @@ public class UserServiceImpl implements UserService {
             throw new UserException(ResponseStatus.INVALID_PHONE_NUMBER);
         }
         Optional<UserEntity> existingCustomer = userRepository.findByEmailAddress(customerRequest.getEmailAddress());
+
 
         Optional<UserEntity> existingCustomerByUsername = userRepository.findByUsername(customerRequest.getUsername());
 
@@ -448,18 +476,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PaginatedResponse<List<UserDto>> fetchAllUsersBy(UserFilterRequest request) {
+    public PaginatedResponse<List<UserDto>> fetchAllUsersBy(int page, int size, String firstName, String lastName, String email, Long roleId) {
 
-        log.info("Request to fetch all users : {}", request);
+        log.info("Request to fetch all users page: {}, size {}, firstName : {}, lastName : {}, email: {}, role Id : {} ", page,size,firstName,lastName, email,roleId);
         try {
             Specification<UserEntity> spec = Specification.where(
-                            UserSpecification.firstNameEqual(request.getFirstName()))
-                    .and(UserSpecification.lastNameEqual(request.getLastName()))
-                    .and(UserSpecification.roleIdEqual(request.getRoleId()))
-                    .and(UserSpecification.emailEqual(request.getEmailAddress()));
+                            UserSpecification.firstNameEqual(firstName))
+                    .and(UserSpecification.lastNameEqual(lastName))
+                    .and(UserSpecification.roleIdEqual(roleId))
+                    .and(UserSpecification.emailEqual(email));
 
-            Page<UserEntity> users = userRepository.findAll(spec, PageRequest.of(request.getPage(), request.getSize(), Sort.by(Sort.Direction.DESC, "dateCreated")));
+            Page<UserEntity> users = userRepository.findAll(spec, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "dateCreated")));
 
+            System.err.println("users "+users);
             PaginatedResponse<List<UserDto>> paginatedResponse = new PaginatedResponse<>();
             paginatedResponse.setPage(users.getNumber());
             paginatedResponse.setSize(users.getSize());

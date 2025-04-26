@@ -1,13 +1,11 @@
 package com.stitch.user.model.entity;
 
 import com.stitch.commons.model.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.envers.Audited;
 
 import java.util.Collection;
@@ -18,6 +16,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @Audited
 @Table(name = "permission")
+@ToString
 public class Permission extends BaseEntity {
 
     @Column(name = "name", unique=true, nullable = false)
@@ -29,7 +28,7 @@ public class Permission extends BaseEntity {
     @Column(name = "category", nullable = false)
     private String category;
 
-    @ManyToMany(mappedBy = "permissions")
+    @ManyToMany(mappedBy = "permissions",fetch = FetchType.EAGER)
     private Collection<Role> roles;
 
     public Permission(String name, String description, String category){

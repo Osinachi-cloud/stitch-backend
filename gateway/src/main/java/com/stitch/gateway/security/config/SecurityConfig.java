@@ -22,6 +22,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.stitch.gateway.util.Constants.ALLOWED_URLS;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity()
@@ -46,12 +48,7 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth->{
                     auth
-                            .requestMatchers(
-                                    "/altair",
-                                    "/actuator/health",
-                                    "/graphql",
-                                    "/vendor/**"
-                            )
+                            .requestMatchers(ALLOWED_URLS)
                             .permitAll()
                             .anyRequest().authenticated();
                 })

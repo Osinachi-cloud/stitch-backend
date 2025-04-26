@@ -39,8 +39,11 @@ public class CustomerController {
 
     @Unsecured
     @GetMapping("/get-users")
-    public ResponseEntity<PaginatedResponse<List<UserDto>>> getUsers(@RequestBody UserFilterRequest request) {
-            return ResponseEntity.ok(userService.fetchAllUsersBy(request));
+    public ResponseEntity<PaginatedResponse<List<UserDto>>> getUsers(
+        @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+         @RequestParam(required = false) String firstName, @RequestParam(required = false) String lastName,
+         @RequestParam(required = false) String email, @RequestParam(required = false) Long roleId) {
+            return ResponseEntity.ok(userService.fetchAllUsersBy(page, size, firstName, lastName, email, roleId));
 
     }
 

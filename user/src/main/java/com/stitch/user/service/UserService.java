@@ -44,5 +44,5 @@ public interface UserService {
 
     Response allowSaveCard(String customerId, Boolean saveCard);
 
-    PaginatedResponse<List<UserDto>> fetchAllUsersBy(UserFilterRequest request);
+    PaginatedResponse<List<UserDto>> fetchAllUsersBy(int page, int size, String firstName, String lastName, String email, Long roleId);
 }

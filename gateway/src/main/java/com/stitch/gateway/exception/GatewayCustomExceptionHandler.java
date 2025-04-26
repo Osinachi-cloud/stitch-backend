@@ -63,8 +63,15 @@ public class GatewayCustomExceptionHandler {
     }
     @ExceptionHandler(UserException.class)
     public ResponseEntity<Map<String, String>> handleUserException(UserException ex) {
-        return new ResponseEntity<>(Map.of("error", ex.getMessage()), status(ex.getCode()));
+        if (Objects.nonNull(ex.getStatus())){
+            return new ResponseEntity<>(Map.of("error", ex.getMessage()), ex.getStatus().getHttpStatus());
+        }
+        if (ex.getCode() >= 200){
+            return new ResponseEntity<>(Map.of("error", ex.getMessage()), status(ex.getCode()));
+        }
+        return new ResponseEntity<>(Map.of("error", ex.getMessage()), BAD_REQUEST);
     }
+
 
     @ExceptionHandler(StitchException.class)
     public ResponseEntity<Map<String, String>> handleStitchException(StitchException ex) {
