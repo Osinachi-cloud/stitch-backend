@@ -29,27 +29,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserService userService;
 
 
-    private final PasswordService passwordService;
-
     private final TokenUtils tokenUtils;
 
     public AuthenticationServiceImpl(AuthenticationManager authenticationManager, UserService userService, PasswordService passwordService, TokenUtils tokenUtils) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
-        this.passwordService = passwordService;
         this.tokenUtils = tokenUtils;
     }
 
     @Override
     public LoginResponse authenticate(LoginRequest loginRequest) {
-        System.out.println(loginRequest.getEmailAddress() + " " + loginRequest.getPassword());
-
-        boolean passwordMatch = passwordService.passwordMatch("A$123456", "$2a$10$S2O5dHSh41MHL7KvAPThm.VudYs0dvo19oFVGnBgvTiXiAjBbAVrK");
-
-        System.out.println(passwordMatch);
-        System.out.println("password matched");
-
-
+        log.info("Login request: {}", loginRequest);
 
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmailAddress(), loginRequest.getPassword()));

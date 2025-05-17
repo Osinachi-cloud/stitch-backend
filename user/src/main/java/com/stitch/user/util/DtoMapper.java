@@ -11,6 +11,9 @@ import org.springframework.beans.BeanUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+
+import static com.stitch.commons.util.Constants.getStr;
 
 @Slf4j
 public class DtoMapper {
@@ -28,10 +31,10 @@ public class DtoMapper {
     }
 
     public static RoleDto mapRoleToDto(Role role) {
-        log.info("role permission: {}", role.getPermissions());
         if (role == null) {
             throw new IllegalArgumentException("Role cannot be null");
         }
+        log.info("role permission: {}", role.getPermissions());
 
         RoleDto roleDto = new RoleDto();
         roleDto.setName(role.getName());
@@ -87,18 +90,16 @@ public class DtoMapper {
     public static List<String> mapToCollectionOfPermissionDtoLoginResponse(Collection<Permission> permissionCollection) {
         List<String> stringList = new ArrayList<>();
 
-//        log.info("permissionCollection : {}", permissionCollection);
-        for (Permission permission : permissionCollection) {
-            log.info("permission_names : {}", permission.getName());
-            if (permission != null) {
-//                PermissionDto permissionDto = new PermissionDto();
-//                permissionDto.setName(permission.getName());
-//                permissionDto.setId(permission.getId());
-//                permissionDto.setDescription(permission.getDescription());
-                String name = permission.getName();
-                stringList.add(name);
+        if (Objects.nonNull(permissionCollection) && !permissionCollection.isEmpty()) {
+            for (Permission permission : permissionCollection) {
+                log.info("permission_names : {}", permission.getName());
+                if (!getStr(permission.getName()).isEmpty()) {
+                    stringList.add(permission.getName());
+                }
             }
         }
+
+
         System.out.println("================= string list");
         System.out.println(stringList);
         return stringList;

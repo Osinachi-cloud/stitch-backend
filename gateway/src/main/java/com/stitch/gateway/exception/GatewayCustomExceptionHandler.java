@@ -10,6 +10,7 @@ import com.stitch.payment.exception.PaymentException;
 import com.stitch.user.exception.UserException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -22,6 +23,7 @@ import java.util.Objects;
 
 import static com.stitch.commons.util.Constants.status;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Slf4j
 @ControllerAdvice
@@ -42,6 +44,10 @@ public class GatewayCustomExceptionHandler {
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<Map<String, String>> handleApiExceptions(ApiException ex) {
         return new ResponseEntity<>(Map.of("error", ex.getMessage()), status(ex.getCode()));
+    }
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Map<String, String>> handleApiExceptions(BadCredentialsException ex) {
+        return new ResponseEntity<>(Map.of("error", ex.getMessage()), UNAUTHORIZED);
     }
     @ExceptionHandler(OrderException.class)
     public ResponseEntity<Map<String, String>> handleOrderException(OrderException ex) {
