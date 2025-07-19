@@ -17,6 +17,7 @@ import com.stitch.payment.model.entity.InitializeTransactionResponse;
 import com.stitch.payment.model.enums.TransactionStatus;
 import com.stitch.payment.service.PaymentService;
 import com.stitch.payment.service.TransactionService;
+import com.stitch.payment.util.EnvironmentProperties;
 import com.stitch.repository.ProductCartRepository;
 import com.stitch.repository.ProductOrderRepository;
 import com.stitch.service.ProductOrderService;
@@ -26,7 +27,6 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -50,18 +50,6 @@ import static com.stitch.commons.util.SharedUtils.getLoggedInUser;
 @Service
 public class PaymentServiceImpl implements PaymentService {
 
-    @Value("${paystack.secret-key}")
-    private String paystackSecretKey;
-
-    @Value("${paystack.initialize-payment-url}")
-    private String initializePaymentUrl;
-
-    @Value("${paystack.call-back-url}")
-    private String callBackURL;
-
-    @Value("${paystack.verification-url}")
-    private String paystackVerificationUrl;
-
 
     private final ProductOrderService productOrderService;
 
@@ -74,14 +62,16 @@ public class PaymentServiceImpl implements PaymentService {
     private final ProductCartRepository productCartRepository;
 
     private final UserRepository userRepository;
+    private final EnvironmentProperties properties;
 
-    public PaymentServiceImpl(ProductOrderService productOrderService, TransactionService transactionService, ProductOrderService orderService, ProductOrderRepository productOrderRepository, ProductCartRepository productCartRepository, UserRepository userRepository) {
+    public PaymentServiceImpl(ProductOrderService productOrderService, TransactionService transactionService, ProductOrderService orderService, ProductOrderRepository productOrderRepository, ProductCartRepository productCartRepository, UserRepository userRepository, EnvironmentProperties properties) {
         this.productOrderService = productOrderService;
         this.transactionService = transactionService;
         this.orderService = orderService;
         this.productOrderRepository = productOrderRepository;
         this.productCartRepository = productCartRepository;
         this.userRepository = userRepository;
+        this.properties = properties;
     }
 
     public void initializeOrder(InitializeTransactionRequest request) {
@@ -188,11 +178,11 @@ public class PaymentServiceImpl implements PaymentService {
     private HttpResponse callPayStackForPayment(StringEntity payStackPayload) {
         try {
             HttpClient client = HttpClientBuilder.create().build();
-            HttpPost post = new HttpPost(initializePaymentUrl);
+            HttpPost post = new HttpPost(properties.getInitializePaymentUrl());
             post.setEntity(payStackPayload);
             post.setEntity(payStackPayload);
             post.addHeader("Content-type", "application/json");
-            post.addHeader("Authorization", "Bearer " + paystackSecretKey);
+            post.addHeader("Authorization", "Bearer " + properties.getPaystackSecretKey());
             return client.execute(post);
         }catch (Exception e){
             log.error("POST call to Pay-stack for payment failed : {}", e.getMessage());
@@ -200,12 +190,12 @@ public class PaymentServiceImpl implements PaymentService {
         }
     }
 
-    private HttpResponse callPayStackForVerification(String reference) throws IOException {
+    private HttpResponse callPayStackForVerification(String reference) {
         try {
             HttpClient client = HttpClientBuilder.create().build();
-            HttpGet request = new HttpGet(paystackVerificationUrl + reference);
+            HttpGet request = new HttpGet(properties.getPaystackVerificationUrl() + reference);
             request.addHeader("Content-type", "application/json");
-            request.addHeader("Authorization", "Bearer " + paystackSecretKey);
+            request.addHeader("Authorization", "Bearer " + properties.getPaystackSecretKey());
             return client.execute(request);
         }catch (Exception e){
             log.error("GET call to Pay-stack for verification failed : {}", e.getMessage());
@@ -220,11 +210,9 @@ public class PaymentServiceImpl implements PaymentService {
         request.setReference(NumberUtils.generate(10));
         request.setChannel(request.getChannel());
         request.setTransaction_charge(2);
-        request.setCallback_url(callBackURL);
+        request.setCallback_url(properties.getCallBackURL());
         request.setAmount(request.getAmount().multiply(BigDecimal.valueOf(100)));
         return new StringEntity(gson.toJson(request));
-
-
     }
 
     @Override
