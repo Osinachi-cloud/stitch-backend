@@ -93,33 +93,38 @@ public class UserServiceImpl implements UserService {
             customer.setUsername(customerRequest.getUsername());
             customer.setPhoneNumber(customerRequest.getPhoneNumber());
             customer.setCountry(customerRequest.getCountry());
-            customer.setShortBio(getStr(customerRequest.getShortBio()));
+//            customer.setRole();
+
+//            customer.setShortBio(getStr(customerRequest.getShortBio()));
 
             log.info("customer obj : {}", customer);
+            customerRequest.setRoleName(customerRequest.isVendor() ? "ROLE_VENDOR" : "ROLE_CUSTOMER");
 
             Optional<Role> optionalRole = roleService.findRoleByName(customerRequest.getRoleName());
+            log.info("optionalRole obj : {}", optionalRole);
 
-            Role role;
-            role = optionalRole.orElseGet(() -> roleService.createUserRole(new RoleDto("ROLE_CUSTOMER", "ROLE CUSTOMER")));
-            log.info("role obj 0 : {}", role);
+            if(optionalRole.isPresent()){
+                Role role = optionalRole.get();
+                customer.setRole(role);
+            }
+//            role = optionalRole.orElseGet(() -> roleService.createUserRole(new RoleDto("ROLE_CUSTOMER", "ROLE CUSTOMER")));
+//            log.info("role obj 0 : {}", role);
 
-
-            customer.setRole(role);
             customer.setPassword(passwordService.encode(customerRequest.getPassword()));
             log.info("customer obj 1 : {}", customer);
 
-            if (Objects.nonNull(customerRequest.getProfileImage())) {
-                log.info("customer obj 2 : {}", customer);
-
-                byte[] imageBytes = Base64.decodeBase64(customerRequest.getProfileImage());
-                String base64EncodedImage = Base64.encodeBase64String(imageBytes);
-                customer.setProfileImage(base64EncodedImage);
-            }
-
-            if (customerRequest.getDevice() != null) {
-                log.info("customer obj 3 : {}", customer);
-                customer.setDevice(new Device(customerRequest.getDevice()));
-            }
+//            if (Objects.nonNull(customerRequest.getProfileImage())) {
+//                log.info("customer obj 2 : {}", customer);
+//
+//                byte[] imageBytes = Base64.decodeBase64(customerRequest.getProfileImage());
+//                String base64EncodedImage = Base64.encodeBase64String(imageBytes);
+//                customer.setProfileImage(base64EncodedImage);
+//            }
+//
+//            if (customerRequest.getDevice() != null) {
+//                log.info("customer obj 3 : {}", customer);
+//                customer.setDevice(new Device(customerRequest.getDevice()));
+//            }
 
             log.info("customer obj : {}", customer);
 
@@ -138,7 +143,6 @@ public class UserServiceImpl implements UserService {
             }
             throw new StitchException(e.getMessage());
         }
-
     }
 
     @Override
@@ -203,11 +207,12 @@ public class UserServiceImpl implements UserService {
     }
 
     private void validate(CustomerRequest customerRequest) {
+        log.info("customerRequest ===>: {}", customerRequest);
 
         if (StringUtils.isBlank(customerRequest.getFirstName()) ||
                 StringUtils.isBlank(customerRequest.getLastName()) ||
                 StringUtils.isBlank(customerRequest.getEmailAddress()) ||
-                StringUtils.isBlank(customerRequest.getPhoneNumber()) ||
+//                StringUtils.isBlank(customerRequest.getPhoneNumber()) ||
                 StringUtils.isBlank(customerRequest.getCountry()) ||
                 StringUtils.isBlank(customerRequest.getPassword())) {
             throw new UserException(ResponseStatus.EMPTY_FIELD_VALUES);
@@ -217,9 +222,9 @@ public class UserServiceImpl implements UserService {
             throw new UserException(ResponseStatus.INVALID_EMAIL_ADDRESS);
         }
 
-        if (!UserValidationUtils.isValidPhoneNumber(customerRequest.getPhoneNumber())) {
-            throw new UserException(ResponseStatus.INVALID_PHONE_NUMBER);
-        }
+//        if (!UserValidationUtils.isValidPhoneNumber(customerRequest.getPhoneNumber())) {
+//            throw new UserException(ResponseStatus.INVALID_PHONE_NUMBER);
+//        }
         Optional<UserEntity> existingCustomer = userRepository.findByEmailAddress(customerRequest.getEmailAddress());
 
 

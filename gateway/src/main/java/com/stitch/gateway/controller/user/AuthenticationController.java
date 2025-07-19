@@ -16,7 +16,7 @@ import static com.stitch.gateway.util.Constants.BASE_URL;
 
 @RestController
 @RequestMapping(BASE_URL)
-@CrossOrigin(origins = "http://localhost:4200/login")
+//@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class AuthenticationController {
 
@@ -40,7 +40,6 @@ public class AuthenticationController {
         CustomerDto user = authenticationService.getAuthenticatedUser();
         return userService.createPin(user.getUserId(), pin.trim());
     }
-
 
     @PostMapping("/reset-pin-initiate-email")
     public Response resetPinInitiateEmail(@RequestParam("phoneNumber") String phoneNumber) {

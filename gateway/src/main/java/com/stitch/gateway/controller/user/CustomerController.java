@@ -3,11 +3,14 @@ package com.stitch.gateway.controller.user;
 
 import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.commons.model.dto.Response;
+import com.stitch.gateway.model.request.ContactVerificationRequest;
 import com.stitch.gateway.security.model.Unsecured;
 import com.stitch.gateway.security.service.AuthenticationService;
 import com.stitch.user.model.dto.*;
+import com.stitch.user.model.entity.ContactVerification;
 import com.stitch.user.service.ContactVerificationService;
 import com.stitch.user.service.UserService;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +23,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 
 @Slf4j
-@CrossOrigin(origins = "http://localhost:4200/login")
+//@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(BASE_URL)
@@ -91,9 +94,10 @@ public class CustomerController {
 
 
     @Unsecured
-    @PostMapping(value = "verify-email")
-    public ResponseEntity<VerificationResponse> verifyEmail(@RequestParam("emailAddress") String emailAddress) {
-        return ResponseEntity.ok(verificationService.addEmailAddressForVerification(emailAddress));
+    @PostMapping(value = "/verify-email")
+    public ResponseEntity<VerificationResponse> verifyEmail(@RequestBody ContactVerificationRequest contactVerification) {
+        log.info("contactVerification ===>>>: {}", contactVerification);
+        return ResponseEntity.ok(verificationService.addEmailAddressForVerification(contactVerification.getEmailAddress()));
     }
 
     @Unsecured
@@ -108,3 +112,4 @@ public class CustomerController {
         return userService.allowSaveCard(user.getUserId(), savedCard);
     }
 }
+

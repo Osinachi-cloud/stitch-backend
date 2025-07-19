@@ -33,7 +33,7 @@ public class ContactVerificationServiceImpl implements ContactVerificationServic
 
     @Override
     public VerificationResponse addEmailAddressForVerification(final String emailAddress) throws ContactVerificationException {
-        log.debug("Adding email address [{}] for verification", emailAddress);
+        log.info("Adding email address [{}] for verification", emailAddress);
 
         if (!UserValidationUtils.isValidEmail(emailAddress)) {
             log.error("Failed to add email address [{}] due to invalid email address", emailAddress);

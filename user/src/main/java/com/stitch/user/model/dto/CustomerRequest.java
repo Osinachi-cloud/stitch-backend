@@ -21,4 +21,5 @@ public class CustomerRequest {
     private String roleName;
     private String username;
     private String shortBio;
+    private boolean isVendor;
 }

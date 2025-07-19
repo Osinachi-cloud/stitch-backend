@@ -14,38 +14,58 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
 
+//@Configuration
+//@EnableWebMvc
+//public class WebConfig implements WebMvcConfigurer {
+//
+//    @Value("${cors.allowed-credential}")
+//    private boolean allowedCredential;
+//
+//    @Value("${cors.allowed-origin}")
+//    private String allowedOrigin;
+//
+//    @Value("${cors.allowed-header}")
+//    private String allowedHeader;
+//
+//    @Value("${cors.allowed-method}")
+//    private String allowedMethod;
+//
+//    @Bean
+//    public CorsFilter corsFilter() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowedOrigins(Arrays.asList(allowedOrigin.split(",")));
+//        configuration.setAllowedMethods(Arrays.asList(allowedMethod.split(",")));
+//        configuration.setAllowedHeaders(Arrays.asList(allowedHeader.split(",")));
+//        configuration.setAllowCredentials(allowedCredential);
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return new CorsFilter(source);
+//    }
+//
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        registry.addResourceHandler("/vendor/altair/**")
+//                .addResourceLocations("classpath:/static/vendor/altair/");
+//    }
+//
+//}
+
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 @Configuration
-@EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
-    @Value("${cors.allowed-credential}")
-    private boolean allowedCredential;
-
-    @Value("${cors.allowed-origin}")
-    private String allowedOrigin;
-
-    @Value("${cors.allowed-header}")
-    private String allowedHeader;
-
-    @Value("${cors.allowed-method}")
-    private String allowedMethod;
-
-    @Bean
-    public CorsFilter corsFilter() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(allowedOrigin.split(",")));
-        configuration.setAllowedMethods(Arrays.asList(allowedMethod.split(",")));
-        configuration.setAllowedHeaders(Arrays.asList(allowedHeader.split(",")));
-        configuration.setAllowCredentials(allowedCredential);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return new CorsFilter(source);
-    }
-
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/vendor/altair/**")
-                .addResourceLocations("classpath:/static/vendor/altair/");
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:3000")
+//                .allowedOriginPatterns("*")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization")
+                .allowCredentials(true);
     }
-
 }
