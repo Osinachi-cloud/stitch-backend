@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
 //            customer.setShortBio(getStr(customerRequest.getShortBio()));
 
             log.info("customer obj : {}", customer);
-            customerRequest.setRoleName(customerRequest.isVendor() ? "ROLE_VENDOR" : "ROLE_CUSTOMER");
+            customerRequest.setRoleName(customerRequest.isVendor() ? "VENDOR" : "CUSTOMER");
 
             Optional<Role> optionalRole = roleService.findRoleByName(customerRequest.getRoleName());
             log.info("optionalRole obj : {}", optionalRole);

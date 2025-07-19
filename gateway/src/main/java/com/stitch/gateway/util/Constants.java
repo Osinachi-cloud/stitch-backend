@@ -15,6 +15,7 @@ public final class Constants {
             "/api/v1/create-customer",
             "/api/v1/get-users",
             "/api/v1/customer-login",
-            "/api/v1/verify-email"
+            "/api/v1/verify-email",
+//            "/api/v1/fetch-customer-orders"
     };
 }
