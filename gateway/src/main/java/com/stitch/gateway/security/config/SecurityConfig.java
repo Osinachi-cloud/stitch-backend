@@ -1,5 +1,6 @@
 package com.stitch.gateway.security.config;
 
+import com.stitch.gateway.util.EnvProperties;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +39,9 @@ public class SecurityConfig {
 
     @Autowired
     private  TokenAuthenticationFilter tokenAuthenticationFilter;
+
+    @Autowired
+    private EnvProperties props;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -93,10 +97,10 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"));
-        configuration.setAllowCredentials(true);
+        configuration.setAllowedOrigins(props.getAllowedOrigins());
+        configuration.setAllowedMethods(props.getAllowedMethods());
+        configuration.setAllowedHeaders(props.getAllowedHeaders());
+        configuration.setAllowCredentials(props.isAllowCORS());
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
