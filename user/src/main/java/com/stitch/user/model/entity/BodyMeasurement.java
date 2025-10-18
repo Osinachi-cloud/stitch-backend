@@ -8,8 +8,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.envers.Audited;
 
-
-
 @Entity
 @Getter
 @Setter
@@ -72,5 +70,4 @@ public class BodyMeasurement extends BaseEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "email_address", referencedColumnName = "email_address")
     private UserEntity userEntity;
-
 }

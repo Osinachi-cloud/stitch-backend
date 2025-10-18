@@ -14,9 +14,9 @@
         <module>commons</module>
         <module>user</module>
         <module>currency</module>
-        <module>Order</module>
+        <module>order</module>
         <module>product</module>
-        <module>Payment</module>
+        <module>payment</module>
     </modules>
 
     <parent>

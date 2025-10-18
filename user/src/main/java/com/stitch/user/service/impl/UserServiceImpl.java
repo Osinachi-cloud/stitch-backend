@@ -11,7 +11,6 @@ import com.stitch.user.exception.UserException;
 import com.stitch.user.exception.UserNotFoundException;
 import com.stitch.user.model.dto.*;
 import com.stitch.user.model.entity.ContactVerification;
-import com.stitch.user.model.entity.Device;
 import com.stitch.user.model.entity.Role;
 import com.stitch.user.model.entity.UserEntity;
 import com.stitch.user.repository.ContactVerificationRepository;
@@ -39,11 +38,9 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static com.stitch.commons.util.Constants.NIGERIA;
-import static com.stitch.commons.util.Constants.getStr;
 import static com.stitch.user.util.DtoMapper.convertUserListToDto;
 
 
@@ -89,7 +86,7 @@ public class UserServiceImpl implements UserService {
             customer.setUserId(NumberUtils.generate(9));
             customer.setFirstName(customerRequest.getFirstName());
             customer.setLastName(customerRequest.getLastName());
-            customer.setEmailAddress(customerRequest.getEmailAddress());
+            customer.setEmailAddress(customerRequest.getEmail());
             customer.setUsername(customerRequest.getUsername());
             customer.setPhoneNumber(customerRequest.getPhoneNumber());
             customer.setCountry(customerRequest.getCountry());
@@ -211,21 +208,21 @@ public class UserServiceImpl implements UserService {
 
         if (StringUtils.isBlank(customerRequest.getFirstName()) ||
                 StringUtils.isBlank(customerRequest.getLastName()) ||
-                StringUtils.isBlank(customerRequest.getEmailAddress()) ||
+                StringUtils.isBlank(customerRequest.getEmail()) ||
 //                StringUtils.isBlank(customerRequest.getPhoneNumber()) ||
                 StringUtils.isBlank(customerRequest.getCountry()) ||
                 StringUtils.isBlank(customerRequest.getPassword())) {
             throw new UserException(ResponseStatus.EMPTY_FIELD_VALUES);
         }
 
-        if (!UserValidationUtils.isValidEmail(customerRequest.getEmailAddress())) {
+        if (!UserValidationUtils.isValidEmail(customerRequest.getEmail())) {
             throw new UserException(ResponseStatus.INVALID_EMAIL_ADDRESS);
         }
 
 //        if (!UserValidationUtils.isValidPhoneNumber(customerRequest.getPhoneNumber())) {
 //            throw new UserException(ResponseStatus.INVALID_PHONE_NUMBER);
 //        }
-        Optional<UserEntity> existingCustomer = userRepository.findByEmailAddress(customerRequest.getEmailAddress());
+        Optional<UserEntity> existingCustomer = userRepository.findByEmailAddress(customerRequest.getEmail());
 
 
         Optional<UserEntity> existingCustomerByUsername = userRepository.findByUsername(customerRequest.getUsername());
@@ -239,7 +236,7 @@ public class UserServiceImpl implements UserService {
             throw new UserException(ResponseStatus.USERNAME_EXISTS);
         }
 
-        ContactVerification contactVerification = verificationRepository.findFirstByEmailAddressOrderByDateCreatedDesc(customerRequest.getEmailAddress());
+        ContactVerification contactVerification = verificationRepository.findFirstByEmailAddressOrderByDateCreatedDesc(customerRequest.getEmail());
 
         if (contactVerification == null || !contactVerification.isVerified()) {
             throw new UserException(ResponseStatus.EMAIL_ADDRESS_UNVERIFIED);

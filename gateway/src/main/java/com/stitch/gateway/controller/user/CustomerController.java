@@ -7,10 +7,8 @@ import com.stitch.gateway.model.request.ContactVerificationRequest;
 import com.stitch.gateway.security.model.Unsecured;
 import com.stitch.gateway.security.service.AuthenticationService;
 import com.stitch.user.model.dto.*;
-import com.stitch.user.model.entity.ContactVerification;
 import com.stitch.user.service.ContactVerificationService;
 import com.stitch.user.service.UserService;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -97,7 +95,7 @@ public class CustomerController {
     @PostMapping(value = "/verify-email")
     public ResponseEntity<VerificationResponse> verifyEmail(@RequestBody ContactVerificationRequest contactVerification) {
         log.info("contactVerification ===>>>: {}", contactVerification);
-        return ResponseEntity.ok(verificationService.addEmailAddressForVerification(contactVerification.getEmailAddress()));
+        return ResponseEntity.ok(verificationService.addEmailAddressForVerification(contactVerification.getEmail()));
     }
 
     @Unsecured

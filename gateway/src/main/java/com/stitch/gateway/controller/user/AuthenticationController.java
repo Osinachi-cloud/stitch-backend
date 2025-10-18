@@ -16,7 +16,7 @@ import static com.stitch.gateway.util.Constants.BASE_URL;
 
 @RestController
 @RequestMapping(BASE_URL)
-//@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:8090")
 @RequiredArgsConstructor
 public class AuthenticationController {
 
