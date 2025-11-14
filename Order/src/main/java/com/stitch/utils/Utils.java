@@ -60,6 +60,7 @@ public class Utils {
         productVariationDto.setSleeveType(productOrder.getSleeveType());
 
         productOrderDto.setProductVariationDto(productVariationDto);
+        log.info("productOrderDto ----------======>: {}", productOrderDto);
         return productOrderDto;
     }
 

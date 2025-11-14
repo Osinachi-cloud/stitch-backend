@@ -82,9 +82,10 @@ public class ProductCartServiceImpl implements ProductCartService {
     @Override
     public Response addToCart(String productId, ProductVariationRequest productVariationDto) {
         log.info("productId cart: {}", productId);
+        log.info("productVariationDto: {}", productVariationDto);
 
         try {
-            Map<String, Object> details = validateProductWithCustomer(productId);
+            Map<String, Object> details = validateProductWithCustomer(productId, productVariationDto);
             Product product = safeCast(details, "product", Product.class);
             UserEntity customer = safeCast(details, "customer", UserEntity.class);
             log.info("existing Product fetched : {} \n Existing user : {} ", product, customer);
@@ -114,6 +115,7 @@ public class ProductCartServiceImpl implements ProductCartService {
             ProductCart productCart = existingProductCart.get();
             productCart.setQuantity(productCart.getQuantity() + 1);
             productCart.setProductCategoryName(product.getCategory().name());
+            System.out.println("vendor :" + product.getVendor());
             productCart.setVendor(product.getVendor());
             productCart.setAmountByQuantity(product.getPrice().multiply(BigDecimal.valueOf(productCart.getQuantity())));
             productCartRepository.save(productCart);
@@ -123,6 +125,7 @@ public class ProductCartServiceImpl implements ProductCartService {
             ProductCart productCart = new ProductCart();
             productCart.setProductId(productId);
             productCart.setCustomer(customer);
+            productCart.setVendor(product.getVendor());
             productCart.setQuantity(1);
             productCart.setAmountByQuantity(product.getPrice().multiply(BigDecimal.valueOf(productCart.getQuantity())));
             productVariation.ifPresent(productVariationRequest -> setVariationDetails(productCart, productVariationRequest));
@@ -130,6 +133,31 @@ public class ProductCartServiceImpl implements ProductCartService {
         }
         return createDefaultSuccessResponse();
 
+    }
+    private Map<String, Object> validateProductWithCustomer(String productId, ProductVariationRequest productVariationDto) {
+        if(Objects.isNull(productVariationDto.getMeasurementTag()) || productVariationDto.getMeasurementTag().trim().isEmpty()) {
+            throw new CartException("Body measurement is required", 400);
+        }
+
+        if(Objects.isNull(productVariationDto.getSleeveType()) || productVariationDto.getSleeveType().trim().isEmpty()) {
+            throw new CartException("Sleeve Type is required", 400);
+        }
+
+        if(Objects.isNull(productVariationDto.getColor()) || productVariationDto.getColor().trim().isEmpty()) {
+            throw new CartException("Color is required", 400);
+        }
+
+        validateId(productId, "product Id");
+        String username = getLoggedInUser()
+                .orElseThrow(() -> new CartException("Failed to authenticate user", 403));
+
+        UserEntity customer = customerRepository.findByEmailAddress(username)
+                .orElseThrow(() -> new CartException("Customer with Id : " + username + " does not exist", 404));
+
+        Product product = productRepository.findByProductId(productId)
+                .orElseThrow(() -> new CartException("Product with Id : " + productId + " does not exist", 404));
+
+        return Map.of("customer", customer, "product", product);
     }
 
     private Map<String, Object> validateProductWithCustomer(String productId) {
@@ -212,7 +240,7 @@ public class ProductCartServiceImpl implements ProductCartService {
                     .orElseThrow(() -> new CartException("Customer with Id : " + username + " does not exist", 404));
             Pageable pageRequest = PageRequest.of(page, size);
 
-            log.info("customer id to get cart: {}", customer.getUserId());
+            log.info("customer id to get cart: {}, page :{}, size:{}", customer.getEmailAddress(), page,size);
             Page<ProductCart> productCart = productCartRepository.findProductCartByCustomer(customer, pageRequest);
 
             log.info("productCart content: {}", productCart.getContent());

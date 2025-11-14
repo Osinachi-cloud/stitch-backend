@@ -2,10 +2,12 @@ package com.stitch.model.dto;
 
 import com.stitch.model.ProductCategory;
 import com.stitch.model.enums.PublishStatus;
+import lombok.Builder;
 import lombok.Data;
 import java.util.List;
 
 @Data
+@Builder
 public class ProductFilterRequest {
 
     private int page;

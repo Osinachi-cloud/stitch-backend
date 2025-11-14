@@ -68,7 +68,7 @@ public class Product extends BaseEntity {
     @Column(name = "country")
     private String country;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "email_address", referencedColumnName = "email_address")
     private UserEntity vendor;
 

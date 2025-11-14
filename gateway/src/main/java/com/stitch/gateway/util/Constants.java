@@ -16,6 +16,11 @@ public final class Constants {
             "/api/v1/get-users",
             "/api/v1/customer-login",
             "/api/v1/verify-email",
+            "/api/v1/validateEmailCode",
+            "/api/v1/request-password-reset",
+            "/api/v1/validate-reset-code",
+            "/api/v1/get-all-products",
+            "/api/v1/get-product-by-id"
 //            "/api/v1/fetch-customer-orders"
     };
 }

@@ -42,7 +42,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         log.info("Login request: {}", loginRequest);
 
         try {
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmailAddress(), loginRequest.getPassword()));
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
             CustomerDto user = getUser(authentication);
 
             Token token = tokenUtils.generateAccessAndRefreshToken(user);
@@ -52,12 +52,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             onSuccessfulAuthentication(user);
             return loginResponse;
         } catch (BadCredentialsException e) {
-            log.error("Bad login credentials for user : {} : {}", loginRequest.getEmailAddress(), e.getMessage());
-            onFailedAuthentication(loginRequest.getEmailAddress());
+            log.error("Bad login credentials for user : {} : {}", loginRequest.getEmail(), e.getMessage());
+            onFailedAuthentication(loginRequest.getEmail());
             throw new BadCredentialsException("Incorrect email address or password");
         } catch (AuthenticationException e) {
-            log.error("Authentication error for user: {} : {}", loginRequest.getEmailAddress(), e.getMessage());
-            onFailedAuthentication(loginRequest.getEmailAddress());
+            log.error("Authentication error for user: {} : {}", loginRequest.getEmail(), e.getMessage());
+            onFailedAuthentication(loginRequest.getEmail());
             if (e.getCause() != null) {
                 Throwable cause = e.getCause();
                 if (cause.getCause() != null) {

@@ -271,7 +271,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    @PreAuthorize("hasAuthority('VENDOR')")
+//    @PreAuthorize("hasAuthority('VENDOR')")
     public PaginatedResponse<List<ProductDto>> fetchAllProductsBy(ProductFilterRequest request) {
         try {
             Specification<Product> spec = Specification.where(

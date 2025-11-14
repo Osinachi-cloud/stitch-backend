@@ -158,6 +158,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
             productOrderDto.setOrderId(NumberUtils.generate(10));
             log.info("productOrderDto 2: {}", productOrderDto);
             ProductOrder productOrder = convertRequestToModel(productOrderDto);
+//            log.info("productOrder: {}", productOrder);
             ProductOrder savedproductOrder = productOrderRepository.save(productOrder);
             return convertProductOrderToDto(savedproductOrder);
         } catch (Exception e) {

@@ -3,7 +3,7 @@ package com.stitch.gateway.controller.user;
 
 import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.commons.model.dto.Response;
-import com.stitch.gateway.model.request.ContactVerificationRequest;
+import com.stitch.gateway.model.request.EmailRequest;
 import com.stitch.gateway.security.model.Unsecured;
 import com.stitch.gateway.security.service.AuthenticationService;
 import com.stitch.user.model.dto.*;
@@ -64,8 +64,8 @@ public class CustomerController {
 
     @Unsecured
     @PostMapping("/request-password-reset")
-    public ResponseEntity<Response> requestPasswordReset(@RequestParam("emailAddress") String emailAddress) {
-        return ResponseEntity.ok(userService.requestPasswordReset(emailAddress));
+    public ResponseEntity<Response> requestPasswordReset(@RequestBody EmailRequest emailAddress) {
+        return ResponseEntity.ok(userService.requestPasswordReset(emailAddress.getEmail()));
     }
 
     @Unsecured
@@ -75,7 +75,7 @@ public class CustomerController {
     }
 
     @Unsecured
-    @PostMapping(value = "validate-reset-code")
+    @PostMapping(value = "/validate-reset-code")
     public ResponseEntity<Response> validatePasswordResetCode(@RequestBody PasswordResetRequest passwordResetRequest) {
         return ResponseEntity.ok(userService.validatePasswordResetCode(passwordResetRequest));
     }
@@ -93,13 +93,13 @@ public class CustomerController {
 
     @Unsecured
     @PostMapping(value = "/verify-email")
-    public ResponseEntity<VerificationResponse> verifyEmail(@RequestBody ContactVerificationRequest contactVerification) {
+    public ResponseEntity<VerificationResponse> verifyEmail(@RequestBody EmailRequest contactVerification) {
         log.info("contactVerification ===>>>: {}", contactVerification);
         return ResponseEntity.ok(verificationService.addEmailAddressForVerification(contactVerification.getEmail()));
     }
 
     @Unsecured
-    @PostMapping(value = "validateEmailCode")
+    @PostMapping(value = "/validateEmailCode")
     public VerificationResponse validateEmailCode(@RequestBody EmailVerificationRequest verificationRequest) {
         return verificationService.verifyEmailAddress(verificationRequest);
     }

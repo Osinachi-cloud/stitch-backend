@@ -1,6 +1,7 @@
 package com.stitch.payment.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.uuid.impl.TimeBasedGenerator;
 import com.google.gson.Gson;
 import com.stitch.commons.util.NumberUtils;
 import com.stitch.model.dto.ProductOrderDto;
@@ -44,6 +45,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 import static com.stitch.commons.util.SharedUtils.getLoggedInUser;
+import com.fasterxml.uuid.Generators;
+
 
 
 @Slf4j
@@ -74,6 +77,12 @@ public class PaymentServiceImpl implements PaymentService {
         this.properties = properties;
     }
 
+    private final static TimeBasedGenerator uuidGenerator = Generators.timeBasedGenerator();
+
+    public static String generateUuid() {
+        return uuidGenerator.generate().toString();
+    }
+
     public void initializeOrder(InitializeTransactionRequest request) {
 
         String email = getLoggedInUser()
@@ -88,11 +97,13 @@ public class PaymentServiceImpl implements PaymentService {
 
         String transactionId = request.getReference();
 
+        log.info(" transactionId ---->{}", transactionId);
+
         for (ProductCart productItem : productCart) {
             ProductOrderRequest productOrderRequest = new ProductOrderRequest();
             productOrderRequest.setStatus(OrderStatus.PROCESSING.toString());
             productOrderRequest.setEmailAddress(email);
-            productOrderRequest.setTransactionId(transactionId);
+            productOrderRequest.setTransactionId(generateUuid());
             productOrderRequest.setOrderId(NumberUtils.generate(10) + productItem.getProductId());
             productOrderRequest.setAmount(productItem.getAmountByQuantity());
             productOrderRequest.setProductId(productItem.getProductId());
@@ -107,12 +118,12 @@ public class PaymentServiceImpl implements PaymentService {
 
             ProductOrderDto productOrder = productOrderService.createProductOrder(productOrderRequest);
 
-            log.info("saved productOrder : {}", productOrder);
+            log.info("saved productOrder --->: {}", productOrder);
         }
     }
 
     @Override
-    @Transactional
+//    @Transactional
     public InitializeTransactionResponse initTransaction(InitializeTransactionRequest request) {
 
         log.info("Payment initialization request : {}", request);
@@ -128,6 +139,7 @@ public class PaymentServiceImpl implements PaymentService {
             log.info("initializeTransactionResponse : {}", initializeTransactionResponse);
             initializeOrder(request);
             if (initializeTransactionResponse.isStatus()) {
+                log.info("Transaction successfully completed : {}", initializeTransactionResponse);
                 paymentVerification(initializeTransactionResponse.getData().getReference());
             }
             return initializeTransactionResponse;
@@ -191,6 +203,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     private HttpResponse callPayStackForVerification(String reference) {
+        log.info("reference ===>>: {}", reference);
         try {
             HttpClient client = HttpClientBuilder.create().build();
             HttpGet request = new HttpGet(properties.getPaystackVerificationUrl() + reference);
@@ -205,9 +218,10 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     private StringEntity createPayStackPayload(InitializeTransactionRequest request, String email) throws UnsupportedEncodingException {
+        log.info("Paystack payload : {}, email:{}", request, email);
         Gson gson = new Gson();
         request.setEmail(email);
-        request.setReference(NumberUtils.generate(10));
+        request.setReference(generateUuid());
         request.setChannel(request.getChannel());
         request.setTransaction_charge(2);
         request.setCallback_url(properties.getCallBackURL());
@@ -216,7 +230,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    @Transactional
+//    @Transactional
     public PaymentVerificationResponse paymentVerification(String reference) {
         PaymentVerificationResponse paymentVerificationResponse;
 

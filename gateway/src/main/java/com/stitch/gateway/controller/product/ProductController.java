@@ -4,10 +4,12 @@ package com.stitch.gateway.controller.product;
 import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.commons.model.dto.Response;
 import com.stitch.gateway.security.model.Unsecured;
+import com.stitch.model.ProductCategory;
 import com.stitch.model.dto.ProductDto;
 import com.stitch.model.dto.ProductFilterRequest;
 import com.stitch.model.dto.ProductRequest;
 import com.stitch.model.dto.ProductUpdateRequest;
+import com.stitch.model.enums.PublishStatus;
 import com.stitch.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -85,16 +87,83 @@ public class ProductController {
         return ResponseEntity.ok(productService.fetchAllProductsByVendor(productFilterRequest));
     }
 
+//    @Unsecured
+//    @GetMapping("/get-all-products")
+//    public ResponseEntity<PaginatedResponse<List<ProductDto>>> getAllProductsBy(
+//            @RequestBody ProductFilterRequest productFilterRequest) {
+//        return ResponseEntity.ok(productService.fetchAllProductsBy(productFilterRequest));
+//    }
+
     @Unsecured
     @GetMapping("/get-all-products")
     public ResponseEntity<PaginatedResponse<List<ProductDto>>> getAllProductsBy(
-            @RequestBody ProductFilterRequest productFilterRequest) {
-        return ResponseEntity.ok(productService.fetchAllProductsBy(productFilterRequest));
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String code,
+            @RequestParam(required = false) Boolean outOfStock,
+            @RequestParam(required = false) List<ProductCategory> categories,
+            @RequestParam(required = false) String provider,
+            @RequestParam(required = false) String vendorId,
+            @RequestParam(required = false) PublishStatus publishStatus,
+            @RequestParam(required = false) String productId,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice) {
+
+        ProductFilterRequest filterRequest = ProductFilterRequest.builder()
+                .page(page)
+                .size(size)
+                .name(name)
+                .code(code)
+                .outOfStock(outOfStock != null ? outOfStock : false)
+                .categories(categories)
+                .provider(provider)
+                .vendorId(vendorId)
+                .publishStatus(publishStatus)
+                .productId(productId)
+                .minPrice(minPrice)
+                .maxPrice(maxPrice)
+                .build();
+
+        return ResponseEntity.ok(productService.fetchAllProductsBy(filterRequest));
     }
+
+//    @GetMapping("/get-all-products-by-auth")
+//    public ResponseEntity<PaginatedResponse<List<ProductDto>>> getAllProductsByAuth(
+//            @RequestBody ProductFilterRequest productFilterRequest) {
+//        return ResponseEntity.ok(productService.fetchAllProductsByAuth(productFilterRequest));
+//    }
 
     @GetMapping("/get-all-products-by-auth")
     public ResponseEntity<PaginatedResponse<List<ProductDto>>> getAllProductsByAuth(
-            @RequestBody ProductFilterRequest productFilterRequest) {
-        return ResponseEntity.ok(productService.fetchAllProductsByAuth(productFilterRequest));
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String code,
+            @RequestParam(required = false) Boolean outOfStock,
+            @RequestParam(required = false) List<ProductCategory> categories,
+            @RequestParam(required = false) String provider,
+            @RequestParam(required = false) String vendorId,
+            @RequestParam(required = false) PublishStatus publishStatus,
+            @RequestParam(required = false) String productId,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice) {
+
+        ProductFilterRequest filterRequest = ProductFilterRequest.builder()
+                .page(page)
+                .size(size)
+                .name(name)
+                .code(code)
+                .outOfStock(outOfStock != null ? outOfStock : false)
+                .categories(categories)
+                .provider(provider)
+                .vendorId(vendorId)
+                .publishStatus(publishStatus)
+                .productId(productId)
+                .minPrice(minPrice)
+                .maxPrice(maxPrice)
+                .build();
+        return ResponseEntity.ok(productService.fetchAllProductsByAuth(filterRequest));
     }
 }
+

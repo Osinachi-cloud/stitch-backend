@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.stitch.gateway.util.Constants.BASE_URL;
 
@@ -57,7 +58,10 @@ public class ProductCartController {
 
     @GetMapping("/get-cart")
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    public ResponseEntity<PaginatedResponse<List<CartDto>>> getCart(@RequestBody PageRequest pageRequest) {
+    public ResponseEntity<PaginatedResponse<List<CartDto>>> getCart(@RequestParam Optional<Integer> page, @RequestParam Optional<Integer> size) {
+        PageRequest pageRequest = new PageRequest();
+        pageRequest.setPage(page.orElse(0));
+        pageRequest.setSize(size.orElse(20));
         return ResponseEntity.ok(productCartService.getCart(pageRequest.getPage(), pageRequest.getSize()));
     }
 

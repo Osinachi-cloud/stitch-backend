@@ -79,17 +79,17 @@ public class ContactVerificationServiceImpl implements ContactVerificationServic
 
         log.debug("Verifying email address {}", verificationRequest);
 
-        final ContactVerification contactVerification = verificationRepository.findFirstByEmailAddressOrderByDateCreatedDesc(verificationRequest.getEmailAddress());
+        final ContactVerification contactVerification = verificationRepository.findFirstByEmailAddressOrderByDateCreatedDesc(verificationRequest.getEmail());
 
         if (contactVerification == null) {
-            log.error("Email address [{}] not found for verification", verificationRequest.getEmailAddress());
+            log.error("Email address [{}] not found for verification", verificationRequest.getEmail());
             throw new ContactVerificationException(ResponseStatus.EMAIL_ADDRESS_NOT_FOUND);
         }
 
         log.debug("Found contact verification: {}", contactVerification);
 
         if (!contactVerification.getVerificationCode().equals(verificationRequest.getVerificationCode())) {
-            log.error("Invalid verification code [{}] for email address {}", verificationRequest.getVerificationCode(), verificationRequest.getEmailAddress());
+            log.error("Invalid verification code [{}] for email address {}", verificationRequest.getVerificationCode(), verificationRequest.getEmail());
             throw new ContactVerificationException(ResponseStatus.INVALID_VERIFICATION_CODE);
         }
 
@@ -110,7 +110,7 @@ public class ContactVerificationServiceImpl implements ContactVerificationServic
             return verificationResponse;
 
         } catch (Exception e) {
-            log.error("Failed to verify email address [{}]", verificationRequest.getEmailAddress(), e);
+            log.error("Failed to verify email address [{}]", verificationRequest.getEmail(), e);
             throw new ContactVerificationException(ResponseStatus.PROCESSING_ERROR);
         }
     }
