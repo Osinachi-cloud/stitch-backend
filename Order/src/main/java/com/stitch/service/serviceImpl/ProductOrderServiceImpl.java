@@ -168,7 +168,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 
     }
 
-
     @Override
     public ProductOrderDto updateProductOrder(String orderId, String orderStatus) {
         log.info("Request to update Product order with Id : : {} to status :: {}", orderId, orderStatus);
@@ -237,7 +236,5 @@ public class ProductOrderServiceImpl implements ProductOrderService {
             log.error("An error occurred getting Vendor's order statistics : {}", e.getMessage());
             throw new OrderException("Failed to get Vendor's order statistics", 417);
         }
-
     }
-
 }

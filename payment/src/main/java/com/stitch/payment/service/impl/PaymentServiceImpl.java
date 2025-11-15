@@ -103,7 +103,7 @@ public class PaymentServiceImpl implements PaymentService {
             ProductOrderRequest productOrderRequest = new ProductOrderRequest();
             productOrderRequest.setStatus(OrderStatus.PROCESSING.toString());
             productOrderRequest.setEmailAddress(email);
-            productOrderRequest.setTransactionId(generateUuid());
+            productOrderRequest.setTransactionId(transactionId);
             productOrderRequest.setOrderId(NumberUtils.generate(10) + productItem.getProductId());
             productOrderRequest.setAmount(productItem.getAmountByQuantity());
             productOrderRequest.setProductId(productItem.getProductId());
