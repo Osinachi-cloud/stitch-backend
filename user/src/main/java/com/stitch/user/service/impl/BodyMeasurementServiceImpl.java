@@ -119,6 +119,4 @@ public class BodyMeasurementServiceImpl implements BodyMeasurementService {
             throw new UserException(e.getMessage(),400);
         }
     }
-
-
 }

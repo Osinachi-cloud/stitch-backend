@@ -184,7 +184,7 @@ public class PasswordServiceImpl implements PasswordService {
 
         validateNewPassword(passwordResetRequest.getPassword());
         validateNewPassword(passwordResetRequest.getConfirmPassword());
-        log.debug("Found password reset : {}", passwordReset);
+        log.debug("Found password  reset : {}", passwordReset);
 
         if (!passwordReset.getResetCode().equals(passwordResetRequest.getResetCode())) {
             log.error("Invalid password reset code [{}] for email address [{}]", passwordResetRequest.getResetCode(), passwordResetRequest.getEmail());
@@ -196,10 +196,17 @@ public class PasswordServiceImpl implements PasswordService {
             throw new PasswordException(ResponseStatus.EXPIRED_RESET_CODE);
         }
 
-
         try {
             passwordReset.setVerified(true);
-            passwordResetRepository.saveAndFlush(passwordReset);
+            passwordResetRepository.save(passwordReset);
+
+            Optional<UserEntity> optionalUser = customerRepository.findByEmailAddress(passwordResetRequest.getEmail());
+            if (optionalUser.isEmpty()) {
+                throw new UserNotFoundException(ResponseStatus.USER_NOT_FOUND);
+            }
+            UserEntity user = optionalUser.get();
+            user.setPassword(encode(passwordResetRequest.getPassword()));
+            customerRepository.save(user);
 
             log.info("Password reset code [{}] successfully verified", passwordReset.getEmailAddress());
             return ResponseUtils.createSuccessResponse("Successful");

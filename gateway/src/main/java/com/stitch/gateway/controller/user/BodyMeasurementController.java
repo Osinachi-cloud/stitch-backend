@@ -38,5 +38,4 @@ public class BodyMeasurementController {
         return ResponseEntity.ok(bodyMeasurementService.getBodyMeasurementByUser());
 
     }
-
 }

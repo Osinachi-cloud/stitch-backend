@@ -11,10 +11,13 @@ import com.stitch.user.service.ContactVerificationService;
 import com.stitch.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.stitch.gateway.util.Constants.BASE_URL;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -108,6 +111,14 @@ public class CustomerController {
     public Response allowSaveCard(@RequestParam("savedCard") Boolean savedCard) {
         CustomerDto user = authenticationService.getAuthenticatedUser();
         return userService.allowSaveCard(user.getUserId(), savedCard);
+    }
+
+    @Unsecured
+    @PostMapping("/addresses")
+    public ResponseEntity<List<AddressDto>> getAddresses(@RequestBody AddressDto addresses) {
+        System.out.println("11111111111111111111111111111" + addresses);
+
+       return ResponseEntity.ok(List.of(addresses));
     }
 }
 

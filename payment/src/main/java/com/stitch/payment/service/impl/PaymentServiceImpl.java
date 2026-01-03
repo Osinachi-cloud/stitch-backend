@@ -115,6 +115,7 @@ public class PaymentServiceImpl implements PaymentService {
             productOrderRequest.setColor(productItem.getColor());
             productOrderRequest.setSleeveType(productItem.getSleeveType());
             productOrderRequest.setBodyMeasurementTag(productItem.getMeasurementTag());
+            productOrderRequest.setProductName(productItem.getProductName());
 
             ProductOrderDto productOrder = productOrderService.createProductOrder(productOrderRequest);
 
@@ -177,8 +178,6 @@ public class PaymentServiceImpl implements PaymentService {
             throw new PaymentException("Call to PayStack was not successful: Status code : " + statusCode, 417);
 
         }
-
-
     }
 
     private InitializeTransactionResponse mapPaymentResponse(HttpResponse response) throws IOException {
@@ -214,7 +213,6 @@ public class PaymentServiceImpl implements PaymentService {
             log.error("GET call to Pay-stack for verification failed : {}", e.getMessage());
             throw new PaymentException("Failed to call Pay-stack for verification ", 400);
         }
-
     }
 
     private StringEntity createPayStackPayload(InitializeTransactionRequest request, String email) throws UnsupportedEncodingException {
@@ -261,7 +259,6 @@ public class PaymentServiceImpl implements PaymentService {
                     ProductOrder p = productOrderRepository.save(productOrder);
                     log.info("product order entity: {}", p);
                 }
-
             }
         } catch (PaymentException e) {
             throw new PaymentException(e.getMessage(), e.getCode());

@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 
 public class ProductOrderRequest {
 
+    private String productName;
+
     private String orderId;
 
     private String transactionId;

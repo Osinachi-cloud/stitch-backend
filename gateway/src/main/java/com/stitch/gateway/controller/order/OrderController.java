@@ -50,8 +50,7 @@ public class OrderController {
 
     }
 
-
-    @PostMapping("/update-order-status/{orderId}")
+    @PutMapping("/update-order-status/{orderId}")
     public ResponseEntity<ProductOrderDto> updateProductOrderStatus(@PathVariable String orderId, @RequestParam(required = false) String orderStatus) {
         return ResponseEntity.ok(productOrderService.updateProductOrder(orderId, orderStatus));
     }
@@ -62,13 +61,13 @@ public class OrderController {
     }
 
     @GetMapping("/order-stats-for-vendor")
-    @PreAuthorize("hasAuthority('VENDOR')")
+//    @PreAuthorize("hasAuthority('VENDOR')")
     public ResponseEntity<ProductOrderStatistics> getProductOrderStatsByVendor() {
         return ResponseEntity.ok(productOrderService.getVendorProductStat());
     }
 
     @GetMapping("/get-order-by-orderId")
-    @PreAuthorize("hasAuthority('VENDOR')")
+//    @PreAuthorize("hasAuthority('VENDOR')")
     public ResponseEntity<ProductOrderDto> getOrderByOrderId(@RequestParam("orderId") String orderId) {
         return ResponseEntity.ok(productOrderService.getOrderByOrderId(orderId));
 

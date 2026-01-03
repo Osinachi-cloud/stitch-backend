@@ -54,6 +54,7 @@ public class Utils {
         productOrderDto.setBodyMeasurementId(productOrder.getBodyMeasurementId());
         productOrderDto.setQuantity(productOrder.getQuantity());
         productOrderDto.setBodyMeasurementTag(productOrder.getBodyMeasurementTag());
+        productOrderDto.setProductName(productOrder.getProductName());
 
         ProductVariationDto productVariationDto = new ProductVariationDto();
         productVariationDto.setColor(productOrder.getColor());
