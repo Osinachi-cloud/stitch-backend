@@ -72,7 +72,7 @@ public class BodyMeasurementServiceImpl implements BodyMeasurementService {
                     .orElseThrow(() -> new UserException("Failed to authenticate user", 403));
             UserEntity customer = customerRepository.findByEmailAddress(username)
                     .orElseThrow(() -> new UserException("User with username : " + username + " does not exist", 404));
-            BodyMeasurement bodyMeasurement = bodyMeasurementRepository.findByUserEntity(customer)
+            BodyMeasurement bodyMeasurement = bodyMeasurementRepository.findBodyMeasurementByTagAndUserEntity(bodyMeasurementRequest.getTag(), customer)
                     .orElseThrow(() -> new UserException("Body measurement has not been created :" + username, 404));
 
             bodyMeasurement.setKnee(bodyMeasurementRequest.getKnee());
