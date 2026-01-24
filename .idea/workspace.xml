@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="37808e87-b2e1-4bea-b85c-58053f9412f8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/aws.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jpa-buddy.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderRequestDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderStatistics.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/entity/ProductOrder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/enums/OrderStatus.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/enums/PaymentMode.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/repository/ProductOrderRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/service/ProductOrderService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/service/serviceImpl/ProductOrderServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/utils/Utils.class" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="349" />
+    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 0
+}]]></component>
+  <component name="ProjectId" id="38hT6FEb8LbvjafSxvAfctHzDLv" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.stitch.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "SDKs",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="stitch" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.stitch.gateway.StitchGatewayApplication" />
+      <module name="gateway" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-26cb7f24e5b0-intellij.indexing.shared.core-IU-253.29346.240" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.29346.240" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="37808e87-b2e1-4bea-b85c-58053f9412f8" name="Changes" comment="" />
+      <created>1769250633102</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1769250633102</updated>
+      <workItem from="1769250634312" duration="1414000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
