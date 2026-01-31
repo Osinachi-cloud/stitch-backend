@@ -12,6 +12,8 @@ public interface UserService {
 
     CustomerDto createCustomer(CustomerRequest customerRequest);
 
+    UserEntity saveUserEntity(UserEntity userEntity);
+
     CustomerDto updateCustomer(CustomerUpdateRequest customerRequest, String emailAddress);
 
     Response updateCustomerProfileImage(String profileImage, String emailAddress);
@@ -19,6 +21,8 @@ public interface UserService {
     CustomerDto getCustomer(String customerId);
 
     UserEntity getCustomerEntity(String customerId);
+
+    UserEntity getCustomerEmail(String email);
 
     CustomerDto getCustomerByEmail(String emailAddress);
 

@@ -41,8 +41,8 @@ public class RoleServiceImpl implements RoleService {
         Permission permission = new Permission();
         permission.setName(roleDto.getName());
         permission.setDescription(roleDto.getDescription());
-        permission.setCategory("CUSTOMER");
-        Permission savedPermission = permissionRepository.saveAndFlush(permission);
+        permission.setCategory(roleDto.getName());
+        Permission savedPermission = permissionRepository.save(permission);
         System.err.println(savedPermission);
         permissions.add(savedPermission);
         role.setPermissions(permissions);

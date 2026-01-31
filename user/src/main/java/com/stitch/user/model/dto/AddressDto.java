@@ -21,5 +21,6 @@ public class AddressDto {
     private String apartmentNumber;
     private String postalCode;
     private String fullAddress;
+    private Long id;
 }
 

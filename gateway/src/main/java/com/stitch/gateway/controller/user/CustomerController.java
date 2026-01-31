@@ -7,12 +7,16 @@ import com.stitch.gateway.model.request.EmailRequest;
 import com.stitch.gateway.security.model.Unsecured;
 import com.stitch.gateway.security.service.AuthenticationService;
 import com.stitch.user.model.dto.*;
+import com.stitch.user.model.entity.Address;
+import com.stitch.user.model.entity.UserEntity;
+import com.stitch.user.service.AddressService;
 import com.stitch.user.service.ContactVerificationService;
 import com.stitch.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -20,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.stitch.gateway.util.Constants.BASE_URL;
+import static com.stitch.user.util.DtoMapper.mapAddressToDto;
 import static org.springframework.http.HttpStatus.CREATED;
 
 
@@ -33,6 +38,7 @@ public class CustomerController {
     private final UserService userService;
     private final AuthenticationService authenticationService;
     private final ContactVerificationService verificationService;
+    private final AddressService addressService;
 
 
     @Unsecured
@@ -115,10 +121,26 @@ public class CustomerController {
 
     @Unsecured
     @PostMapping("/addresses")
-    public ResponseEntity<List<AddressDto>> getAddresses(@RequestBody AddressDto addresses) {
-        System.out.println("11111111111111111111111111111" + addresses);
+    public ResponseEntity<AddressDto> getAddresses(@RequestBody AddressDto addressRequest) {
+        System.out.println("11111111111111111111111111111" + addressRequest);
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity user = userService.getCustomerEmail(userName);
+         Address address = addressService.createAddress(addressRequest);
+         user.setAddress(address);
+         UserEntity savedUser = userService.saveUserEntity(user);
+         log.info("saved user ==================> : {}", savedUser);
+       return ResponseEntity.ok(mapAddressToDto(address));
+    }
 
-       return ResponseEntity.ok(List.of(addresses));
+    @Unsecured
+    @GetMapping("/addresses")
+    public ResponseEntity<List<AddressDto>> getAddress() {
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity user = userService.getCustomerEmail(userName);
+        log.info("Get User Address ==================> : {}", user.getAddress());
+        List<AddressDto> addressDtoList = new ArrayList<>();
+        addressDtoList.add(mapAddressToDto(user.getAddress()));
+        return ResponseEntity.ok(addressDtoList);
     }
 }
 

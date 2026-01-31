@@ -6,12 +6,12 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.envers.Audited;
+//import org.hibernate.envers.Audited;
 
 @Entity
 @Getter
 @Setter
-@Audited
+//@Audited
 @Table(name = "body_measurement")
 @AllArgsConstructor
 @NoArgsConstructor
