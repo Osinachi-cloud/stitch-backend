@@ -103,6 +103,30 @@ public class ProductCartServiceImpl implements ProductCartService {
 
     }
 
+    @Override
+    public Response increaseToCart(String productId, int quantity, ProductVariationRequest productVariationDto) {
+        log.info("productId cart: {}", productId);
+        log.info("productVariationDto: {}", productVariationDto);
+
+        try {
+            Map<String, Object> details = validateProductWithCustomer(productId, productVariationDto);
+            Product product = safeCast(details, "product", Product.class);
+            UserEntity customer = safeCast(details, "customer", UserEntity.class);
+            log.info("existing Product fetched : {} \n Existing user : {} ", product, customer);
+            Optional<ProductCart> existingProductCart = productCartRepository.findByProductIdAndColorAndSleeveTypeAndMeasurementTag(productId, productVariationDto.getColor(),
+                    productVariationDto.getSleeveType(), productVariationDto.getMeasurementTag());
+            return increaseCartDetails(existingProductCart, product, customer, productId, Optional.of(productVariationDto), quantity);
+
+        } catch (CartException e) {
+            log.error("Custom error occurred while adding to cart with variation for product id : {} : {}", productId, e.getMessage());
+            throw new CartException(e.getMessage(), e.getCode());
+        } catch (Exception e) {
+            log.error("An exception occurred while adding product to cart with variation for id : {} : {}", productId, e.getMessage());
+            throw new CartException(e.getMessage(), 400);
+        }
+
+    }
+
     private void setVariationDetails(ProductCart productCart, ProductVariationRequest productVariationDto) {
         productCart.setColor(getStr(productVariationDto.getColor()));
         productCart.setSleeveType(getStr(productVariationDto.getSleeveType()));
@@ -127,6 +151,32 @@ public class ProductCartServiceImpl implements ProductCartService {
             productCart.setCustomer(customer);
             productCart.setVendor(product.getVendor());
             productCart.setQuantity(1);
+            productCart.setAmountByQuantity(product.getPrice().multiply(BigDecimal.valueOf(productCart.getQuantity())));
+            productVariation.ifPresent(productVariationRequest -> setVariationDetails(productCart, productVariationRequest));
+            productCartRepository.save(productCart);
+        }
+        return createDefaultSuccessResponse();
+
+    }
+
+    private Response increaseCartDetails(Optional<ProductCart> existingProductCart, Product product, UserEntity customer, String productId, Optional<ProductVariationRequest> productVariation, int quantity) {
+        if (existingProductCart.isPresent()) {
+            log.info("existing Product Cart is present : {}", existingProductCart.get());
+            ProductCart productCart = existingProductCart.get();
+            productCart.setQuantity(productCart.getQuantity() + 1);
+            productCart.setProductCategoryName(product.getCategory().name());
+            System.out.println("vendor :" + product.getVendor());
+            productCart.setVendor(product.getVendor());
+            productCart.setAmountByQuantity(product.getPrice().multiply(BigDecimal.valueOf(productCart.getQuantity())));
+            productCartRepository.save(productCart);
+
+        } else {
+            log.info("existing Product Cart is not present");
+            ProductCart productCart = new ProductCart();
+            productCart.setProductId(productId);
+            productCart.setCustomer(customer);
+            productCart.setVendor(product.getVendor());
+            productCart.setQuantity(quantity);
             productCart.setAmountByQuantity(product.getPrice().multiply(BigDecimal.valueOf(productCart.getQuantity())));
             productVariation.ifPresent(productVariationRequest -> setVariationDetails(productCart, productVariationRequest));
             productCartRepository.save(productCart);
