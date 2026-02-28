@@ -377,6 +377,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Response changePassword(ChangePasswordRequest passwordChangeRequest){
+        return passwordService.changePassword(passwordChangeRequest);
+    }
+
+
+    @Override
     public Response validatePasswordResetCode(PasswordResetRequest passwordResetRequest) {
         return passwordService.validatePasswordResetCode(passwordResetRequest);
 

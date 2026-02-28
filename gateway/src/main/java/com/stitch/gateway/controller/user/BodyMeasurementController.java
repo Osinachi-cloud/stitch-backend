@@ -25,11 +25,13 @@ public class BodyMeasurementController {
 
     @PostMapping("/create-body-measurement")
     public ResponseEntity<BodyMeasurementDto> createBodyMeasurement(@RequestBody BodyMeasurementRequest bodyMeasurementRequest) {
+        System.out.println("body ms c:" + bodyMeasurementRequest);
         return new ResponseEntity<>(bodyMeasurementService.createBodyMeasurement(bodyMeasurementRequest), CREATED);
     }
 
     @PutMapping("/update-body-measurement")
     public ResponseEntity<BodyMeasurementDto> updateBodyMeasurement(@RequestBody BodyMeasurementRequest bodyMeasurementRequest) {
+        System.out.println("body ms u:" + bodyMeasurementRequest);
         return ResponseEntity.ok(bodyMeasurementService.updateBodyMeasurement(bodyMeasurementRequest));
     }
 
@@ -37,5 +39,16 @@ public class BodyMeasurementController {
     public ResponseEntity<List<BodyMeasurementDto>> getBodyMeasurementByUser() {
         return ResponseEntity.ok(bodyMeasurementService.getBodyMeasurementByUser());
 
+    }
+
+    @GetMapping("/get-body-measurement-by-user-by-tag")
+    public ResponseEntity<BodyMeasurementDto> getBodyMeasurementByUserTag(@RequestParam String tag,  @RequestParam String email) {
+        return ResponseEntity.ok(bodyMeasurementService.getBodyMeasurementByUserTag(tag, email));
+    }
+
+    @DeleteMapping("/delete-body-measurement")
+    public ResponseEntity<Void> deleteBodyMeasurement(@RequestParam String tag, @RequestParam String email) {
+        bodyMeasurementService.deleteBodyMeasurement(tag, email);
+        return ResponseEntity.noContent().build();
     }
 }
