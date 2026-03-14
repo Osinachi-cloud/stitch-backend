@@ -20,18 +20,19 @@ import com.stitch.user.service.RoleService;
 import com.stitch.user.service.UserService;
 import com.stitch.user.specification.UserSpecification;
 import com.stitch.user.util.UserValidationUtils;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.beans.PropertyDescriptor;
 import java.time.Instant;
@@ -52,6 +53,9 @@ public class UserServiceImpl implements UserService {
     private final ContactVerificationRepository verificationRepository;
     private final PasswordService passwordService;
 
+    @Value("${use-test-code:true}")
+    private boolean useTestCode;
+
     private final RoleService roleService;
 
     public UserServiceImpl(
@@ -64,7 +68,7 @@ public class UserServiceImpl implements UserService {
         this.roleService = roleService;
     }
 
-    @Transactional
+//    @Transactional
     @Override
     public CustomerDto createCustomer(CustomerRequest customerRequest) {
 
@@ -142,6 +146,36 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @PostConstruct
+    private void initializeRole(){
+        RoleDto customerRole = new RoleDto();
+        customerRole.setName("CUSTOMER");
+        customerRole.setDescription("Customer role");
+
+        RoleDto vendorRole = new RoleDto();
+        vendorRole.setName("VENDOR");
+        vendorRole.setDescription("Vendor role");
+
+        Optional<Role> existingCustomerRole = roleService.findRoleByName("CUSTOMER");
+        if(existingCustomerRole.isEmpty()){
+            roleService.createUserRole(customerRole);
+        }else {
+            log.info("customer role already exists");
+        }
+
+        Optional<Role> existingVendorRole = roleService.findRoleByName("VENDOR");
+        if(existingVendorRole.isEmpty()){
+            roleService.createUserRole(vendorRole);
+        } else {
+            log.info("vendor role already exists");
+        }
+    }
+
+    @Override
+    public UserEntity saveUserEntity(UserEntity userEntity){
+        return userRepository.save(userEntity);
+    }
+
     @Override
     public CustomerDto updateCustomer(CustomerUpdateRequest customerRequest, String emailAddress) {
         log.info("Updating customer with email : {} ,  request: {}", emailAddress, customerRequest);
@@ -149,7 +183,7 @@ public class UserServiceImpl implements UserService {
             UserEntity customer = userRepository.findByEmailAddress(emailAddress)
                     .orElseThrow(() -> new UserException(ResponseStatus.EMAIL_ADDRESS_NOT_FOUND));
             BeanUtils.copyProperties(customerRequest, customer, getNullPropertyNames(customerRequest));
-            UserEntity newCustomer = userRepository.saveAndFlush(customer);
+            UserEntity newCustomer = userRepository.save(customer);
 
             log.info("Updated customer with ID: {}", newCustomer.getUserId());
             return new CustomerDto(newCustomer);
@@ -277,6 +311,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserEntity getCustomerEmail(String email) {
+        return userRepository.findByEmailAddress(email).orElseThrow(() -> new UserNotFoundException(String.format("Customer [%s] not found", email)));
+    }
+
+    @Override
     public CustomerDto getCustomerByEmail(String emailAddress) {
 
         System.out.println("got to login method" + emailAddress);
@@ -342,6 +381,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Response changePassword(ChangePasswordRequest passwordChangeRequest){
+        return passwordService.changePassword(passwordChangeRequest);
+    }
+
+
+    @Override
     public Response validatePasswordResetCode(PasswordResetRequest passwordResetRequest) {
         return passwordService.validatePasswordResetCode(passwordResetRequest);
 
@@ -404,7 +449,7 @@ public class UserServiceImpl implements UserService {
             final ContactVerification contactVerification = new ContactVerification();
             contactVerification.setEmailAddress(customer.getEmailAddress());
 
-            final String verificationCode = NumberUtils.generate(5);
+            final String verificationCode = useTestCode ? "12345": NumberUtils.generate(5);
 
             log.debug("Reset code [{}] for email address [{}]", verificationCode, contactVerification.getEmailAddress());
 

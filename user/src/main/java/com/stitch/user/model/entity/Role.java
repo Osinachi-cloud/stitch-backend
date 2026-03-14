@@ -5,14 +5,14 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.envers.Audited;
+//import org.hibernate.envers.Audited;
 
 import java.util.Collection;
 
 @Entity
 @Getter
 @Setter
-@Audited
+//@Audited
 @NoArgsConstructor
 public class Role extends BaseEntity {
 

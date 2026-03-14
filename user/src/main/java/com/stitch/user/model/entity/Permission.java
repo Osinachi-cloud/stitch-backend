@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.envers.Audited;
+//import org.hibernate.envers.Audited;
 
 import java.util.Collection;
 
@@ -14,7 +14,7 @@ import java.util.Collection;
 @Getter
 @Setter
 @NoArgsConstructor
-@Audited
+//@Audited
 @Table(name = "permission")
 @ToString
 public class Permission extends BaseEntity {

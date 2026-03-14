@@ -36,8 +36,13 @@ public class ProductCartController {
     }
 
     @PostMapping("/add-product-cart-with-variation")
-    public ResponseEntity<Response> addProductCartWithVariation(@RequestParam("productId") String productId, @RequestBody ProductVariationRequest productVariationDto) {
+    public ResponseEntity<Response> addProductCartWithVariation(@RequestParam("productId") String productId,  @RequestBody ProductVariationRequest productVariationDto) {
         return ResponseEntity.ok(productCartService.addToCart(productId, productVariationDto));
+    }
+
+    @PostMapping("/increase-cart-with-variation")
+    public ResponseEntity<Response> increaseProductCartWithVariation(@RequestParam("productId") String productId, @RequestParam("quantity") Optional<Integer> quantity,  @RequestBody ProductVariationRequest productVariationDto) {
+        return ResponseEntity.ok(productCartService.increaseToCart(productId, quantity.orElse(1), productVariationDto));
     }
 
     @PutMapping("/delete-product-cart")

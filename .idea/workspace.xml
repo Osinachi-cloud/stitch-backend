@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="37808e87-b2e1-4bea-b85c-58053f9412f8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Order/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/src/main/java/com/stitch/model/dto/ProductOrderDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/Order/src/main/java/com/stitch/model/dto/ProductOrderDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/src/main/java/com/stitch/model/dto/ProductOrderRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Order/src/main/java/com/stitch/model/dto/ProductOrderRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/src/main/java/com/stitch/model/entity/ProductOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/Order/src/main/java/com/stitch/model/entity/ProductOrder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/src/main/java/com/stitch/service/ProductOrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Order/src/main/java/com/stitch/service/ProductOrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/src/main/java/com/stitch/service/serviceImpl/ProductOrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Order/src/main/java/com/stitch/service/serviceImpl/ProductOrderServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/src/main/java/com/stitch/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/Order/src/main/java/com/stitch/utils/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderStatistics.class" beforeDir="false" afterPath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderStatistics.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/service/ProductOrderService.class" beforeDir="false" afterPath="$PROJECT_DIR$/Order/target/classes/com/stitch/service/ProductOrderService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/service/serviceImpl/ProductOrderServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/Order/target/classes/com/stitch/service/serviceImpl/ProductOrderServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/utils/Utils.class" beforeDir="false" afterPath="$PROJECT_DIR$/Order/target/classes/com/stitch/utils/Utils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Order/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/Order/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/Order/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/stitch.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/config/BillersConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/exception/BillingException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/exception/RetryableBillerApiException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/exception/StitchApiException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/AirtimeRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/BillPaymentRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/BillPaymentResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/CableTvRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/DataPlanContent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/DataPlanDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/DataPlanVariation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/DataRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/ElectricityMeterValidationRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/ElectricityPaymentResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/ElectricityRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/InternetEmailVerificationRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/MeterValidationResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/SmileEmailVerificationRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/SmileEmailVerificationResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/VTPasPostPaidDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/VTPassAirtimePaymentResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/VTPassAirtimeRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/VTPassCableInfoRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/VTPassCableInfoResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/VTPassCablePackageDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/VTPassCableTvPaymentRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/VTPassCableTvPaymentResponseDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/VTPassDataEmailVerificationResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/VTPassDataPaymentResponseDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/VTPassDataRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/VTPassDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/VTPassElectricityMeterValidation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/VTPassElectricityPaymentRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/VTPassElectricityPostPaidResponseDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/VTPassElectricityPrePaidResponseDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/VTPassElectricityResponseDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/VTPassMeterValidationDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/VTPassMultichoiceDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/VTPassRequeryRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/dtos/VTPassRequeryResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/model/entity/BillTransaction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/repository/BillerTransactionRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/service/BillerService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/service/BillerTransactionService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/service/impl/BillerServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/service/impl/BillerTransactionServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/service/impl/RequeryServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/utils/RequestIdGenerator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/vendor/vtpass/AirtimeVendor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/vendor/vtpass/CableTvVendor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/vendor/vtpass/DataVendor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/vendor/vtpass/ElectricityVendor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/vendor/vtpass/RequeryService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/vendor/vtpass/impl/VTPassAirtimeVendor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/vendor/vtpass/impl/VTPassCableTvVendor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/vendor/vtpass/impl/VTPassDataVendor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/java/com/stitch/vendor/vtpass/impl/VTPassElectricityVendor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/main/main5.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/test/java/com/gateway/AppTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/test/java/com/stitch/service/impl/BillerServiceImplTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/billers/src/test/test4.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/commons/src/main/java/com/stitch/commons/enums/ResponseStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/commons/src/main/java/com/stitch/commons/enums/ResponseStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commons/src/main/java/com/stitch/commons/model/dto/CountryDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/commons/src/main/java/com/stitch/commons/model/dto/CountryDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commons/src/main/java/com/stitch/commons/model/dto/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/commons/src/main/java/com/stitch/commons/model/dto/Response.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commons/src/main/java/com/stitch/commons/model/entity/BaseEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/commons/src/main/java/com/stitch/commons/model/entity/BaseEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/config/graphql/GraphQLConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/controller/BodyMeasurementController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/exception/AppExceptionHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/exception/CustomExceptionResolver.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/exception/SecurityException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/model/ErrorResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/model/LoginRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/model/LoginResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/security/config/GraphQLSecurityAspect.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/model/dto/PageRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/graphql/mutation.graphqls" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/graphql/query.graphqls" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/config/EmailConfigProperties.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/config/NotificationConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/config/ThymeleafConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/exception/NotificationException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/model/Email.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/model/InAppNotification.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/model/PushNotification.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/model/dto/ExpoPushRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/model/dto/InAppNotificationRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/model/dto/InAppNotificationResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/model/dto/InAppNotificationStatsResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/model/dto/PushRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/model/dto/ReceiptBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/model/enums/MessageSeverity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/repository/InAppNotificationRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/repository/PushNotificationRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/service/InAppNotificationService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/service/MailerService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/service/NotificationService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/service/PushNotificationService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/service/impl/AwsMailerServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/service/impl/InAppNotificationServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/service/impl/NotificationServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/service/impl/PushNotificationImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/src/main/java/com/stitch/notification/test" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/config/EmailConfigProperties.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/config/NotificationConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/config/ThymeleafConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/exception/NotificationException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/model/Email$EmailBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/model/Email.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/model/InAppNotification$InAppNotificationBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/model/InAppNotification.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/model/PushNotification$PushNotificationBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/model/PushNotification.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/model/dto/ExpoPushRequest$Data$DataBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/model/dto/ExpoPushRequest$Data.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/model/dto/ExpoPushRequest$ExpoPushRequestBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/model/dto/ExpoPushRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/model/dto/InAppNotificationRequest$InAppNotificationRequestBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/model/dto/InAppNotificationRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/model/dto/InAppNotificationResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/model/dto/InAppNotificationStatsResponse$InAppNotificationStatsResponseBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/model/dto/InAppNotificationStatsResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/model/dto/PushRequest$PushRequestBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/model/dto/PushRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/model/dto/ReceiptBuilder$ReceiptBuilderBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/model/dto/ReceiptBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/model/enums/MessageSeverity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/repository/InAppNotificationRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/repository/PushNotificationRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/service/InAppNotificationService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/service/MailerService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/service/NotificationService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/service/PushNotificationService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/service/impl/AwsMailerServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/service/impl/InAppNotificationServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification/target/classes/com/stitch/notification/service/impl/PushNotificationImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payment/src/main/java/com/stitch/payment/exception/PaymentFailedException.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="349" />
+    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="38hT6FEb8LbvjafSxvAfctHzDLv" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.stitch.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="stitch" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.stitch.gateway.StitchGatewayApplication" />
+      <module name="gateway" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-26cb7f24e5b0-intellij.indexing.shared.core-IU-253.29346.240" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.29346.240" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="37808e87-b2e1-4bea-b85c-58053f9412f8" name="Changes" comment="" />
+      <created>1769250633102</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1769250633102</updated>
+      <workItem from="1769250634312" duration="1414000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

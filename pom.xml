@@ -45,10 +45,17 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-envers</artifactId>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.projectlombok</groupId>-->
+<!--            <artifactId>lombok</artifactId>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <version>1.18.36</version>  <!-- Add the latest version -->
+            <scope>provided</scope>      <!-- Change this from optional to scope -->
+            <!-- <optional>true</optional> -->  <!-- You can remove this line -->
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -81,6 +88,13 @@
         </dependency>
 
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.36</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.fasterxml.uuid</groupId>
             <artifactId>java-uuid-generator</artifactId>
             <version>4.0.1</version>
@@ -93,9 +107,20 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>3.11.0</version>  <!-- Make sure this is at least 3.5, 3.11 is current -->
+                    <configuration>
+                        <source>17</source>  <!-- your Java version -->
+<!--                        <target>17/target>  &lt;!&ndash; your Java version &ndash;&gt;-->
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>1.18.36</version>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
     </build>
-
 </project>

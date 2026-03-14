@@ -9,4 +9,7 @@ public interface BodyMeasurementService {
     BodyMeasurementDto createBodyMeasurement(BodyMeasurementRequest bodyMeasurementRequest);
     BodyMeasurementDto updateBodyMeasurement(BodyMeasurementRequest bodyMeasurementRequest);
     List<BodyMeasurementDto> getBodyMeasurementByUser();
+    void deleteBodyMeasurement(String tag, String email);
+
+    BodyMeasurementDto getBodyMeasurementByUserTag(String tag, String email);
 }

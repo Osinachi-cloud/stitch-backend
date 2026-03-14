@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.stitch.gateway.util.Constants.BASE_URL;
 
@@ -32,7 +33,10 @@ public class ProductLikeController {
     }
 
     @GetMapping("/get-all-product-likes")
-    public ResponseEntity<PaginatedResponse<List<ProductDto>>> getAllProductLikes(@RequestBody PageRequest pageRequest) {
+    public ResponseEntity<PaginatedResponse<List<ProductDto>>> getAllProductLikes(@RequestParam Optional<Integer> page, @RequestParam Optional<Integer> size) {
+        PageRequest pageRequest = new PageRequest();
+        pageRequest.setPage(page.orElse(0));
+        pageRequest.setSize(size.orElse(5));
         return ResponseEntity.ok(productLikeService.getAllLikes(pageRequest.getPage(), pageRequest.getSize()));
     }
 

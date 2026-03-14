@@ -13,6 +13,8 @@ public interface ProductCartService {
     Response addToCart(String productId);
     Response addToCart(String productId, ProductVariationRequest productVariationDto);
 
+    Response increaseToCart(String productId, int quantity, ProductVariationRequest productVariationDto);
+
     Response removeOrReduceFromCart(String productId, ProductVariationRequest productVariationDto);
 
     Response removeProductFromCart(String productId, ProductVariationRequest productVariationDto);

@@ -1,10 +1,7 @@
 package com.stitch.user.util;
 
 import com.stitch.user.model.dto.*;
-import com.stitch.user.model.entity.BodyMeasurement;
-import com.stitch.user.model.entity.Permission;
-import com.stitch.user.model.entity.Role;
-import com.stitch.user.model.entity.UserEntity;
+import com.stitch.user.model.entity.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 
@@ -119,5 +116,32 @@ public class DtoMapper {
            return  userDto;
         }).toList();
 
+    }
+
+    public static AddressDto mapAddressToDto(Address address){
+        AddressDto addressDto = new AddressDto();
+        addressDto.setCity(address.getCity());
+        addressDto.setCountry(address.getCountry());
+        addressDto.setFullAddress(address.getFullAddress());
+        addressDto.setState(address.getState());
+        addressDto.setStreet(address.getStreet());
+        addressDto.setApartmentNumber(address.getApartmentNumber());
+        addressDto.setHouseNumber(address.getHouseNumber());
+        addressDto.setPostalCode(address.getPostalCode());
+        addressDto.setId(address.getId());
+        return addressDto;
+    }
+
+    public static Address mapAddressDtoToAddress(AddressDto addressDto){
+        Address address = new Address();
+        address.setCity(addressDto.getCity());
+        address.setCountry(addressDto.getCountry());
+        address.setFullAddress(addressDto.getFullAddress());
+        address.setState(addressDto.getState());
+        address.setStreet(addressDto.getStreet());
+        address.setApartmentNumber(addressDto.getApartmentNumber());
+        address.setHouseNumber(addressDto.getHouseNumber());
+        address.setPostalCode(addressDto.getPostalCode());
+        return address;
     }
 }

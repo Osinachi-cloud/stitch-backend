@@ -12,6 +12,8 @@ public interface UserService {
 
     CustomerDto createCustomer(CustomerRequest customerRequest);
 
+    UserEntity saveUserEntity(UserEntity userEntity);
+
     CustomerDto updateCustomer(CustomerUpdateRequest customerRequest, String emailAddress);
 
     Response updateCustomerProfileImage(String profileImage, String emailAddress);
@@ -19,6 +21,8 @@ public interface UserService {
     CustomerDto getCustomer(String customerId);
 
     UserEntity getCustomerEntity(String customerId);
+
+    UserEntity getCustomerEmail(String email);
 
     CustomerDto getCustomerByEmail(String emailAddress);
 
@@ -45,4 +49,6 @@ public interface UserService {
     Response allowSaveCard(String customerId, Boolean saveCard);
 
     PaginatedResponse<List<UserDto>> fetchAllUsersBy(int page, int size, String firstName, String lastName, String email, Long roleId);
+
+    Response changePassword(ChangePasswordRequest passwordChangeRequest);
 }

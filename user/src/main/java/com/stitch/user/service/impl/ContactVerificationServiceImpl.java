@@ -11,6 +11,7 @@ import com.stitch.user.repository.UserRepository;
 import com.stitch.user.service.ContactVerificationService;
 import com.stitch.user.util.UserValidationUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -22,6 +23,9 @@ public class ContactVerificationServiceImpl implements ContactVerificationServic
 
     private final ContactVerificationRepository verificationRepository;
     private final UserRepository customerRepository;
+
+    @Value("${use-test-code:true}")
+    private boolean useTestCode;
 
     public ContactVerificationServiceImpl(
             ContactVerificationRepository verificationRepository,
@@ -51,7 +55,7 @@ public class ContactVerificationServiceImpl implements ContactVerificationServic
             final ContactVerification contactVerification = new ContactVerification();
             contactVerification.setEmailAddress(emailAddress);
 
-            final String verificationCode = NumberUtils.generate(5);
+            final String verificationCode = useTestCode ? "12345": NumberUtils.generate(5);
 
             log.debug("Verification code [{}] for email address [{}]", verificationCode, contactVerification.getEmailAddress());
 
@@ -59,7 +63,7 @@ public class ContactVerificationServiceImpl implements ContactVerificationServic
             contactVerification.setGeneratedOn(Instant.now());
 
             contactVerification.setExpiredOn(Instant.now().plus(15, ChronoUnit.MINUTES));
-            verificationRepository.saveAndFlush(contactVerification);
+            verificationRepository.save(contactVerification);
 
             VerificationResponse verificationResponse = new VerificationResponse();
             verificationResponse.setCode(0);

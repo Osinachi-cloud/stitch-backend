@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="stitch">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Order/target/stitch.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
