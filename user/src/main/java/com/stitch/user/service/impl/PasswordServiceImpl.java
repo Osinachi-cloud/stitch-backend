@@ -17,6 +17,7 @@ import com.stitch.user.service.PasswordService;
 import com.stitch.user.util.UserValidationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,8 @@ public class PasswordServiceImpl implements PasswordService {
     private final PasswordResetRepository passwordResetRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Value("${use-test-code:true}")
+    private boolean useTestCode;
 
     public PasswordServiceImpl(
             UserRepository customerRepository,
@@ -68,13 +71,13 @@ public class PasswordServiceImpl implements PasswordService {
             PasswordReset passwordReset = new PasswordReset();
             passwordReset.setEmailAddress(emailAddress);
 
-            String resetCode = NumberUtils.generate(5);
+            String resetCode = useTestCode? "12345": NumberUtils.generate(5);
 
             passwordReset.setResetCode(resetCode);
             passwordReset.setGeneratedOn(Instant.now());
 
             passwordReset.setExpiredOn(Instant.now().plus(15, ChronoUnit.MINUTES));
-            passwordResetRepository.saveAndFlush(passwordReset);
+            passwordResetRepository.save(passwordReset);
 
             log.info("Customer [{}] has requested a password reset process and reset code sent to email [{}]", customer.getUserId(), customer.getEmailAddress());
             return ResponseUtils.createSuccessResponse("Password reset code sent to email");

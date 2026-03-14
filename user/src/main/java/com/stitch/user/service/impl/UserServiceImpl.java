@@ -27,6 +27,7 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -51,6 +52,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ContactVerificationRepository verificationRepository;
     private final PasswordService passwordService;
+
+    @Value("${use-test-code:true}")
+    private boolean useTestCode;
 
     private final RoleService roleService;
 
@@ -445,7 +449,7 @@ public class UserServiceImpl implements UserService {
             final ContactVerification contactVerification = new ContactVerification();
             contactVerification.setEmailAddress(customer.getEmailAddress());
 
-            final String verificationCode = NumberUtils.generate(5);
+            final String verificationCode = useTestCode ? "12345": NumberUtils.generate(5);
 
             log.debug("Reset code [{}] for email address [{}]", verificationCode, contactVerification.getEmailAddress());
 
