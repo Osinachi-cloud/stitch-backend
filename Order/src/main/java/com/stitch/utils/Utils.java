@@ -8,12 +8,18 @@ import com.stitch.model.enums.OrderStatus;
 import com.stitch.user.model.dto.BodyMeasurementDto;
 import com.stitch.user.model.entity.BodyMeasurement;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 public class Utils {
@@ -48,12 +54,14 @@ public class Utils {
         productOrderDto.setBodyMeasurementId(productOrder.getBodyMeasurementId());
         productOrderDto.setQuantity(productOrder.getQuantity());
         productOrderDto.setBodyMeasurementTag(productOrder.getBodyMeasurementTag());
+        productOrderDto.setProductName(productOrder.getProductName());
 
         ProductVariationDto productVariationDto = new ProductVariationDto();
         productVariationDto.setColor(productOrder.getColor());
         productVariationDto.setSleeveType(productOrder.getSleeveType());
 
         productOrderDto.setProductVariationDto(productVariationDto);
+        log.info("productOrderDto ----------======>: {}", productOrderDto);
         return productOrderDto;
     }
 

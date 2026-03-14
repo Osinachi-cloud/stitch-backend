@@ -1,95 +1,78 @@
 package com.stitch.gateway.controller.productcart;
 
-import com.stitch.commons.exception.StitchException;
 import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.commons.model.dto.Response;
 import com.stitch.model.dto.CartDto;
-import com.stitch.model.dto.PageRequest;
+import com.stitch.gateway.model.dto.PageRequest;
 import com.stitch.model.dto.ProductVariationRequest;
-import com.stitch.payment.service.PaymentService;
 import com.stitch.service.ProductCartService;
-import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.graphql.data.method.annotation.MutationMapping;
-import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.stereotype.Controller;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-@Controller
+import static com.stitch.gateway.util.Constants.BASE_URL;
+
+@Slf4j
+@RestController
+@RequestMapping(BASE_URL)
 public class ProductCartController {
     private final ProductCartService productCartService;
-    private final PaymentService paymentService;
 
-    public ProductCartController(ProductCartService productCartService, PaymentService paymentService) {
+
+    public ProductCartController(ProductCartService productCartService) {
         this.productCartService = productCartService;
-        this.paymentService = paymentService;
     }
 
-    @MutationMapping(value = "addProductCart")
-    public Response addProductCart(@Argument("productId") String productId){
-        try {
-            return productCartService.addToCart(productId);
-        }catch (StitchException e){
-            throw new StitchException(e.getMessage());
-        }
+    @PostMapping("/add-to-cart")
+    public ResponseEntity<Response> addProductCart(@RequestParam("productId") String productId) {
+        return ResponseEntity.ok(productCartService.addToCart(productId));
     }
 
-    @MutationMapping(value = "addProductCartWithVariation")
-    public Response addProductCartWithVariation(@Argument("productId") String productId, @Argument("productVariation") ProductVariationRequest productVariationDto){
-        try {
-            return productCartService.addToCart(productId, productVariationDto);
-        }catch (StitchException e){
-            throw new StitchException(e.getMessage());
-        }
+    @PostMapping("/add-product-cart-with-variation")
+    public ResponseEntity<Response> addProductCartWithVariation(@RequestParam("productId") String productId,  @RequestBody ProductVariationRequest productVariationDto) {
+        return ResponseEntity.ok(productCartService.addToCart(productId, productVariationDto));
     }
 
-    @MutationMapping(value = "deleteProductCart")
-    public Response deleteProductCart(@Argument("productId")String productId, @Argument("productVariation") ProductVariationRequest productVariationDto){
-        try {
-            return productCartService.removeOrReduceFromCart(productId, productVariationDto);
-//            return productCartService.removeProductFromCart(productId, productVariationDto);
-        }catch (StitchException e){
-            throw new StitchException(e.getMessage());
-        }
+    @PostMapping("/increase-cart-with-variation")
+    public ResponseEntity<Response> increaseProductCartWithVariation(@RequestParam("productId") String productId, @RequestParam("quantity") Optional<Integer> quantity,  @RequestBody ProductVariationRequest productVariationDto) {
+        return ResponseEntity.ok(productCartService.increaseToCart(productId, quantity.orElse(1), productVariationDto));
     }
 
-    @MutationMapping(value = "removeEntireProductFromCart")
-    public Response removeEntireProductFromCart(@Argument("productId")String productId, @Argument("productVariation") ProductVariationRequest productVariationDto){
-        try {
-            return productCartService.removeProductFromCart(productId, productVariationDto);
-        }catch (StitchException e){
-            throw new StitchException(e.getMessage());
-        }
+    @PutMapping("/delete-product-cart")
+    public ResponseEntity<Response> deleteProductCart(@RequestParam(value = "productId", required = false) String productId, @RequestBody ProductVariationRequest productVariationDto) {
+        return ResponseEntity.ok(productCartService.removeOrReduceFromCart(productId, productVariationDto));
     }
 
-    @MutationMapping(value = "clearCart")
-    public Response clearCart(){
-        try {
-            return productCartService.clearCart();
-        }catch (StitchException e){
-            throw new StitchException(e.getMessage());
-        }
+    @DeleteMapping("/remove-all-product-from-cart")
+    public ResponseEntity<Response> removeEntireProductFromCart(@RequestParam("productId") String productId, @RequestBody ProductVariationRequest productVariationDto) {
+        return ResponseEntity.ok(productCartService.removeProductFromCart(productId, productVariationDto));
     }
 
-    @QueryMapping(value = "getCart")
-    public PaginatedResponse<List<CartDto>> getCart(@Argument("pageRequest") PageRequest pageRequest){
-        try {
-            return productCartService.getCart(pageRequest.getPage(), pageRequest.getSize());
-        }catch (StitchException e){
-            throw new StitchException(e.getMessage());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    @PutMapping("/clear-cart")
+    public ResponseEntity<Response> clearCart() {
+        return ResponseEntity.ok(productCartService.clearCart());
+
     }
 
-    @QueryMapping(value = "sumAmountByQuantityByCustomerId")
-    public BigDecimal sumAmountByQuantityByCustomerId(){
-        try {
-            return productCartService.sumAmountByQuantityByCustomerId();
-        }catch (StitchException e){
-            throw new StitchException(e.getMessage());
-        }
+    @GetMapping("/get-cart")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    public ResponseEntity<PaginatedResponse<List<CartDto>>> getCart(@RequestParam Optional<Integer> page, @RequestParam Optional<Integer> size) {
+        PageRequest pageRequest = new PageRequest();
+        pageRequest.setPage(page.orElse(0));
+        pageRequest.setSize(size.orElse(20));
+        return ResponseEntity.ok(productCartService.getCart(pageRequest.getPage(), pageRequest.getSize()));
+    }
+
+    @GetMapping("/sum-amount-by-quantity-by-customerId")
+    public ResponseEntity<Map<String, BigDecimal>> sumAmountByQuantityByCustomerId() {
+        return ResponseEntity.ok(productCartService.sumAmountByQuantityByCustomerId());
     }
 
 }

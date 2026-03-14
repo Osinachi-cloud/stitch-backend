@@ -11,6 +11,7 @@ import com.stitch.user.repository.UserRepository;
 import com.stitch.user.service.ContactVerificationService;
 import com.stitch.user.util.UserValidationUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -23,6 +24,9 @@ public class ContactVerificationServiceImpl implements ContactVerificationServic
     private final ContactVerificationRepository verificationRepository;
     private final UserRepository customerRepository;
 
+    @Value("${use-test-code:true}")
+    private boolean useTestCode;
+
     public ContactVerificationServiceImpl(
             ContactVerificationRepository verificationRepository,
             UserRepository customerRepository
@@ -33,7 +37,7 @@ public class ContactVerificationServiceImpl implements ContactVerificationServic
 
     @Override
     public VerificationResponse addEmailAddressForVerification(final String emailAddress) throws ContactVerificationException {
-        log.debug("Adding email address [{}] for verification", emailAddress);
+        log.info("Adding email address [{}] for verification", emailAddress);
 
         if (!UserValidationUtils.isValidEmail(emailAddress)) {
             log.error("Failed to add email address [{}] due to invalid email address", emailAddress);
@@ -51,7 +55,7 @@ public class ContactVerificationServiceImpl implements ContactVerificationServic
             final ContactVerification contactVerification = new ContactVerification();
             contactVerification.setEmailAddress(emailAddress);
 
-            final String verificationCode = NumberUtils.generate(5);
+            final String verificationCode = useTestCode ? "12345": NumberUtils.generate(5);
 
             log.debug("Verification code [{}] for email address [{}]", verificationCode, contactVerification.getEmailAddress());
 
@@ -59,7 +63,7 @@ public class ContactVerificationServiceImpl implements ContactVerificationServic
             contactVerification.setGeneratedOn(Instant.now());
 
             contactVerification.setExpiredOn(Instant.now().plus(15, ChronoUnit.MINUTES));
-            verificationRepository.saveAndFlush(contactVerification);
+            verificationRepository.save(contactVerification);
 
             VerificationResponse verificationResponse = new VerificationResponse();
             verificationResponse.setCode(0);
@@ -79,17 +83,17 @@ public class ContactVerificationServiceImpl implements ContactVerificationServic
 
         log.debug("Verifying email address {}", verificationRequest);
 
-        final ContactVerification contactVerification = verificationRepository.findFirstByEmailAddressOrderByDateCreatedDesc(verificationRequest.getEmailAddress());
+        final ContactVerification contactVerification = verificationRepository.findFirstByEmailAddressOrderByDateCreatedDesc(verificationRequest.getEmail());
 
         if (contactVerification == null) {
-            log.error("Email address [{}] not found for verification", verificationRequest.getEmailAddress());
+            log.error("Email address [{}] not found for verification", verificationRequest.getEmail());
             throw new ContactVerificationException(ResponseStatus.EMAIL_ADDRESS_NOT_FOUND);
         }
 
         log.debug("Found contact verification: {}", contactVerification);
 
         if (!contactVerification.getVerificationCode().equals(verificationRequest.getVerificationCode())) {
-            log.error("Invalid verification code [{}] for email address {}", verificationRequest.getVerificationCode(), verificationRequest.getEmailAddress());
+            log.error("Invalid verification code [{}] for email address {}", verificationRequest.getVerificationCode(), verificationRequest.getEmail());
             throw new ContactVerificationException(ResponseStatus.INVALID_VERIFICATION_CODE);
         }
 
@@ -110,7 +114,7 @@ public class ContactVerificationServiceImpl implements ContactVerificationServic
             return verificationResponse;
 
         } catch (Exception e) {
-            log.error("Failed to verify email address [{}]", verificationRequest.getEmailAddress(), e);
+            log.error("Failed to verify email address [{}]", verificationRequest.getEmail(), e);
             throw new ContactVerificationException(ResponseStatus.PROCESSING_ERROR);
         }
     }

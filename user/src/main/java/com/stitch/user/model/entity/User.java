@@ -5,12 +5,12 @@ import com.stitch.commons.model.entity.BaseEntity;
 import lombok.Data;
 
 import jakarta.persistence.*;
-import org.hibernate.envers.Audited;
+//import org.hibernate.envers.Audited;
 
 import java.time.Instant;
 
 @Data
-@Audited
+//@Audited
 @MappedSuperclass
 public abstract class User  extends BaseEntity {
 

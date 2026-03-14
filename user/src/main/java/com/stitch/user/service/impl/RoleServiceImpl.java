@@ -4,6 +4,7 @@ import com.stitch.user.exception.UserException;
 import com.stitch.user.model.dto.RoleDto;
 import com.stitch.user.model.entity.Permission;
 import com.stitch.user.model.entity.Role;
+import com.stitch.user.repository.PermissionRepository;
 import com.stitch.user.repository.RoleRepository;
 import com.stitch.user.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
+import static com.stitch.commons.util.Constants.getStr;
 import static com.stitch.user.util.DtoMapper.mapRoleToDto;
 
 
@@ -21,13 +23,15 @@ import static com.stitch.user.util.DtoMapper.mapRoleToDto;
 public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
+    private final PermissionRepository permissionRepository;
 
-    public RoleServiceImpl(RoleRepository roleRepository) {
+    public RoleServiceImpl(RoleRepository roleRepository, PermissionRepository permissionRepository) {
         this.roleRepository = roleRepository;
+        this.permissionRepository = permissionRepository;
     }
 
     @Override
-    public RoleDto createUserRole(RoleDto roleDto){
+    public Role createUserRole(RoleDto roleDto){
         log.debug("Creating customer with request: {}", roleDto);
         Role role = new Role();
         role.setName(roleDto.getName());
@@ -36,26 +40,25 @@ public class RoleServiceImpl implements RoleService {
         Collection<Permission> permissions = new ArrayList<>();
         Permission permission = new Permission();
         permission.setName(roleDto.getName());
-        permissions.add(permission);
+        permission.setDescription(roleDto.getDescription());
+        permission.setCategory(roleDto.getName());
+        Permission savedPermission = permissionRepository.save(permission);
+        System.err.println(savedPermission);
+        permissions.add(savedPermission);
         role.setPermissions(permissions);
 
-        return mapRoleToDto(role);
+        return roleRepository.save(role);
+
+//        return mapRoleToDto(role);
     }
 
     @Override
-    public Role findRoleByName(String name){
+    public Optional<Role> findRoleByName(String name){
         System.out.println("in find role method");
 
-        Optional<Role> optionalRole = roleRepository.findRoleByName(name);
-        System.out.println("in find role method 2");
+        return roleRepository.findRoleByName(getStr(name));
 
-        if(optionalRole.isPresent()){
-            System.out.println("Role is found now");
-            log.info("optionalRole : {}", optionalRole.get());
-            return optionalRole.get();
-        }else {
-            throw new UserException("Role not found");
-        }
+
 
     }
 }

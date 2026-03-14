@@ -1,130 +1,169 @@
 package com.stitch.gateway.controller.product;
 
 
-import com.stitch.commons.exception.StitchException;
 import com.stitch.commons.model.dto.PaginatedResponse;
 import com.stitch.commons.model.dto.Response;
 import com.stitch.gateway.security.model.Unsecured;
+import com.stitch.model.ProductCategory;
 import com.stitch.model.dto.ProductDto;
 import com.stitch.model.dto.ProductFilterRequest;
 import com.stitch.model.dto.ProductRequest;
 import com.stitch.model.dto.ProductUpdateRequest;
+import com.stitch.model.enums.PublishStatus;
 import com.stitch.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.graphql.data.method.annotation.MutationMapping;
-import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 
-import java.util.Collection;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+
+import static com.stitch.gateway.util.Constants.BASE_URL;
+import static org.springframework.http.HttpStatus.CREATED;
 
 @Slf4j
-@Controller
+@RestController
+@RequestMapping(BASE_URL)
 public class ProductController {
 
     private final ProductService productService;
+
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
-    @MutationMapping(value = "createProduct")
-    public ProductDto createProduct(@Argument("productRequest")ProductRequest productRequest){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        log.info("Authorities: {}", authorities);
+    @PostMapping("/create-product")
+    @PreAuthorize("hasAuthority('VENDOR')")
+    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductRequest productRequest) {
+        return new ResponseEntity<>(productService.createProduct(productRequest), CREATED);
 
-        try {
-            return productService.createProduct(productRequest);
-        }catch (StitchException e){
-            throw new StitchException(e.getMessage());
-        }
     }
 
-    @MutationMapping(value = "togglePublishProduct")
-    public boolean togglePublishProduct(@Argument("productId")String productId){
-        try {
-            return productService.togglePublishProduct(productId);
-        }catch (StitchException e){
-            throw new StitchException(e.getMessage());
-        }
+    @PatchMapping("/toggle-publish-product")
+    @PreAuthorize("hasAuthority('VENDOR')")
+    public ResponseEntity<Map<String, Boolean>> togglePublishProduct(@RequestParam(value = "productId") String productId) {
+        return ResponseEntity.ok(Map.of("response", productService.togglePublishProduct(productId)));
     }
 
-    @MutationMapping(value = "updateProduct")
-    public ProductDto updateProduct(@Argument("productUpdateRequest") ProductUpdateRequest productRequest, @Argument("productId") String productId){
-        try {
-            return productService.updateProduct(productRequest, productId);
-        }catch (StitchException e){
-            throw new StitchException(e.getMessage());
-        }
+    @PutMapping("/update-product/{productId}")
+    public ResponseEntity<ProductDto> updateProduct(@RequestBody() ProductUpdateRequest productRequest, @PathVariable("productId") String productId) {
+        return ResponseEntity.ok(productService.updateProduct(productRequest, productId));
     }
 
-    @MutationMapping(value = "deleteProduct")
-    public void deleteProduct(@Argument("productId") String productId){
-        try {
-             productService.deleteProduct(productId);
-        }catch (StitchException e){
-            throw new StitchException(e.getMessage());
-        }
+    @DeleteMapping("/delete-product/{productId}")
+    @PreAuthorize("hasAuthority('VENDOR')")
+    public ResponseEntity<Map<String, String>> deleteProduct(@PathVariable(value = "productId") String productId) {
+        return ResponseEntity.ok(productService.deleteProduct(productId));
     }
 
     @Unsecured
-    @QueryMapping(value = "getProductByProductId")
-    public ProductDto getProductByProductId(@Argument("productId") String productId){
-        try {
-            return productService.getProductByProductId(productId);
-        }catch (StitchException e){
-            throw new StitchException(e.getMessage());
-        }
+    @GetMapping("/get-product-by-id")
+    public ResponseEntity<ProductDto> getProductByProductId(@RequestParam(value = "productId") String productId) {
+        return ResponseEntity.ok(productService.getProductByProductId(productId));
     }
 
-    @QueryMapping(value = "getProductsByVendorId")
-    public PaginatedResponse<List<ProductDto>> getProductsByVendorId(@Argument("vendorId") String vendorId,
-                                                                  @Argument("page") Optional<Integer> page,
-                                                                  @Argument("size") Optional<Integer> size
-    ){
-        PageRequest pr = PageRequest.of(page.orElse(0), size.orElse(10));
+    @GetMapping("/get-products-by-vendor")
+    @PreAuthorize("hasAuthority('VENDOR')")
+    public ResponseEntity<PaginatedResponse<List<ProductDto>>> getProductsByVendorId(@RequestParam("vendorId") String vendorId,
+                                                                                     @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(productService.getProductByVendor(vendorId, page, size));
 
-        try {
-            return productService.getProductByVendor(vendorId, pr);
-        }catch (StitchException e){
-            throw new StitchException(e.getMessage());
-        }
     }
 
-    @MutationMapping(value = "updateProductProfileImage")
-    public Response updateProductProfileImage(@Argument("productImage") String productImage, @Argument("productId") String productId){
-        try {
-            return productService.updateProductProfileImage(productImage, productId);
-        }catch (StitchException e){
-            throw new StitchException(e.getMessage());
-        }
+    @PostMapping("/update-product-profile-image")
+    @PreAuthorize("hasAuthority('VENDOR')")
+    public ResponseEntity<Response> updateProductProfileImage(@RequestParam("productImage") String productImage, @RequestParam("productId") String productId) {
+        return ResponseEntity.ok(productService.updateProductProfileImage(productImage, productId));
+
     }
 
-    @QueryMapping(value = "getVendorProductsBy")
-    public PaginatedResponse<List<ProductDto>> getVendorProductsBy(
-            @Argument("productFilterRequest") ProductFilterRequest productFilterRequest
-    ) {
-        return productService.fetchAllProductsByVendor(productFilterRequest);
+    @GetMapping("/get-vendor-products")
+    @PreAuthorize("hasAuthority('VENDOR')")
+    public ResponseEntity<PaginatedResponse<List<ProductDto>>> getVendorProductsBy(
+            @RequestBody @Valid ProductFilterRequest productFilterRequest) {
+        return ResponseEntity.ok(productService.fetchAllProductsByVendor(productFilterRequest));
     }
+
+//    @Unsecured
+//    @GetMapping("/get-all-products")
+//    public ResponseEntity<PaginatedResponse<List<ProductDto>>> getAllProductsBy(
+//            @RequestBody ProductFilterRequest productFilterRequest) {
+//        return ResponseEntity.ok(productService.fetchAllProductsBy(productFilterRequest));
+//    }
 
     @Unsecured
-    @QueryMapping(value = "getAllProductsBy")
-    public PaginatedResponse<List<ProductDto>> getAllProductsBy(
-            @Argument("productFilterRequest") ProductFilterRequest productFilterRequest
-    ) {
-        return productService.fetchAllProductsBy(productFilterRequest);
+    @GetMapping("/get-all-products")
+    public ResponseEntity<PaginatedResponse<List<ProductDto>>> getAllProductsBy(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String code,
+            @RequestParam(required = false) Boolean outOfStock,
+            @RequestParam(required = false) List<ProductCategory> categories,
+            @RequestParam(required = false) String provider,
+            @RequestParam(required = false) String vendorId,
+            @RequestParam(required = false) PublishStatus publishStatus,
+            @RequestParam(required = false) String productId,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice) {
+
+        ProductFilterRequest filterRequest = ProductFilterRequest.builder()
+                .page(page)
+                .size(size)
+                .name(name)
+                .code(code)
+                .outOfStock(outOfStock != null ? outOfStock : false)
+                .categories(categories)
+                .provider(provider)
+                .vendorId(vendorId)
+                .publishStatus(publishStatus)
+                .productId(productId)
+                .minPrice(minPrice)
+                .maxPrice(maxPrice)
+                .build();
+
+        return ResponseEntity.ok(productService.fetchAllProductsBy(filterRequest));
     }
 
-    @QueryMapping(value = "getAllProductsByAuth")
-    public PaginatedResponse<List<ProductDto>> getAllProductsByAuth(
-            @Argument("productFilterRequest") ProductFilterRequest productFilterRequest
-    ) {
-        return productService.fetchAllProductsByAuth(productFilterRequest);
+//    @GetMapping("/get-all-products-by-auth")
+//    public ResponseEntity<PaginatedResponse<List<ProductDto>>> getAllProductsByAuth(
+//            @RequestBody ProductFilterRequest productFilterRequest) {
+//        return ResponseEntity.ok(productService.fetchAllProductsByAuth(productFilterRequest));
+//    }
+
+    @GetMapping("/get-all-products-by-auth")
+    public ResponseEntity<PaginatedResponse<List<ProductDto>>> getAllProductsByAuth(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String code,
+            @RequestParam(required = false) Boolean outOfStock,
+            @RequestParam(required = false) List<ProductCategory> categories,
+            @RequestParam(required = false) String provider,
+            @RequestParam(required = false) String vendorId,
+            @RequestParam(required = false) PublishStatus publishStatus,
+            @RequestParam(required = false) String productId,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice) {
+
+        ProductFilterRequest filterRequest = ProductFilterRequest.builder()
+                .page(page)
+                .size(size)
+                .name(name)
+                .code(code)
+                .outOfStock(outOfStock != null ? outOfStock : false)
+                .categories(categories)
+                .provider(provider)
+                .vendorId(vendorId)
+                .publishStatus(publishStatus)
+                .productId(productId)
+                .minPrice(minPrice)
+                .maxPrice(maxPrice)
+                .build();
+        return ResponseEntity.ok(productService.fetchAllProductsByAuth(filterRequest));
     }
 }
+

@@ -67,5 +67,7 @@ public class NumberUtils {
     public static String formatWithCommas(BigDecimal amount){
         return String.format(Locale.ENGLISH,"%,.2f", amount.setScale(2, RoundingMode.HALF_UP));
     }
+
+
 }
 

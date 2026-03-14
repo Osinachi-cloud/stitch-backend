@@ -2,15 +2,16 @@ package com.stitch.user.model.entity;
 
 import com.stitch.commons.model.entity.BaseEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.envers.Audited;
-
-import javax.validation.constraints.*;
+//import org.hibernate.envers.Audited;
 
 @Entity
 @Getter
 @Setter
-@Audited
+//@Audited
 @Table(name = "body_measurement")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -69,5 +70,8 @@ public class BodyMeasurement extends BaseEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "email_address", referencedColumnName = "email_address")
     private UserEntity userEntity;
+
+    @Column(name = "is_default")
+    private boolean isDefault;
 
 }

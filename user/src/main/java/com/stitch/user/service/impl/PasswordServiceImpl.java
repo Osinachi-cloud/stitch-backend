@@ -7,6 +7,7 @@ import com.stitch.commons.util.ResponseUtils;
 //import com.stitch.notification.service.NotificationService;
 import com.stitch.user.exception.PasswordException;
 import com.stitch.user.exception.UserNotFoundException;
+import com.stitch.user.model.dto.ChangePasswordRequest;
 import com.stitch.user.model.dto.PasswordResetRequest;
 import com.stitch.user.model.entity.UserEntity;
 import com.stitch.user.model.entity.PasswordReset;
@@ -16,6 +17,8 @@ import com.stitch.user.service.PasswordService;
 import com.stitch.user.util.UserValidationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +35,8 @@ public class PasswordServiceImpl implements PasswordService {
     private final PasswordResetRepository passwordResetRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Value("${use-test-code:true}")
+    private boolean useTestCode;
 
     public PasswordServiceImpl(
             UserRepository customerRepository,
@@ -66,13 +71,13 @@ public class PasswordServiceImpl implements PasswordService {
             PasswordReset passwordReset = new PasswordReset();
             passwordReset.setEmailAddress(emailAddress);
 
-            String resetCode = NumberUtils.generate(5);
+            String resetCode = useTestCode? "12345": NumberUtils.generate(5);
 
             passwordReset.setResetCode(resetCode);
             passwordReset.setGeneratedOn(Instant.now());
 
             passwordReset.setExpiredOn(Instant.now().plus(15, ChronoUnit.MINUTES));
-            passwordResetRepository.saveAndFlush(passwordReset);
+            passwordResetRepository.save(passwordReset);
 
             log.info("Customer [{}] has requested a password reset process and reset code sent to email [{}]", customer.getUserId(), customer.getEmailAddress());
             return ResponseUtils.createSuccessResponse("Password reset code sent to email");
@@ -86,23 +91,23 @@ public class PasswordServiceImpl implements PasswordService {
     @Override
     public Response resetPassword(PasswordResetRequest passwordResetRequest) {
 
-        log.debug("Resetting password for customer with email address {}", passwordResetRequest.getEmailAddress());
+        log.debug("Resetting password for customer with email address {}", passwordResetRequest.getEmail());
 
-        final PasswordReset passwordReset = passwordResetRepository.findFirstByEmailAddressOrderByDateCreatedDesc(passwordResetRequest.getEmailAddress());
+        final PasswordReset passwordReset = passwordResetRepository.findFirstByEmailAddressOrderByDateCreatedDesc(passwordResetRequest.getEmail());
 
         if (passwordReset == null) {
-            log.error("Email address [{}] not found for password reset", passwordResetRequest.getEmailAddress());
+            log.error("Email address [{}] not found for password reset", passwordResetRequest.getEmail());
             throw new PasswordException(ResponseStatus.EMAIL_ADDRESS_NOT_FOUND);
         }
 
         log.debug("Found password reset : {}", passwordReset);
 
-        if (!passwordReset.isVerified()){
+        if (!passwordReset.isVerified()) {
             throw new PasswordException(ResponseStatus.PASSWORD_RESET_CODE_UNVERIFIED);
         }
 
         if (!passwordReset.getResetCode().equals(passwordResetRequest.getResetCode())) {
-            log.error("Invalid password reset code [{}] for email address {}", passwordResetRequest.getResetCode(), passwordResetRequest.getEmailAddress());
+            log.error("Invalid password reset code [{}] for email address {}", passwordResetRequest.getResetCode(), passwordResetRequest.getEmail());
             throw new PasswordException(ResponseStatus.INVALID_RESET_CODE);
         }
 
@@ -118,7 +123,7 @@ public class PasswordServiceImpl implements PasswordService {
             UserEntity customer = customerRepository.findByEmailAddress(passwordReset.getEmailAddress())
                     .orElseThrow(() -> new UserNotFoundException(ResponseStatus.USER_NOT_FOUND));
 
-            customer.setPassword(encode(passwordResetRequest.getNewPassword()));
+            customer.setPassword(encode(passwordResetRequest.getPassword()));
             customer.setLastPasswordChange(Instant.now());
             customerRepository.save(customer);
 
@@ -129,7 +134,41 @@ public class PasswordServiceImpl implements PasswordService {
             return ResponseUtils.createDefaultSuccessResponse();
 
         } catch (Exception e) {
-            log.error("Failed to reset password for customer with email address [{}]", passwordResetRequest.getEmailAddress(), e);
+            log.error("Failed to reset password for customer with email address [{}]", passwordResetRequest.getEmail(), e);
+            throw new PasswordException(ResponseStatus.PROCESSING_ERROR);
+        }
+    }
+
+    @Override
+    public Response changePassword(ChangePasswordRequest passwordResetRequest) {
+
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        try {
+            Optional<UserEntity> optionalUser = customerRepository.findByEmailAddress(email);
+            if (optionalUser.isEmpty()) {
+                throw new UserNotFoundException(ResponseStatus.USER_NOT_FOUND);
+            }
+
+            UserEntity user = optionalUser.get();
+
+            log.debug("change password for customer with email address {}", email);
+
+            validateNewPassword(passwordResetRequest);
+
+            boolean isPasswordMatch = passwordEncoder.matches(passwordResetRequest.getOldPassword(), user.getPassword());
+            if (!isPasswordMatch) {
+                throw new UserNotFoundException(ResponseStatus.PASSWORD_MISMATCH);
+            }
+
+            user.setPassword(encode(passwordResetRequest.getPassword()));
+            customerRepository.save(user);
+
+
+            return ResponseUtils.createDefaultSuccessResponse();
+
+        } catch (Exception e) {
+            log.error("Failed to reset password for customer with email address [{}]", email, e);
             throw new PasswordException(ResponseStatus.PROCESSING_ERROR);
         }
     }
@@ -142,17 +181,35 @@ public class PasswordServiceImpl implements PasswordService {
     @Override
     public void validateNewPassword(PasswordResetRequest passwordResetRequest) {
 
-        if (StringUtils.isBlank(passwordResetRequest.getNewPassword()) || StringUtils.isBlank(passwordResetRequest.getConfirmPassword())) {
+        if (StringUtils.isBlank(passwordResetRequest.getPassword()) || StringUtils.isBlank(passwordResetRequest.getConfirmPassword())) {
             throw new PasswordException(ResponseStatus.PASSWORD_EMPTY);
         }
 
-        List<String> passwordErrors = UserValidationUtils.getPasswordErrors(passwordResetRequest.getNewPassword());
+        List<String> passwordErrors = UserValidationUtils.getPasswordErrors(passwordResetRequest.getPassword());
 
         if (!passwordErrors.isEmpty()) {
             throw new PasswordException(passwordErrors.toString());
         }
 
-        if (!passwordResetRequest.getNewPassword().equals(passwordResetRequest.getConfirmPassword())) {
+        if (!passwordResetRequest.getPassword().equals(passwordResetRequest.getConfirmPassword())) {
+            throw new PasswordException(ResponseStatus.PASSWORD_MISMATCH);
+        }
+    }
+
+    @Override
+    public void validateNewPassword(ChangePasswordRequest passwordResetRequest) {
+
+        if (StringUtils.isBlank(passwordResetRequest.getPassword()) || StringUtils.isBlank(passwordResetRequest.getConfirmPassword())) {
+            throw new PasswordException(ResponseStatus.PASSWORD_EMPTY);
+        }
+
+        List<String> passwordErrors = UserValidationUtils.getPasswordErrors(passwordResetRequest.getPassword());
+
+        if (!passwordErrors.isEmpty()) {
+            throw new PasswordException(passwordErrors.toString());
+        }
+
+        if (!passwordResetRequest.getPassword().equals(passwordResetRequest.getConfirmPassword())) {
             throw new PasswordException(ResponseStatus.PASSWORD_MISMATCH);
         }
     }
@@ -173,19 +230,21 @@ public class PasswordServiceImpl implements PasswordService {
     @Override
     public Response validatePasswordResetCode(PasswordResetRequest passwordResetRequest) {
 
-        log.debug("Validating password reset code for customer with email address {}", passwordResetRequest.getEmailAddress());
+        log.debug("Validating password reset code for customer with email address {}", passwordResetRequest.getEmail());
 
-        final PasswordReset passwordReset = passwordResetRepository.findFirstByEmailAddressOrderByDateCreatedDesc(passwordResetRequest.getEmailAddress());
+        final PasswordReset passwordReset = passwordResetRepository.findFirstByEmailAddressOrderByDateCreatedDesc(passwordResetRequest.getEmail());
 
         if (passwordReset == null) {
-            log.error("Email address [{}] not found for password reset", passwordResetRequest.getEmailAddress());
+            log.error("Email address [{}] not found for password reset", passwordResetRequest.getEmail());
             throw new PasswordException(ResponseStatus.EMAIL_ADDRESS_NOT_FOUND);
         }
 
-        log.debug("Found password reset : {}", passwordReset);
+        validateNewPassword(passwordResetRequest.getPassword());
+        validateNewPassword(passwordResetRequest.getConfirmPassword());
+        log.debug("Found password  reset : {}", passwordReset);
 
         if (!passwordReset.getResetCode().equals(passwordResetRequest.getResetCode())) {
-            log.error("Invalid password reset code [{}] for email address [{}]", passwordResetRequest.getResetCode(), passwordResetRequest.getEmailAddress());
+            log.error("Invalid password reset code [{}] for email address [{}]", passwordResetRequest.getResetCode(), passwordResetRequest.getEmail());
             throw new PasswordException(ResponseStatus.INVALID_RESET_CODE);
         }
 
@@ -194,10 +253,17 @@ public class PasswordServiceImpl implements PasswordService {
             throw new PasswordException(ResponseStatus.EXPIRED_RESET_CODE);
         }
 
-
         try {
             passwordReset.setVerified(true);
-            passwordResetRepository.saveAndFlush(passwordReset);
+            passwordResetRepository.save(passwordReset);
+
+            Optional<UserEntity> optionalUser = customerRepository.findByEmailAddress(passwordResetRequest.getEmail());
+            if (optionalUser.isEmpty()) {
+                throw new UserNotFoundException(ResponseStatus.USER_NOT_FOUND);
+            }
+            UserEntity user = optionalUser.get();
+            user.setPassword(encode(passwordResetRequest.getPassword()));
+            customerRepository.save(user);
 
             log.info("Password reset code [{}] successfully verified", passwordReset.getEmailAddress());
             return ResponseUtils.createSuccessResponse("Successful");

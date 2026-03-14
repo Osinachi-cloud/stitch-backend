@@ -3,8 +3,8 @@ package com.stitch.gateway.security.service;
 import com.stitch.commons.exception.StitchException;
 import com.stitch.user.model.dto.CustomerDto;
 import com.stitch.user.service.UserService;
-import com.stitch.gateway.model.LoginRequest;
-import com.stitch.gateway.model.LoginResponse;
+import com.stitch.gateway.model.request.LoginRequest;
+import com.stitch.gateway.model.response.LoginResponse;
 import com.stitch.gateway.security.model.CustomUserDetails;
 import com.stitch.gateway.security.model.Token;
 import com.stitch.gateway.security.util.TokenUtils;
@@ -29,30 +29,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserService userService;
 
 
-    private final PasswordService passwordService;
-
     private final TokenUtils tokenUtils;
 
     public AuthenticationServiceImpl(AuthenticationManager authenticationManager, UserService userService, PasswordService passwordService, TokenUtils tokenUtils) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
-        this.passwordService = passwordService;
         this.tokenUtils = tokenUtils;
     }
 
     @Override
     public LoginResponse authenticate(LoginRequest loginRequest) {
-        System.out.println(loginRequest.getEmailAddress() + " " + loginRequest.getPassword());
-
-        boolean passwordMatch = passwordService.passwordMatch("A$123456", "$2a$10$S2O5dHSh41MHL7KvAPThm.VudYs0dvo19oFVGnBgvTiXiAjBbAVrK");
-
-        System.out.println(passwordMatch);
-        System.out.println("password matched");
-
-
+        log.info("Login request: {}", loginRequest);
 
         try {
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmailAddress(), loginRequest.getPassword()));
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
             CustomerDto user = getUser(authentication);
 
             Token token = tokenUtils.generateAccessAndRefreshToken(user);
@@ -62,12 +52,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             onSuccessfulAuthentication(user);
             return loginResponse;
         } catch (BadCredentialsException e) {
-            log.error("Bad login credentials: " + loginRequest.getEmailAddress(), e);
-            onFailedAuthentication(loginRequest.getEmailAddress(), e);
+            log.error("Bad login credentials for user : {} : {}", loginRequest.getEmail(), e.getMessage());
+            onFailedAuthentication(loginRequest.getEmail());
             throw new BadCredentialsException("Incorrect email address or password");
         } catch (AuthenticationException e) {
-            log.error("Authentication error for user: " + loginRequest.getEmailAddress(), e);
-            onFailedAuthentication(loginRequest.getEmailAddress(), e);
+            log.error("Authentication error for user: {} : {}", loginRequest.getEmail(), e.getMessage());
+            onFailedAuthentication(loginRequest.getEmail());
             if (e.getCause() != null) {
                 Throwable cause = e.getCause();
                 if (cause.getCause() != null) {
@@ -80,12 +70,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    private void onFailedAuthentication(String emailAddress, Throwable e) {
+    private void onFailedAuthentication(String emailAddress) {
         userService.updateLoginAttempts(emailAddress);
     }
 
     private void onSuccessfulAuthentication(CustomerDto user) {
-        log.debug("Successful authentication for user: " + user.getUserId());
+        log.debug("Successful authentication for user: {}", user.getUserId());
         userService.updateLastLogin(user);
     }
 

@@ -11,7 +11,7 @@ import com.stitch.user.exception.UserException;
 import com.stitch.user.exception.UserNotFoundException;
 import com.stitch.user.model.dto.*;
 import com.stitch.user.model.entity.ContactVerification;
-import com.stitch.user.model.entity.Device;
+import com.stitch.user.model.entity.Role;
 import com.stitch.user.model.entity.UserEntity;
 import com.stitch.user.repository.ContactVerificationRepository;
 import com.stitch.user.repository.UserRepository;
@@ -20,21 +20,28 @@ import com.stitch.user.service.RoleService;
 import com.stitch.user.service.UserService;
 import com.stitch.user.specification.UserSpecification;
 import com.stitch.user.util.UserValidationUtils;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.beans.PropertyDescriptor;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
+import static com.stitch.commons.util.Constants.NIGERIA;
 import static com.stitch.user.util.DtoMapper.convertUserListToDto;
 
 
@@ -45,6 +52,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ContactVerificationRepository verificationRepository;
     private final PasswordService passwordService;
+
+    @Value("${use-test-code:true}")
+    private boolean useTestCode;
 
     private final RoleService roleService;
 
@@ -58,54 +68,65 @@ public class UserServiceImpl implements UserService {
         this.roleService = roleService;
     }
 
-    @Transactional
+//    @Transactional
     @Override
-    public CustomerDto createCustomer(CustomerRequest customerRequest){
-        System.out.println(userRepository.findLastChangeRevision(1L));
+    public CustomerDto createCustomer(CustomerRequest customerRequest) {
 
         log.info("Creating customer with request: {}", customerRequest);
-        String country = "NIGERIA";
-        customerRequest.setCountry(country);
-
-        log.info("Creating customer with request: {}", customerRequest);
-
-        validate(customerRequest);
-
-        UserEntity customer = new UserEntity();
-        customer.setUserId(NumberUtils.generate(9));
-        customer.setFirstName(customerRequest.getFirstName());
-        customer.setLastName(customerRequest.getLastName());
-        customer.setEmailAddress(customerRequest.getEmailAddress());
-        customer.setUsername(customerRequest.getUsername());
-        customer.setPhoneNumber(customerRequest.getPhoneNumber());
-        customer.setCountry(country);
-        customer.setShortBio(customerRequest.getShortBio());
-
-        log.info("customer obj 0 : {}", customer);
-
-        log.info("role obj 0 : {}", roleService.findRoleByName(customerRequest.getRoleName()));
-
-
-
-        customer.setRole(roleService.findRoleByName(customerRequest.getRoleName()));
-        customer.setPassword(passwordService.encode(customerRequest.getPassword()));
-        log.info("customer obj 1 : {}", customer);
-
-        if(Objects.nonNull(customerRequest.getProfileImage())){
-            log.info("customer obj 2 : {}", customer);
-
-            byte[] imageBytes = Base64.decodeBase64(customerRequest.getProfileImage());
-            String base64EncodedImage = Base64.encodeBase64String(imageBytes);
-            customer.setProfileImage(base64EncodedImage);
-        }
-
-        if (customerRequest.getDevice() != null) {
-            log.info("customer obj 3 : {}", customer);
-
-            customer.setDevice(new Device(customerRequest.getDevice()));
-        }
-
         try {
+            try {
+                System.out.println(userRepository.findLastChangeRevision(1L));
+            }catch (Exception e) {
+                log.error("Error ==> {}",e.getMessage());
+            }
+
+            customerRequest.setCountry(NIGERIA);
+
+            log.info("Creating customer with request: {}", customerRequest);
+
+            validate(customerRequest);
+
+            UserEntity customer = new UserEntity();
+            customer.setUserId(NumberUtils.generate(9));
+            customer.setFirstName(customerRequest.getFirstName());
+            customer.setLastName(customerRequest.getLastName());
+            customer.setEmailAddress(customerRequest.getEmail());
+            customer.setUsername(customerRequest.getUsername());
+            customer.setPhoneNumber(customerRequest.getPhoneNumber());
+            customer.setCountry(customerRequest.getCountry());
+//            customer.setRole();
+
+//            customer.setShortBio(getStr(customerRequest.getShortBio()));
+
+            log.info("customer obj : {}", customer);
+            customerRequest.setRoleName(customerRequest.isVendor() ? "VENDOR" : "CUSTOMER");
+
+            Optional<Role> optionalRole = roleService.findRoleByName(customerRequest.getRoleName());
+            log.info("optionalRole obj : {}", optionalRole);
+
+            if(optionalRole.isPresent()){
+                Role role = optionalRole.get();
+                customer.setRole(role);
+            }
+//            role = optionalRole.orElseGet(() -> roleService.createUserRole(new RoleDto("ROLE_CUSTOMER", "ROLE CUSTOMER")));
+//            log.info("role obj 0 : {}", role);
+
+            customer.setPassword(passwordService.encode(customerRequest.getPassword()));
+            log.info("customer obj 1 : {}", customer);
+
+//            if (Objects.nonNull(customerRequest.getProfileImage())) {
+//                log.info("customer obj 2 : {}", customer);
+//
+//                byte[] imageBytes = Base64.decodeBase64(customerRequest.getProfileImage());
+//                String base64EncodedImage = Base64.encodeBase64String(imageBytes);
+//                customer.setProfileImage(base64EncodedImage);
+//            }
+//
+//            if (customerRequest.getDevice() != null) {
+//                log.info("customer obj 3 : {}", customer);
+//                customer.setDevice(new Device(customerRequest.getDevice()));
+//            }
+
             log.info("customer obj : {}", customer);
 
             UserEntity newCustomer = userRepository.save(customer);
@@ -113,93 +134,135 @@ public class UserServiceImpl implements UserService {
             log.info("Created new customer with ID: {}", newCustomer.getUserId());
 
             return new CustomerDto(newCustomer);
-        } catch (StitchException e){
-            log.error("Error creating customer", e);
-            throw new UserException("Failed to create customer", e);
+        } catch (UserException e) {
+            log.error("Custom error occurred while creating customer :: {}", e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            log.error("An Exception occurred in customer creation :: {}", e.getMessage());
+            if (e.getMessage().contains("JDBC exception")){
+                throw new StitchException("Error inserting user in DB");
+            }
+            throw new StitchException(e.getMessage());
+        }
+    }
+
+    @PostConstruct
+    private void initializeRole(){
+        RoleDto customerRole = new RoleDto();
+        customerRole.setName("CUSTOMER");
+        customerRole.setDescription("Customer role");
+
+        RoleDto vendorRole = new RoleDto();
+        vendorRole.setName("VENDOR");
+        vendorRole.setDescription("Vendor role");
+
+        Optional<Role> existingCustomerRole = roleService.findRoleByName("CUSTOMER");
+        if(existingCustomerRole.isEmpty()){
+            roleService.createUserRole(customerRole);
+        }else {
+            log.info("customer role already exists");
+        }
+
+        Optional<Role> existingVendorRole = roleService.findRoleByName("VENDOR");
+        if(existingVendorRole.isEmpty()){
+            roleService.createUserRole(vendorRole);
+        } else {
+            log.info("vendor role already exists");
         }
     }
 
     @Override
+    public UserEntity saveUserEntity(UserEntity userEntity){
+        return userRepository.save(userEntity);
+    }
+
+    @Override
     public CustomerDto updateCustomer(CustomerUpdateRequest customerRequest, String emailAddress) {
-
-        Optional<UserEntity> existingCustomer = userRepository.findByEmailAddress(emailAddress);
-
-        if (existingCustomer.isEmpty()) {
-            throw new UserException(ResponseStatus.EMAIL_ADDRESS_NOT_FOUND);
-        }
-
-        UserEntity customer = existingCustomer.get();
-        customer.setFirstName(customerRequest.getFirstName());
-        customer.setLastName(customerRequest.getLastName());
-        customer.setCountry(customerRequest.getCountry());
-
+        log.info("Updating customer with email : {} ,  request: {}", emailAddress, customerRequest);
         try {
-
-            UserEntity newCustomer = userRepository.saveAndFlush(customer);
+            UserEntity customer = userRepository.findByEmailAddress(emailAddress)
+                    .orElseThrow(() -> new UserException(ResponseStatus.EMAIL_ADDRESS_NOT_FOUND));
+            BeanUtils.copyProperties(customerRequest, customer, getNullPropertyNames(customerRequest));
+            UserEntity newCustomer = userRepository.save(customer);
 
             log.info("Updated customer with ID: {}", newCustomer.getUserId());
-
             return new CustomerDto(newCustomer);
-        } catch (Exception e){
-            log.error("Error creating customer", e);
-            throw new UserException("Failed to create customer", e);
+        } catch (UserException e) {
+            log.error("Custom error occurred while updating customer :: {}", e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            log.error("Error creating customer {}", e.getMessage());
+            throw new UserException("Failed to create customer", 500);
         }
 
+    }
+
+    private String[] getNullPropertyNames(Object source){
+        System.err.println("I entered in here ...");
+        final BeanWrapper wrapper = new BeanWrapperImpl(source);
+        PropertyDescriptor[] descriptors = wrapper.getPropertyDescriptors();
+        List<String> nullProperties = new ArrayList<>();
+        for (PropertyDescriptor descriptor: descriptors) {
+            Object propertyValue = wrapper.getPropertyValue(descriptor.getName());
+            if (propertyValue == null || (propertyValue instanceof String && ((String) propertyValue).trim().isEmpty())) {
+                nullProperties.add(descriptor.getName());
+            }
+        }
+        return nullProperties.toArray(new String[0]);
     }
 
     @Override
     public Response updateCustomerProfileImage(String profileImage, String emailAddress) {
         log.info("email address value: {}", emailAddress);
-            Optional<UserEntity> existingCustomer = userRepository.findByEmailAddress(emailAddress);
+        Optional<UserEntity> existingCustomer = userRepository.findByEmailAddress(emailAddress);
 
-            if (existingCustomer.isEmpty()) {
-                throw new UserException("customer does not exist");
-            }
-            log.info("existingCustomer: {}", existingCustomer.get().getFirstName());
+        if (existingCustomer.isEmpty()) {
+            throw new UserException("customer does not exist");
+        }
+        log.info("existingCustomer: {}", existingCustomer.get().getFirstName());
 
-            UserEntity customer = existingCustomer.get();
+        UserEntity customer = existingCustomer.get();
 
-            if (profileImage != null && !profileImage.isEmpty()) {
-                byte[] imageBytes = Base64.decodeBase64(profileImage);
-                String base64EncodedImage = Base64.encodeBase64String(imageBytes);
-                customer.setProfileImage(base64EncodedImage);
-                UserEntity newCustomer = userRepository.saveAndFlush(customer);
+        if (profileImage != null && !profileImage.isEmpty()) {
+            byte[] imageBytes = Base64.decodeBase64(profileImage);
+            String base64EncodedImage = Base64.encodeBase64String(imageBytes);
+            customer.setProfileImage(base64EncodedImage);
+            UserEntity newCustomer = userRepository.saveAndFlush(customer);
 
-                log.info("Updated customer with ID: {}", newCustomer.getUserId());
+            log.info("Updated customer with ID: {}", newCustomer.getUserId());
 
-                return ResponseUtils.createSuccessResponse("profile image updated successfully");
-            } else {
-                throw new StitchException("image field can not be empty");
-            }
+            return ResponseUtils.createSuccessResponse("profile image updated successfully");
+        } else {
+            throw new StitchException("image field can not be empty");
+        }
     }
 
     private void validate(CustomerRequest customerRequest) {
+        log.info("customerRequest ===>: {}", customerRequest);
+
         if (StringUtils.isBlank(customerRequest.getFirstName()) ||
                 StringUtils.isBlank(customerRequest.getLastName()) ||
-                StringUtils.isBlank(customerRequest.getEmailAddress()) ||
-                StringUtils.isBlank(customerRequest.getPhoneNumber()) ||
+                StringUtils.isBlank(customerRequest.getEmail()) ||
+//                StringUtils.isBlank(customerRequest.getPhoneNumber()) ||
                 StringUtils.isBlank(customerRequest.getCountry()) ||
                 StringUtils.isBlank(customerRequest.getPassword())) {
             throw new UserException(ResponseStatus.EMPTY_FIELD_VALUES);
         }
 
-        if (!UserValidationUtils.isValidEmail(customerRequest.getEmailAddress())) {
+        if (!UserValidationUtils.isValidEmail(customerRequest.getEmail())) {
             throw new UserException(ResponseStatus.INVALID_EMAIL_ADDRESS);
         }
 
-        if (!UserValidationUtils.isValidPhoneNumber(customerRequest.getPhoneNumber())) {
-            throw new UserException(ResponseStatus.INVALID_PHONE_NUMBER);
-        }
-        Optional<UserEntity> existingCustomer = userRepository.findByEmailAddress(customerRequest.getEmailAddress());
+//        if (!UserValidationUtils.isValidPhoneNumber(customerRequest.getPhoneNumber())) {
+//            throw new UserException(ResponseStatus.INVALID_PHONE_NUMBER);
+//        }
+        Optional<UserEntity> existingCustomer = userRepository.findByEmailAddress(customerRequest.getEmail());
+
 
         Optional<UserEntity> existingCustomerByUsername = userRepository.findByUsername(customerRequest.getUsername());
 
-        if(existingCustomer.isPresent()) {
-            log.info("customer ===>>> :{}", existingCustomer.get().getEmailAddress());
-        }
-
-
         if (existingCustomer.isPresent()) {
+            log.info("customer exists with email ===>>> :{}", existingCustomer.get().getEmailAddress());
             throw new UserException(ResponseStatus.EMAIL_ADDRESS_EXISTS);
         }
 
@@ -207,7 +270,7 @@ public class UserServiceImpl implements UserService {
             throw new UserException(ResponseStatus.USERNAME_EXISTS);
         }
 
-        ContactVerification contactVerification = verificationRepository.findFirstByEmailAddressOrderByDateCreatedDesc(customerRequest.getEmailAddress());
+        ContactVerification contactVerification = verificationRepository.findFirstByEmailAddressOrderByDateCreatedDesc(customerRequest.getEmail());
 
         if (contactVerification == null || !contactVerification.isVerified()) {
             throw new UserException(ResponseStatus.EMAIL_ADDRESS_UNVERIFIED);
@@ -245,6 +308,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity getCustomerEntity(String customerId) {
         return userRepository.findByUserId(customerId).orElseThrow(() -> new UserNotFoundException(String.format("Customer [%s] not found", customerId)));
+    }
+
+    @Override
+    public UserEntity getCustomerEmail(String email) {
+        return userRepository.findByEmailAddress(email).orElseThrow(() -> new UserNotFoundException(String.format("Customer [%s] not found", email)));
     }
 
     @Override
@@ -313,6 +381,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Response changePassword(ChangePasswordRequest passwordChangeRequest){
+        return passwordService.changePassword(passwordChangeRequest);
+    }
+
+
+    @Override
     public Response validatePasswordResetCode(PasswordResetRequest passwordResetRequest) {
         return passwordService.validatePasswordResetCode(passwordResetRequest);
 
@@ -375,7 +449,7 @@ public class UserServiceImpl implements UserService {
             final ContactVerification contactVerification = new ContactVerification();
             contactVerification.setEmailAddress(customer.getEmailAddress());
 
-            final String verificationCode = NumberUtils.generate(5);
+            final String verificationCode = useTestCode ? "12345": NumberUtils.generate(5);
 
             log.debug("Reset code [{}] for email address [{}]", verificationCode, contactVerification.getEmailAddress());
 
@@ -449,22 +523,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PaginatedResponse<List<UserDto>> fetchAllUsersBy(UserFilterRequest request) {
+    public PaginatedResponse<List<UserDto>> fetchAllUsersBy(int page, int size, String firstName, String lastName, String email, Long roleId) {
 
-        Specification<UserEntity> spec = Specification.where(
-                        UserSpecification.firstNameEqual(request.getFirstName()))
-                .and(UserSpecification.lastNameEqual(request.getLastName()))
-                .and(UserSpecification.roleIdEqual(request.getRoleId()))
-                .and(UserSpecification.emailEqual(request.getEmailAddress()));
+        log.info("Request to fetch all users page: {}, size {}, firstName : {}, lastName : {}, email: {}, role Id : {} ", page,size,firstName,lastName, email,roleId);
+        try {
+            Specification<UserEntity> spec = Specification.where(
+                            UserSpecification.firstNameEqual(firstName))
+                    .and(UserSpecification.lastNameEqual(lastName))
+                    .and(UserSpecification.roleIdEqual(roleId))
+                    .and(UserSpecification.emailEqual(email));
 
-        Page<UserEntity> users = userRepository.findAll(spec, PageRequest.of(request.getPage(), request.getSize(), Sort.by(Sort.Direction.DESC, "dateCreated")));
+            Page<UserEntity> users = userRepository.findAll(spec, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "dateCreated")));
 
-        PaginatedResponse<List<UserDto>> paginatedResponse = new PaginatedResponse<>();
-        paginatedResponse.setPage(users.getNumber());
-        paginatedResponse.setSize(users.getSize());
-        paginatedResponse.setTotal((int) userRepository.count());
-        paginatedResponse.setData(convertUserListToDto(users.getContent()));
-        return paginatedResponse;
+            System.err.println("users "+users);
+            PaginatedResponse<List<UserDto>> paginatedResponse = new PaginatedResponse<>();
+            paginatedResponse.setPage(users.getNumber());
+            paginatedResponse.setSize(users.getSize());
+            paginatedResponse.setTotal((int) userRepository.count());
+            paginatedResponse.setData(convertUserListToDto(users.getContent()));
+            return paginatedResponse;
+        } catch (Exception e) {
+            log.error("An error occurred while fetching all users : {}", e.getMessage());
+            throw new UserException("Failed to get all users ", 400);
+        }
     }
 
 }
