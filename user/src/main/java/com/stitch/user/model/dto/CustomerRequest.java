@@ -10,7 +10,7 @@ public class CustomerRequest {
 
     private String firstName;
     private String lastName;
-    private String emailAddress;
+    private String email;
     private String phoneNumber;
     private String password;
     private String country;
@@ -18,7 +18,7 @@ public class CustomerRequest {
     private String profileImage;
     private String currency;
     private String roleName;
-    @NonNull
     private String username;
     private String shortBio;
+    private boolean isVendor;
 }

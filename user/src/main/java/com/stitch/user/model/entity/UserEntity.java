@@ -6,13 +6,13 @@ import com.stitch.user.enums.Tier;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.envers.Audited;
+//import org.hibernate.envers.Audited;
 
 
 
 @Getter
 @Setter
-@Audited
+//@Audited
 @Entity
 @Table(name = "USER_ENTITY")
 public class UserEntity extends User {

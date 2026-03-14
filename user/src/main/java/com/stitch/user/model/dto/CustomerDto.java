@@ -52,6 +52,4 @@ public class CustomerDto implements Serializable {
         this.role = mapRoleToDto(customer.getRole());
         this.roleName = customer.getRole().getName();
     }
-
-
 }

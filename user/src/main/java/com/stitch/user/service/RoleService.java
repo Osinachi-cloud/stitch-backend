@@ -3,8 +3,10 @@ package com.stitch.user.service;
 import com.stitch.user.model.dto.RoleDto;
 import com.stitch.user.model.entity.Role;
 
-public interface RoleService {
-    RoleDto createUserRole(RoleDto roleDto);
+import java.util.Optional;
 
-    Role findRoleByName(String name);
+public interface RoleService {
+    Role createUserRole(RoleDto roleDto);
+
+    Optional<Role> findRoleByName(String name);
 }

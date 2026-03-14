@@ -13,6 +13,12 @@ public class UserException extends StitchException {
     private ResponseStatus status;
     private Error error;
     private Object details;
+    private int code;
+
+    public UserException(String message, int code){
+        super(message);
+        this.code = code;
+    }
 
     public UserException(String message){
         super(message);
@@ -67,5 +73,8 @@ public class UserException extends StitchException {
         return error;
     }
 
+    public int getCode() {
+        return code;
+    }
 }
 

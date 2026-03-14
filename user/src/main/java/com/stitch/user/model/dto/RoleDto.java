@@ -1,6 +1,5 @@
 package com.stitch.user.model.dto;
 
-import com.stitch.user.enums.RoleName;
 import com.stitch.user.model.entity.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,5 +32,10 @@ public class RoleDto {
         this.dateCreated = role.getDateCreated().toString();
         this.lastUpdated = role.getLastUpdated().toString();
         this.permissionsDto = mapToCollectionOfPermissionDto(role.getPermissions());
+    }
+
+    public RoleDto(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 }

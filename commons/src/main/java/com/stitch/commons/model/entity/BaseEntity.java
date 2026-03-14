@@ -3,7 +3,6 @@ package com.stitch.commons.model.entity;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import jakarta.persistence.*;
 import org.hibernate.envers.Audited;
 

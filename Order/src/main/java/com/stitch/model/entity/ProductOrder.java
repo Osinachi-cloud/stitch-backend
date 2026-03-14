@@ -21,7 +21,7 @@ public class ProductOrder extends BaseEntity {
     @Column(name = "order_id", unique = true, nullable = false)
     private String orderId;
 
-    @Column(name = "transaction_id", unique = true, nullable = false)
+    @Column(name = "transaction_id", nullable = false)
     private String transactionId;
 
     @Column(name = "email_address", nullable = false)
@@ -29,6 +29,9 @@ public class ProductOrder extends BaseEntity {
 
     @Column(name = "product_id", nullable = false)
     private String productId;
+
+    @Column(name = "product_name")
+    private String productName;
 
     @Column(name = "product_category_name")
     private String productCategoryName;

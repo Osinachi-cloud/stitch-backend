@@ -5,9 +5,9 @@ import com.stitch.model.ProductCategory;
 import com.stitch.model.enums.PublishStatus;
 import com.stitch.user.model.entity.UserEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 
-import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -68,7 +68,7 @@ public class Product extends BaseEntity {
     @Column(name = "country")
     private String country;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "email_address", referencedColumnName = "email_address")
     private UserEntity vendor;
 

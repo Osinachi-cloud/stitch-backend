@@ -16,6 +16,8 @@ import java.math.BigDecimal;
 @Table(name = "product_cart")
 public class ProductCart extends BaseEntity {
 
+    @Column(name = "product_name")
+    private String productName;
 
     @Column(name = "productId")
     private String productId;

@@ -19,4 +19,5 @@ public class BodyMeasurementDto {
     private int knee;
     private int ankle;
     private int trouserLength;
+    private boolean isDefault;
 }

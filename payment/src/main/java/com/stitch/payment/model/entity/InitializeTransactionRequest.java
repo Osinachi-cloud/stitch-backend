@@ -3,12 +3,9 @@ package com.stitch.payment.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.Digits;
 import lombok.Data;
-//import model.MetaData;
-//import model.PaystackBearer;
 
-import javax.validation.ValidationException;
-import javax.validation.constraints.Digits;
 import java.math.BigDecimal;
 import java.util.List;
 

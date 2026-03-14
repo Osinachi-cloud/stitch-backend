@@ -1,5 +1,6 @@
 package com.stitch.gateway.security.config;
 
+import com.stitch.gateway.util.EnvProperties;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,28 +22,28 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import static com.stitch.gateway.util.Constants.ALLOWED_URLS;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity()
 public class SecurityConfig {
     private final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
 
     @Autowired
-    private TokenAuthenticationProvider tokenAuthenticationProvider;
+    private  TokenAuthenticationFilter tokenAuthenticationFilter;
 
     @Autowired
-    private  TokenAuthenticationFilter tokenAuthenticationFilter;
+    private EnvProperties props;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    @Autowired
-    @Qualifier("handlerExceptionResolver")
-    private HandlerExceptionResolver exceptionResolver;
 
     @Autowired
     @Qualifier("customUserDetailsService")
@@ -51,15 +52,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         System.out.println(" entered security config");
-        return http.csrf(AbstractHttpConfigurer::disable)
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth->{
                     auth
-                            .requestMatchers(
-                                    "/altair",
-                                    "/actuator/health",
-                                    "/graphql",
-                                    "/vendor/**"
-                            )
+                            .requestMatchers(ALLOWED_URLS)
                             .permitAll()
                             .anyRequest().authenticated();
                 })
@@ -92,5 +90,17 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(props.getAllowedOrigins());
+        configuration.setAllowedMethods(props.getAllowedMethods());
+        configuration.setAllowedHeaders(props.getAllowedHeaders());
+        configuration.setAllowCredentials(props.isAllowCORS());
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
 }

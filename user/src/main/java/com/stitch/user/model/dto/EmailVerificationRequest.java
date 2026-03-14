@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class EmailVerificationRequest {
 
     private String verificationCode;
-    private String emailAddress;
+    private String email;
 
 }

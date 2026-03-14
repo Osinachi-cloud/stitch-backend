@@ -6,7 +6,10 @@ import com.stitch.user.model.dto.BodyMeasurementRequest;
 import java.util.List;
 
 public interface BodyMeasurementService {
-    BodyMeasurementDto createBodyMeasurement(BodyMeasurementRequest bodyMeasurementRequest, String customerEmailAddress);
-    BodyMeasurementDto upDateBodyMeasurement(BodyMeasurementRequest bodyMeasurementRequest, String customerEmailAddress);
+    BodyMeasurementDto createBodyMeasurement(BodyMeasurementRequest bodyMeasurementRequest);
+    BodyMeasurementDto updateBodyMeasurement(BodyMeasurementRequest bodyMeasurementRequest);
     List<BodyMeasurementDto> getBodyMeasurementByUser();
+    void deleteBodyMeasurement(String tag, String email);
+
+    BodyMeasurementDto getBodyMeasurementByUserTag(String tag, String email);
 }

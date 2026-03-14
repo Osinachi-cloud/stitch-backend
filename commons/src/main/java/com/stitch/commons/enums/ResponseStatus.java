@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 public enum ResponseStatus {
 
     SUCCESS(0, "Successful",HttpStatus.OK),
-    INVALID_PHONE_NUMBER(2, "The phone number is invalid", HttpStatus.BAD_REQUEST),
+    INVALID_PHONE_NUMBER(2, "The phone number is invalid: provide international format", HttpStatus.BAD_REQUEST),
     PHONE_NUMBER_NOT_FOUND(3, "The phone number was not found", HttpStatus.NOT_FOUND),
     EMAIL_ADDRESS_NOT_FOUND(4, "The email address was not found", HttpStatus.NOT_FOUND),
     INVALID_VERIFICATION_CODE(5, "The verification code is invalid", HttpStatus.BAD_REQUEST),

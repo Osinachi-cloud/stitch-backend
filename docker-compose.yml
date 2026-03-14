@@ -20,25 +20,6 @@ services:
     ports:
       - 1080:1080
       - 1025:1025
-  stitch-api:
-    container_name: stitch-api
-    image: stitch/stitch:1.0.8
-    ports:
-      - 8088:8088
-    networks:
-      - spring-demo
-    depends_on:
-      - postgres
-
-  stitch-ui:
-    container_name: stitch-ui
-    image: stitch/stitch-ui:1.0.0
-    ports:
-      - 8080:80
-    networks:
-      - spring-demo
-    depends_on:
-      - stitch-api
 networks:
   spring-demo:
     driver: bridge
