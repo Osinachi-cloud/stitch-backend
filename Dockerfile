@@ -1,62 +1,47 @@
-#FROM maven:3.8.7-openjdk-18 AS build
-#EXPOSE 8080
-#ADD gateway/target/stitch.jar stitch.jar
-#ENTRYPOINT ["java", "-jar", "/stitch.jar"]
-#WORKDIR /build
-#COPY pom.xml .
-## RUN mvn dependency:go-offline
-#COPY gateway/src ./src
-#RUN mvn clean package -DskipTests
+# ============================================
+# Stage 1: Build
+# ============================================
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 
-
-
-FROM maven:3.8.7-openjdk-18 AS build
-EXPOSE 8080
 WORKDIR /app
+
+# Copy parent POM
 COPY pom.xml .
-RUN #mvn dependency:go-offline
-COPY gateway/src gateway/src
-RUN #mvn clean package -DskipTests
 
+# Copy all module POMs (Maven needs these to resolve the reactor)
+COPY gateway/pom.xml ./gateway/
+COPY commons/pom.xml ./commons/
+COPY user/pom.xml ./user/
+COPY currency/pom.xml ./currency/
+COPY Order/pom.xml ./order/
+COPY product/pom.xml ./product/
+COPY payment/pom.xml ./payment/
 
+# Download dependencies (this layer gets cached if POMs don't change)
+RUN mvn dependency:go-offline -B
 
+# Copy all source code
+COPY gateway/src ./gateway/src
+COPY commons/src ./commons/src
+COPY user/src ./user/src
+COPY currency/src ./currency/src
+COPY Order/src ./order/src
+COPY product/src ./product/src
+COPY payment/src ./payment/src
 
-#FROM maven:3.8.7-openjdk-18 AS build
-#EXPOSE 8080
-#
-## Copy the entire parent directory that contains the pom.xml file and the gateway module
-##COPY . .
-#
-#ADD gateway/target/stitch.jar stitch.jar
-#
-#
-## Set the working directory to the root of the project
-#WORKDIR /
-#
-## Run the Maven build command
-#RUN mvn clean package -DskipTests
-#
-## Copy the built JAR file to the root of the Docker image
-#COPY gateway/target/stitch.jar stitch.jar
-#
-## Set the entrypoint for the Docker image
-#ENTRYPOINT ["java", "-jar", "/stitch.jar"]
+# Build gateway and all its dependencies (-pl = project list, -am = also make dependencies)
+RUN mvn clean package -DskipTests -pl gateway -am
 
+# ============================================
+# Stage 2: Runtime
+# ============================================
+FROM eclipse-temurin:17-jre-alpine
 
+WORKDIR /app
 
-#
-#FROM amazoncorretto:17
-#ARG PROFILE=dev
-#ARG APP_VERSION=1.0.0
-#WORKDIR /build
-#COPY --from=build /build/target/stitch*.jar /app/
-#
-##EXPOSE 8085
-#
-#ENV DB_URL=jdbc:postgresql://postgres-sql-stitch:5432/stitch
-#ENV MAILDEV_URL=localhost
-#
-#ENV ACTIVE_PROFILE=${PROFILE}
-#ENV JAR_VERSION=${APP_VERSION}
-#
-#CMD java -jar -Dspring.profiles.active=${ACTIVE_PROFILE} -Dspring.datasource.url=${DB_URL} stitch-${JAR_VERSION}.jar
+# Copy the built JAR from gateway module
+COPY --from=build /app/gateway/target/stitch.jar app.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
