@@ -33,7 +33,6 @@ public class PaymentController {
     @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity<PaymentVerificationResponse> verifyPayment(@RequestParam(required = false, name = "reference") String paymentReference) {
             return ResponseEntity.ok(paymentService.paymentVerification(paymentReference));
-
     }
 
 }
