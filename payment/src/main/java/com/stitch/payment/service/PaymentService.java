@@ -7,7 +7,5 @@ import com.stitch.payment.model.entity.InitializeTransactionResponse;
 public interface PaymentService {
 
      InitializeTransactionResponse initTransaction(InitializeTransactionRequest request);
-
-
      PaymentVerificationResponse paymentVerification(String reference);
 }

@@ -81,7 +81,7 @@ public class PaymentVerificationResponse {
         private String metadata;
 
         @JsonProperty("log")
-        private String log;
+        private Object log;
 
         @JsonProperty("fees")
         private String fees;
