@@ -107,17 +107,17 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>3.11.0</version>  <!-- Make sure this is at least 3.5, 3.11 is current -->
+                     <version>3.2.5</version>  <!-- Make sure this is at least 3.5, 3.11 is current -->
                     <configuration>
-                        <source>17</source>  <!-- your Java version -->
-<!--                        <target>17/target>  &lt;!&ndash; your Java version &ndash;&gt;-->
-                        <annotationProcessorPaths>
-                            <path>
-                                <groupId>org.projectlombok</groupId>
-                                <artifactId>lombok</artifactId>
-                                <version>1.18.36</version>
-                            </path>
-                        </annotationProcessorPaths>
+<!--                        <source>17</source>  -->
+<!--&lt;!&ndash;                        <target>17/target>  &lt;!&ndash; your Java version &ndash;&gt;&ndash;&gt;-->
+<!--                        <annotationProcessorPaths>-->
+<!--                            <path>-->
+<!--                                <groupId>org.projectlombok</groupId>-->
+<!--                                <artifactId>lombok</artifactId>-->
+<!--                                <version>1.18.36</version>-->
+<!--                            </path>-->
+<!--                        </annotationProcessorPaths>-->
                     </configuration>
                 </plugin>
             </plugins>

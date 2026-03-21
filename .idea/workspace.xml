@@ -5,20 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="37808e87-b2e1-4bea-b85c-58053f9412f8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderRequestDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderRequestDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductVariationDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductVariationDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/controller/payment/PaymentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/controller/payment/PaymentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/application-local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/resources/application-local.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/payment/src/main/java/com/stitch/payment/model/dto/PaymentVerificationResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/payment/src/main/java/com/stitch/payment/model/dto/PaymentVerificationResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/payment/src/main/java/com/stitch/payment/service/PaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/payment/src/main/java/com/stitch/payment/service/PaymentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/CartDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/CartDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductUpdateRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductUpdateRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductVariationDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductVariationDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductVariationRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductVariationRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/entity/ProductLike.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/entity/ProductLike.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/entity/ProductVariation.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/entity/ProductVariation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +93,7 @@
       <workItem from="1773600161910" duration="1284000" />
       <workItem from="1773650515721" duration="1445000" />
       <workItem from="1773828854365" duration="595000" />
-      <workItem from="1774005551144" duration="9553000" />
+      <workItem from="1774005551144" duration="12646000" />
     </task>
     <servers />
   </component>
