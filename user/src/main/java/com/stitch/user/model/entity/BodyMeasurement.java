@@ -24,48 +24,48 @@ public class BodyMeasurement extends BaseEntity {
     @NotNull(message = "Neck length is required")
     @Min(value=1, message="neck length: positive number, min 18 is required")
     @Max(value=100, message="neck length: positive number, max 100 is required")
-
     @Column(name = "neck")
-    private int neck;
+    private double neck;
 
     @Column(name = "shoulder")
-    private int shoulder;
+    private double shoulder;
 
     @Column(name = "chest")
-    private int chest;
+    private double chest;
 
     @Column(name = "tummy")
-    private int tummy;
+    private double tummy;
 
     @Column(name = "hip_width")
-    private int hipWidth;
+    private double hipWidth;
 
     @Column(name = "neck_to_hip_length")
-    private int neckToHipLength;
+    private double neckToHipLength;
 
     @Column(name = "short_sleeve_at_biceps")
-    private int shortSleeveAtBiceps;
+    private double shortSleeveAtBiceps;
 
     @Column(name = "mid_sleeve_at_elbow")
-    private int midSleeveAtElbow;
+    private double midSleeveAtElbow;
 
     @Column(name = "long_sleeve_at_wrist")
-    private int longSleeveAtWrist;
+    private double longSleeveAtWrist;
 
     @Column(name = "waist")
-    private int waist;
+    private double waist;
 
     @Column(name = "thigh")
-    private int thigh;
+    private double thigh;
 
     @Column(name = "knee")
-    private int knee;
+    private double knee;
 
     @Column(name = "ankle")
-    private int ankle;
+    private double ankle;
 
     @Column(name = "trouser_length")
-    private int trouserLength;
+    private double trouserLength;
+
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "email_address", referencedColumnName = "email_address")

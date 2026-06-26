@@ -5,18 +5,19 @@ import lombok.Data;
 @Data
 public class BodyMeasurementDto {
     private String tag;
-    private int neck;
-    private int shoulder;
-    private int chest;
-    private int tummy;
-    private int hipWidth;
-    private int neckToHipLength;
-    private int shortSleeveAtBiceps;
-    private int midSleeveAtElbow;
-    private int longSleeveAtWrist;
-    private int waist;
-    private int thigh;
-    private int knee;
-    private int ankle;
-    private int trouserLength;
+    private double neck;
+    private double shoulder;
+    private double chest;
+    private double tummy;
+    private double hipWidth;
+    private double neckToHipLength;
+    private double shortSleeveAtBiceps;
+    private double midSleeveAtElbow;
+    private double longSleeveAtWrist;
+    private double waist;
+    private double thigh;
+    private double knee;
+    private double ankle;
+    private double trouserLength;
+    private boolean isDefault;
 }
