@@ -84,6 +84,12 @@ public class CustomerController {
     }
 
     @Unsecured
+    @PostMapping("/change-password")
+    public ResponseEntity<Response> changePassword(@RequestBody ChangePasswordRequest passwordChangeRequest) {
+        return ResponseEntity.ok(userService.changePassword(passwordChangeRequest));
+    }
+
+    @Unsecured
     @PostMapping(value = "/validate-reset-code")
     public ResponseEntity<Response> validatePasswordResetCode(@RequestBody PasswordResetRequest passwordResetRequest) {
         return ResponseEntity.ok(userService.validatePasswordResetCode(passwordResetRequest));

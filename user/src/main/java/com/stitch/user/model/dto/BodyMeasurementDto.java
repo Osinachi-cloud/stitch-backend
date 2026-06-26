@@ -20,4 +20,5 @@ public class BodyMeasurementDto {
     private double ankle;
     private double trouserLength;
     private boolean isDefault;
+    private boolean isDefault;
 }

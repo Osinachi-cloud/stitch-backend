@@ -70,4 +70,8 @@ public class BodyMeasurement extends BaseEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "email_address", referencedColumnName = "email_address")
     private UserEntity userEntity;
+
+    @Column(name = "is_default")
+    private boolean isDefault;
+
 }
