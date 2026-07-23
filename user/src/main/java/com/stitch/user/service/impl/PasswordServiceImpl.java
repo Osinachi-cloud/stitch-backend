@@ -167,6 +167,8 @@ public class PasswordServiceImpl implements PasswordService {
 
             return ResponseUtils.createDefaultSuccessResponse();
 
+        } catch (UserNotFoundException | PasswordException e) {
+            throw e;
         } catch (Exception e) {
             log.error("Failed to reset password for customer with email address [{}]", email, e);
             throw new PasswordException(ResponseStatus.PROCESSING_ERROR);
