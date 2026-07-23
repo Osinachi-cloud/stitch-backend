@@ -4,42 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="37808e87-b2e1-4bea-b85c-58053f9412f8" name="Changes" comment="" />
+    <list default="true" id="d077c747-81a4-400f-8a62-a138e90e54ea" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="242" />
-    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="McpProjectServerCommands">
-    <commands />
-    <urls />
-  </component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 0
+  &quot;associatedIndex&quot;: 3,
+  &quot;fromUser&quot;: false
 }</component>
-  <component name="ProjectId" id="38hT6FEb8LbvjafSxvAfctHzDLv" />
+  <component name="ProjectId" id="3FwXgIYgRsxsw1hXJ6MJjsCRL0t" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;Application.stitch.executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
     &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;deploy-1&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -47,49 +38,41 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Application.stitch">
-    <configuration name="stitch" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="com.stitch.gateway.StitchGatewayApplication" />
-      <module name="gateway" />
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="currency" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="StitchGatewayApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="gateway" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.stitch.gateway.StitchGatewayApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="currency" />
+      <option name="filePath" />
+      <method v="2" />
     </configuration>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-30f59d01ecdd-26cb7f24e5b0-intellij.indexing.shared.core-IU-253.29346.240" />
-        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.29346.240" />
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.33813.25" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.33813.25" />
       </set>
     </attachedChunks>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="37808e87-b2e1-4bea-b85c-58053f9412f8" name="Changes" comment="" />
-      <created>1769250633102</created>
+      <changelist id="d077c747-81a4-400f-8a62-a138e90e54ea" name="Changes" comment="" />
+      <created>1782987216751</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1769250633102</updated>
-      <workItem from="1769250634312" duration="1414000" />
-      <workItem from="1773600161910" duration="1284000" />
-      <workItem from="1773650515721" duration="1445000" />
-      <workItem from="1773828854365" duration="595000" />
-      <workItem from="1774005551144" duration="12646000" />
+      <updated>1782987216751</updated>
+      <workItem from="1782987217855" duration="7539000" />
+      <workItem from="1783504841204" duration="584000" />
+      <workItem from="1784364646948" duration="2618000" />
     </task>
     <servers />
   </component>
