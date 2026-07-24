@@ -21,7 +21,9 @@ public final class Constants {
             "/api/v1/validate-reset-code",
             "/api/v1/get-all-products",
             "/api/v1/get-product-by-id",
-            "/api/v1/addresses"
+            "/api/v1/addresses",
+            "/api/v1/vendors",
+            "/api/v1/vendor-details"
 //            "/api/v1/fetch-customer-orders"
     };
 }

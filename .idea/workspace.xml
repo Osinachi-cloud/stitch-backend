@@ -6,30 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d077c747-81a4-400f-8a62-a138e90e54ea" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderRequestDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderRequestDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderStatistics.class" beforeDir="false" afterPath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderStatistics.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/entity/ProductOrder.class" beforeDir="false" afterPath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/entity/ProductOrder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/service/serviceImpl/ProductOrderServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/Order/target/classes/com/stitch/service/serviceImpl/ProductOrderServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/ProductSpecification.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/ProductSpecification.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/CartDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/CartDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductFilterRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductFilterRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductUpdateRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductUpdateRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductVariationDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductVariationDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductVariationRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductVariationRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/entity/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/entity/Product.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/entity/ProductCart.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/entity/ProductCart.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/entity/ProductVariation.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/entity/ProductVariation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductCartServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductCartServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductLikeServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductLikeServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/utils/ProductUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/utils/ProductUtils.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,35 +27,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Maven.commons [clean].executor": "Run",
-    "Maven.commons [install].executor": "Run",
-    "Maven.stitch-backend [clean].executor": "Run",
-    "Maven.stitch-backend [install].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "Spring Boot.StitchGatewayApplication.executor": "Run",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "dev",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.commons [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.commons [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.stitch-backend [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.stitch-backend [install].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.StitchGatewayApplication.executor&quot;: &quot;Run&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="currency" />
