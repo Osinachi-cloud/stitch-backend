@@ -59,7 +59,6 @@ public class CustomerController {
 
     }
 
-    @Unsecured
     @GetMapping("/vendors")
     public ResponseEntity<PaginatedResponse<List<UserDto>>> getVendors(
         @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
@@ -116,7 +115,6 @@ public class CustomerController {
         return ResponseEntity.ok(userService.getCustomerByEmail(emailAddress));
     }
 
-    @Unsecured
     @GetMapping("/vendor-details")
     public ResponseEntity<CustomerDto> getVendorByEmailAddress(@RequestParam("emailAddress") String emailAddress) {
         return ResponseEntity.ok(userService.getCustomerByEmail(emailAddress));
