@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d077c747-81a4-400f-8a62-a138e90e54ea" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/controller/user/CustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/controller/user/CustomerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
