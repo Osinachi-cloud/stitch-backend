@@ -158,7 +158,7 @@ public class PasswordServiceImpl implements PasswordService {
 
             boolean isPasswordMatch = passwordEncoder.matches(passwordResetRequest.getOldPassword(), user.getPassword());
             if (!isPasswordMatch) {
-                throw new UserNotFoundException(ResponseStatus.PASSWORD_MISMATCH);
+                throw new UserNotFoundException(ResponseStatus.OLD_PASSWORD_INCORRECT);
             }
 
             user.setPassword(encode(passwordResetRequest.getPassword()));
