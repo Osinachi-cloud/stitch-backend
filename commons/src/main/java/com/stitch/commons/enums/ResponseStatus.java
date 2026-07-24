@@ -19,7 +19,7 @@ public enum ResponseStatus {
     USER_NOT_FOUND(13,"The user could not be found", HttpStatus.NOT_FOUND),
     INVALID_EMAIL_ADDRESS(14,"The email address is invalid", HttpStatus.BAD_REQUEST),
     PASSWORD_MISMATCH(15, "Passwords do not match",HttpStatus.BAD_REQUEST),
-    OLD_PASSWORD_INCORRECT(16, "The old password is incorrect",HttpStatus.BAD_REQUEST),
+    OLD_PASSWORD_INCORRECT(16, "incorrect password",HttpStatus.BAD_REQUEST),
     PASSWORD_EMPTY(17, "Empty password(s) provided",HttpStatus.BAD_REQUEST),
     EMAIL_ADDRESS_UNVERIFIED(18, "Email address has not been verified", HttpStatus.BAD_REQUEST),
     PASSWORD_RESET_CODE_UNVERIFIED(19, "Password reset code sent to email has not been verified", HttpStatus.BAD_REQUEST),
