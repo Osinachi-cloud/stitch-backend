@@ -539,7 +539,7 @@ public class UserServiceImpl implements UserService {
             PaginatedResponse<List<UserDto>> paginatedResponse = new PaginatedResponse<>();
             paginatedResponse.setPage(users.getNumber());
             paginatedResponse.setSize(users.getSize());
-            paginatedResponse.setTotal((int) userRepository.count());
+            paginatedResponse.setTotal((int) users.getTotalElements());
             paginatedResponse.setData(convertUserListToDto(users.getContent()));
             return paginatedResponse;
         } catch (Exception e) {
