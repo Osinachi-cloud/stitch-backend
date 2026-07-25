@@ -86,34 +86,55 @@ public class ProductServiceImpl implements ProductService {
             Product product = new Product();
             String prodId = NumberUtils.generate(10);
             product.setProductId(prodId);
-            product.setProductImage(productRequest.getProductImage());
             product.setCategory(ProductCategory.valueOf(productRequest.getCategory()));
             product.setFixedPrice(productRequest.isFixedPrice());
-            product.setQuantity(productRequest.getQuantity());
-            product.setPrice(productRequest.getPrice());
+
+            BigDecimal price = productRequest.getPrice() != null ? productRequest.getPrice() : BigDecimal.ZERO;
+            BigDecimal quantity = productRequest.getQuantity() != null ? productRequest.getQuantity() : BigDecimal.ZERO;
+            BigDecimal discount = productRequest.getDiscount() != null ? productRequest.getDiscount() : BigDecimal.ZERO;
+
+            product.setQuantity(quantity);
+            product.setPrice(price);
             product.setName(productRequest.getName());
             product.setCode(productRequest.getCode());
             product.setShortDescription(productRequest.getShortDescription());
             product.setLongDescription(productRequest.getLongDescription());
-            product.setSellingPrice(productRequest.getPrice().subtract(productRequest.getPrice().multiply(productRequest.getDiscount()).divide(BigDecimal.valueOf(100))));
+
+            // Treat discount as flat amount (Naira) since frontend labels it as "Discount (₦)"
+            BigDecimal sellingPrice = price.subtract(discount);
+            if (sellingPrice.compareTo(BigDecimal.ZERO) < 0) {
+                sellingPrice = BigDecimal.ZERO;
+            }
+            product.setSellingPrice(sellingPrice);
+
             product.setMaterialUsed(productRequest.getMaterialUsed());
             product.setReadyIn(productRequest.getReadyIn());
-            product.setDiscount(productRequest.getDiscount());
+            product.setDiscount(discount);
             product.setVendor(customer);
 
             log.info("productRequest.getProductVariationDtoList() : {}", productRequest.getProductVariation());
 
             List<ProductVariation> productVariationList = convertProductVariationDtoListToEntity(productRequest.getProductVariation());
-            List<ProductVariation> savedProductVariationList = productVariationRepository.saveAll(productVariationList);
-
-            product.setProductVariation(savedProductVariationList);
+            product.setProductVariation(productVariationList);
 
             product.setPublishStatus(PublishStatus.valueOf(productRequest.getPublishStatus()));
 
-            if (Objects.nonNull(productRequest.getProductImage())) {
-                byte[] imageBytes = Base64.decodeBase64(productRequest.getProductImage());
-                String base64EncodedImage = Base64.encodeBase64String(imageBytes);
-                product.setProductImage(base64EncodedImage);
+            // Only process image if it's a non-empty base64 string or URL
+            if (StringUtils.isNotBlank(productRequest.getProductImage())) {
+                String image = productRequest.getProductImage().trim();
+                // Only base64-decode if it looks like base64 (no http:// or https:// prefix)
+                if (!image.startsWith("http://") && !image.startsWith("https://")) {
+                    try {
+                        byte[] imageBytes = Base64.decodeBase64(image);
+                        String base64EncodedImage = Base64.encodeBase64String(imageBytes);
+                        product.setProductImage(base64EncodedImage);
+                    } catch (Exception imgEx) {
+                        log.warn("Failed to base64-decode product image, storing as-is: {}", imgEx.getMessage());
+                        product.setProductImage(image);
+                    }
+                } else {
+                    product.setProductImage(image);
+                }
             }
 
             Product savedProduct = productRepository.save(product);
@@ -124,10 +145,9 @@ public class ProductServiceImpl implements ProductService {
             log.error("Custom exception occurred during product creation :: {}", e.getMessage());
             throw new ProductException(e.getMessage(), e.getCode());
         } catch (Exception e) {
-            log.error("An error occurred while creating product {}", e.getMessage());
-            throw new ProductException("Failed to create product", 500);
+            log.error("An error occurred while creating product", e);
+            throw new ProductException("Failed to create product: " + e.getMessage(), 500);
         }
-
     }
 
 
@@ -136,11 +156,10 @@ public class ProductServiceImpl implements ProductService {
         if (!Objects.nonNull(productRequest)) {
             throw new ProductException("product request can not be null", 400);
         }
-        if (StringUtils.isBlank(productRequest.getProductImage())
-                || StringUtils.isBlank(productRequest.getName())
+        if (StringUtils.isBlank(productRequest.getName())
                 || StringUtils.isBlank(productRequest.getCode())
                 || StringUtils.isBlank(productRequest.getCategory())) {
-            throw new ProductException("Invalid request: Product name, image, code and category required", 400);
+            throw new ProductException("Invalid request: Product name, code and category required", 400);
         }
 
     }

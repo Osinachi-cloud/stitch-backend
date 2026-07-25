@@ -19,6 +19,8 @@ public final class Constants {
             case 202 -> HttpStatus.ACCEPTED;
             case 400 -> HttpStatus.BAD_REQUEST;
             case 401 -> HttpStatus.UNAUTHORIZED;
+            case 403 -> HttpStatus.FORBIDDEN;
+            case 404 -> HttpStatus.NOT_FOUND;
             case 405 -> HttpStatus.CONFLICT;
             case 406 -> HttpStatus.NOT_ACCEPTABLE;
             case 417 -> HttpStatus.EXPECTATION_FAILED;

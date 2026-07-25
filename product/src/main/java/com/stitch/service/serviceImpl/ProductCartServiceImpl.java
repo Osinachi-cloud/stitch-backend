@@ -343,7 +343,7 @@ public class ProductCartServiceImpl implements ProductCartService {
             UserEntity customer = customerRepository.findByEmailAddress(username)
                     .orElseThrow(() -> new CartException("Customer with Id : " + username + " does not exist", 404));
             BigDecimal sum = productCartRepository.sumAmountByQuantityByUserId(customer.getEmailAddress());
-            return Map.of("sum", sum);
+            return Map.of("sum", sum != null ? sum : BigDecimal.ZERO);
         } catch (CartException e) {
             log.error("Custom error getting sum :: {}", e.getMessage());
             throw new CartException(e.getMessage(), e.getCode());
