@@ -4,7 +4,78 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d077c747-81a4-400f-8a62-a138e90e54ea" name="Changes" comment="" />
+    <list default="true" id="d077c747-81a4-400f-8a62-a138e90e54ea" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/logs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/order/com/stitch/exception/AppExceptionHandler.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/order/com/stitch/exception/OrderException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/order/com/stitch/model/entity/ProductOrder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/stitch.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/src/main/java/com/stitch/service/serviceImpl/ProductOrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Order/src/main/java/com/stitch/service/serviceImpl/ProductOrderServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/order/com/stitch/model/dto/ProductOrderDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/order/com/stitch/model/dto/ProductOrderRequest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderRequestDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/order/com/stitch/model/dto/ProductOrderRequestDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderStatistics.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/order/com/stitch/model/dto/ProductOrderStatistics.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductVariationDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/order/com/stitch/model/dto/ProductVariationDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/entity/ProductOrder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/enums/OrderStatus.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/order/com/stitch/model/enums/OrderStatus.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/enums/PaymentMode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/order/com/stitch/model/enums/PaymentMode.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/repository/ProductOrderRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/order/com/stitch/repository/ProductOrderRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/service/ProductOrderService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/order/com/stitch/service/ProductOrderService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/service/serviceImpl/ProductOrderServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/order/com/stitch/service/serviceImpl/ProductOrderServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/utils/Utils.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/order/com/stitch/utils/Utils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/maven-archiver/pom.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/commons/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/commons/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commons/src/main/java/com/stitch/commons/config/ThymeleafConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/commons/src/main/java/com/stitch/commons/config/ThymeleafConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commons/src/main/java/com/stitch/commons/enums/ResponseStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/commons/src/main/java/com/stitch/commons/enums/ResponseStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commons/src/main/java/com/stitch/commons/util/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/commons/src/main/java/com/stitch/commons/util/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/gateway.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/controller/user/CustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/controller/user/CustomerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/exception/GatewayCustomExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/exception/GatewayCustomExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/util/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/util/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/application-local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/resources/application-local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/src/main/java/com/stitch/service/serviceImpl/ProductCartServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/product/src/main/java/com/stitch/service/serviceImpl/ProductCartServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/src/main/java/com/stitch/service/serviceImpl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/product/src/main/java/com/stitch/service/serviceImpl/ProductServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/ProductSpecification.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/ProductCategory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/CartDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductFilterRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductUpdateRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductVariationDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductVariationRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/entity/Product.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/entity/ProductCart.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/entity/ProductLike.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/entity/ProductVariation.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/enums/PublishStatus.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/repository/ProductCartRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/repository/ProductLikeRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/repository/ProductRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/repository/ProductVariationRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/service/ProductCartService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/service/ProductLikeService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/service/ProductService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductCartServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductLikeServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/utils/ProductUtils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/model/dto/CustomerRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/model/dto/CustomerRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/service/impl/PasswordServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/service/impl/PasswordServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/service/impl/UserServiceImpl.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -42,7 +113,7 @@
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "Spring Boot.StitchGatewayApplication.executor": "Run",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "dev",
+    "git-widget-placeholder": "Merging deploy-1",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
