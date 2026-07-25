@@ -4,33 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d077c747-81a4-400f-8a62-a138e90e54ea" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderRequestDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderRequestDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderStatistics.class" beforeDir="false" afterPath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/dto/ProductOrderStatistics.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/entity/ProductOrder.class" beforeDir="false" afterPath="$PROJECT_DIR$/Order/target/classes/com/stitch/model/entity/ProductOrder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/target/classes/com/stitch/service/serviceImpl/ProductOrderServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/Order/target/classes/com/stitch/service/serviceImpl/ProductOrderServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/ProductSpecification.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/ProductSpecification.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/CartDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/CartDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductFilterRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductFilterRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductUpdateRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductUpdateRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductVariationDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductVariationDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductVariationRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/dto/ProductVariationRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/entity/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/entity/Product.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/entity/ProductCart.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/entity/ProductCart.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/model/entity/ProductVariation.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/model/entity/ProductVariation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductCartServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductCartServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductLikeServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductLikeServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/utils/ProductUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/utils/ProductUtils.class" afterDir="false" />
-    </list>
+    <list default="true" id="d077c747-81a4-400f-8a62-a138e90e54ea" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -68,7 +42,7 @@
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "Spring Boot.StitchGatewayApplication.executor": "Run",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "dev",
+    "git-widget-placeholder": "main",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
