@@ -17,4 +17,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     Page<Product> findProductsByVendor(UserEntity customer, Pageable pageable);
 
     void deleteByProductId(String productId);
+
+    boolean existsByCode(String code);
 }

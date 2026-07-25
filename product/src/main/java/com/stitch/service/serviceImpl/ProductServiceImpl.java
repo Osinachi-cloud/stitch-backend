@@ -81,6 +81,15 @@ public class ProductServiceImpl implements ProductService {
                 throw new ProductException("Vendor with : " + email + " does not exist", 404);
             }
 
+            // Check for duplicate code BEFORE attempting save
+            if (productRepository.existsByCode(productRequest.getCode())) {
+                throw new ProductException(
+                    "A product with code '" + productRequest.getCode() + "' already exists. " +
+                    "Please use a different product code and try again.",
+                    HttpStatus.CONFLICT.value()
+                );
+            }
+
             UserEntity customer = customerExist.get();
 
             Product product = new Product();
@@ -144,10 +153,41 @@ public class ProductServiceImpl implements ProductService {
         } catch (ProductException e) {
             log.error("Custom exception occurred during product creation :: {}", e.getMessage());
             throw new ProductException(e.getMessage(), e.getCode());
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            String fullError = getFullExceptionMessage(e);
+            log.error("Data integrity violation while creating product: {}", fullError);
+            if (containsProductPkeyError(fullError)) {
+                throw new ProductException(
+                    "System error: The database ID sequence is out of sync. " +
+                    "Please contact support or try again in a moment.",
+                    HttpStatus.CONFLICT.value()
+                );
+            }
+            throw new ProductException(
+                "A product with code '" + productRequest.getCode() + "' already exists or conflicts with an existing record. " +
+                "Please use a unique product code and try again.",
+                HttpStatus.CONFLICT.value()
+            );
         } catch (Exception e) {
             log.error("An error occurred while creating product", e);
-            throw new ProductException("Failed to create product: " + e.getMessage(), 500);
+            throw new ProductException("Unable to create product at this time. Please check your internet connection and try again.", 500);
         }
+    }
+
+    private String getFullExceptionMessage(Throwable e) {
+        StringBuilder sb = new StringBuilder();
+        Throwable current = e;
+        while (current != null) {
+            if (current.getMessage() != null) {
+                sb.append(current.getMessage()).append(" ");
+            }
+            current = current.getCause();
+        }
+        return sb.toString().toLowerCase();
+    }
+
+    private boolean containsProductPkeyError(String message) {
+        return message.contains("product_pkey") || message.contains("duplicate key value violates unique constraint");
     }
 
 
