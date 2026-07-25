@@ -11,6 +11,7 @@ import com.stitch.user.model.entity.Address;
 import com.stitch.user.model.entity.UserEntity;
 import com.stitch.user.service.AddressService;
 import com.stitch.user.service.ContactVerificationService;
+import com.stitch.user.service.RoleService;
 import com.stitch.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,7 @@ public class CustomerController {
     private final AuthenticationService authenticationService;
     private final ContactVerificationService verificationService;
     private final AddressService addressService;
+    private final RoleService roleService;
 
 
     @Unsecured
@@ -55,6 +57,14 @@ public class CustomerController {
          @RequestParam(required = false) String email, @RequestParam(required = false) Long roleId) {
             return ResponseEntity.ok(userService.fetchAllUsersBy(page, size, firstName, lastName, email, roleId));
 
+    }
+
+    @GetMapping("/vendors")
+    public ResponseEntity<PaginatedResponse<List<UserDto>>> getVendors(
+        @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        com.stitch.user.model.entity.Role vendorRole = roleService.findRoleByName("VENDOR")
+            .orElseThrow(() -> new RuntimeException("Vendor role not found"));
+        return ResponseEntity.ok(userService.fetchAllUsersBy(page, size, null, null, null, vendorRole.getId()));
     }
 
     @PutMapping("/update-customer")
@@ -102,6 +112,11 @@ public class CustomerController {
 
     @GetMapping("/customer-details")
     public ResponseEntity<CustomerDto> getCustomerByEmailAddress(@RequestParam("emailAddress") String emailAddress) {
+        return ResponseEntity.ok(userService.getCustomerByEmail(emailAddress));
+    }
+
+    @GetMapping("/vendor-details")
+    public ResponseEntity<CustomerDto> getVendorByEmailAddress(@RequestParam("emailAddress") String emailAddress) {
         return ResponseEntity.ok(userService.getCustomerByEmail(emailAddress));
     }
 
