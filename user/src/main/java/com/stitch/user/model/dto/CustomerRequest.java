@@ -1,5 +1,6 @@
 package com.stitch.user.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @Data
@@ -20,5 +21,7 @@ public class CustomerRequest {
     private String roleName;
     private String username;
     private String shortBio;
+
+    @JsonProperty("isVendor")
     private boolean isVendor;
 }

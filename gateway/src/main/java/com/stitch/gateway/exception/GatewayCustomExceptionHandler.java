@@ -43,29 +43,35 @@ public class GatewayCustomExceptionHandler {
 
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<Map<String, String>> handleApiExceptions(ApiException ex) {
-        return new ResponseEntity<>(Map.of("error", ex.getMessage()), status(ex.getCode()));
+        String message = ex.getMessage() != null ? ex.getMessage() : "API error";
+        return new ResponseEntity<>(Map.of("error", message), status(ex.getCode()));
     }
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<Map<String, String>> handleApiExceptions(BadCredentialsException ex) {
-        return new ResponseEntity<>(Map.of("error", ex.getMessage()), UNAUTHORIZED);
+    public ResponseEntity<Map<String, String>> handleBadCredentials(BadCredentialsException ex) {
+        String message = ex.getMessage() != null ? ex.getMessage() : "Invalid credentials";
+        return new ResponseEntity<>(Map.of("error", message), UNAUTHORIZED);
     }
     @ExceptionHandler(OrderException.class)
     public ResponseEntity<Map<String, String>> handleOrderException(OrderException ex) {
-        return new ResponseEntity<>(Map.of("error", ex.getMessage()), status(ex.getCode()));
+        String message = ex.getMessage() != null ? ex.getMessage() : "Order processing error";
+        return new ResponseEntity<>(Map.of("error", message), status(ex.getCode()));
     }
     @ExceptionHandler(ProductException.class)
     public ResponseEntity<Map<String, String>> handleProductException(ProductException ex) {
-        return new ResponseEntity<>(Map.of("error", ex.getMessage()), status(ex.getCode()));
+        String message = ex.getMessage() != null ? ex.getMessage() : "Product processing error";
+        return new ResponseEntity<>(Map.of("error", message), status(ex.getCode()));
     }
 
     @ExceptionHandler(PaymentException.class)
     public ResponseEntity<Map<String, String>> handlePaymentException(PaymentException ex) {
-        return new ResponseEntity<>(Map.of("error", ex.getMessage()), status(ex.getCode()));
+        String message = ex.getMessage() != null ? ex.getMessage() : "Payment processing error";
+        return new ResponseEntity<>(Map.of("error", message), status(ex.getCode()));
     }
 
     @ExceptionHandler(CartException.class)
     public ResponseEntity<Map<String, String>> handleCartException(CartException ex) {
-        return new ResponseEntity<>(Map.of("error", ex.getMessage()), status(ex.getCode()));
+        String message = ex.getMessage() != null ? ex.getMessage() : "Cart processing error";
+        return new ResponseEntity<>(Map.of("error", message), status(ex.getCode()));
     }
     @ExceptionHandler(UserException.class)
     public ResponseEntity<Map<String, String>> handleUserException(UserException ex) {

@@ -187,12 +187,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     @Override
     public ProductOrderStatistics getCustomerProductStat() {
         try {
-
             String userMail = getLoggedInUser().orElseThrow(() -> new OrderException("Failed to authenticate user", 403));
-            List<ProductOrder> existingProductOrder = productOrderRepository.findByEmailAddress(userMail);
-            if (existingProductOrder.isEmpty()) {
-                throw new OrderException("customer with : " + userMail + " does not exist", 404);
-            }
             ProductOrderStatistics productOrderStatistics = new ProductOrderStatistics();
             productOrderStatistics.setAllOrdersCount(productOrderRepository.countAllOrdersByCustomerId(userMail));
             productOrderStatistics.setCompletedOrdersCount(productOrderRepository.countCompletedOrdersByCustomerId(userMail));
@@ -209,17 +204,12 @@ public class ProductOrderServiceImpl implements ProductOrderService {
             log.error("An error occurred getting customer's order statistics : {}", e.getMessage());
             throw new OrderException("Failed to get customer's order statistics", 417);
         }
-
     }
 
     @Override
     public ProductOrderStatistics getVendorProductStat() {
         try {
             String username = getLoggedInUser().orElseThrow(() -> new OrderException("Failed to authenticate user", 403));
-            List<ProductOrder> existingProductOrder = productOrderRepository.findProductOrderByVendorEmailAddress(username);
-            if (existingProductOrder.isEmpty()) {
-                throw new OrderException("No order found for logged in user", 404);
-            }
             ProductOrderStatistics productOrderStatistics = new ProductOrderStatistics();
             productOrderStatistics.setAllOrdersCount(productOrderRepository.countAllOrdersByVendorId(username));
             productOrderStatistics.setCompletedOrdersCount(productOrderRepository.countCompletedOrdersByVendorId(username));
