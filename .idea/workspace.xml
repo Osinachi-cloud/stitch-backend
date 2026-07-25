@@ -6,16 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d077c747-81a4-400f-8a62-a138e90e54ea" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/src/main/java/com/stitch/service/serviceImpl/ProductOrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Order/src/main/java/com/stitch/service/serviceImpl/ProductOrderServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/commons/src/main/java/com/stitch/commons/util/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/commons/src/main/java/com/stitch/commons/util/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/exception/GatewayCustomExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/stitch/gateway/exception/GatewayCustomExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/order/com/stitch/service/serviceImpl/ProductOrderServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/order/com/stitch/service/serviceImpl/ProductOrderServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/src/main/java/com/stitch/service/serviceImpl/ProductCartServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/product/src/main/java/com/stitch/service/serviceImpl/ProductCartServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/src/main/java/com/stitch/service/serviceImpl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/product/src/main/java/com/stitch/service/serviceImpl/ProductServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductCartServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductCartServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/product/target/classes/com/stitch/service/serviceImpl/ProductServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/model/dto/CustomerRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/stitch/user/model/dto/CustomerRequest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,16 +19,16 @@
     <option name="skipTests" value="true" />
   </component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 3,
-  &quot;fromUser&quot;: false
-}</component>
+    &quot;associatedIndex&quot;: 3,
+    &quot;fromUser&quot;: false
+    }</component>
   <component name="ProjectId" id="3FwXgIYgRsxsw1hXJ6MJjsCRL0t" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
+    &quot;keyToString&quot;: {
     &quot;Maven.commons [clean].executor&quot;: &quot;Run&quot;,
     &quot;Maven.commons [install].executor&quot;: &quot;Run&quot;,
     &quot;Maven.stitch-backend [clean].executor&quot;: &quot;Run&quot;,
@@ -64,8 +54,8 @@
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
-  }
-}</component>
+    }
+    }</component>
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="currency" />
