@@ -36,7 +36,8 @@ public class GatewayCustomExceptionHandler {
 
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setCode(2);
-        errorResponse.setMessage("Error processing request");
+        String details = e.getMessage() != null ? e.getMessage() : "No details available";
+        errorResponse.setMessage(e.getClass().getSimpleName() + ": " + details);
 
         return ResponseEntity.badRequest().body(errorResponse);
     }
@@ -75,19 +76,21 @@ public class GatewayCustomExceptionHandler {
     }
     @ExceptionHandler(UserException.class)
     public ResponseEntity<Map<String, String>> handleUserException(UserException ex) {
+        String message = ex.getMessage() != null ? ex.getMessage() : "User processing error";
         if (Objects.nonNull(ex.getStatus())){
-            return new ResponseEntity<>(Map.of("error", ex.getMessage()), ex.getStatus().getHttpStatus());
+            return new ResponseEntity<>(Map.of("error", message), ex.getStatus().getHttpStatus());
         }
         if (ex.getCode() >= 200){
-            return new ResponseEntity<>(Map.of("error", ex.getMessage()), status(ex.getCode()));
+            return new ResponseEntity<>(Map.of("error", message), status(ex.getCode()));
         }
-        return new ResponseEntity<>(Map.of("error", ex.getMessage()), BAD_REQUEST);
+        return new ResponseEntity<>(Map.of("error", message), BAD_REQUEST);
     }
 
 
     @ExceptionHandler(StitchException.class)
     public ResponseEntity<Map<String, String>> handleStitchException(StitchException ex) {
-        return new ResponseEntity<>(Map.of("error", ex.getMessage()), BAD_REQUEST);
+        String message = ex.getMessage() != null ? ex.getMessage() : "An error occurred";
+        return new ResponseEntity<>(Map.of("error", message), BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
