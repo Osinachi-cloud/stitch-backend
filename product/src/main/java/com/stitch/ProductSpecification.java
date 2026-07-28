@@ -87,9 +87,29 @@ public final class ProductSpecification {
         };
     }
 
-    public static Specification<Product> nameEqual(String name) {
-        return (root, query, builder) ->
-                name != null ? builder.equal(root.get("name"), name) : null;
+    public static Specification<Product> nameLike(String name) {
+        return (root, query, builder) -> {
+            if (name == null || name.isBlank()) return null;
+            return builder.like(builder.lower(root.get("name")), "%" + name.toLowerCase() + "%");
+        };
+    }
+
+    public static Specification<Product> shortDescriptionLike(String text) {
+        return (root, query, builder) -> {
+            if (text == null || text.isBlank()) return null;
+            return builder.like(builder.lower(root.get("shortDescription")), "%" + text.toLowerCase() + "%");
+        };
+    }
+
+    public static Specification<Product> vendorNameLike(String text) {
+        return (root, query, builder) -> {
+            if (text == null || text.isBlank()) return null;
+            return builder.or(
+                    builder.like(builder.lower(root.get("vendor").get("firstName")), "%" + text.toLowerCase() + "%"),
+                    builder.like(builder.lower(root.get("vendor").get("lastName")), "%" + text.toLowerCase() + "%"),
+                    builder.like(builder.lower(root.get("vendor").get("emailAddress")), "%" + text.toLowerCase() + "%")
+            );
+        };
     }
 
     public static Specification<Product> productIdEqual(String productId) {

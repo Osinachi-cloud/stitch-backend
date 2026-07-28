@@ -334,11 +334,13 @@ public class ProductServiceImpl implements ProductService {
     public PaginatedResponse<List<ProductDto>> fetchAllProductsBy(ProductFilterRequest request) {
         try {
             Specification<Product> spec = Specification.where(
-                            ProductSpecification.nameEqual(request.getName()))
-                    .and(ProductSpecification.categoryIn(request.getCategories())) // Use categoryIn for multiple categories
+                            ProductSpecification.nameLike(request.getName()))
+                    .and(ProductSpecification.shortDescriptionLike(request.getName()))
+                    .and(ProductSpecification.vendorNameLike(request.getName()))
+                    .and(ProductSpecification.categoryIn(request.getCategories()))
                     .and(ProductSpecification.codeEqual(request.getCode()))
                     .and(ProductSpecification.productIdEqual(request.getProductId()))
-                    .and(ProductSpecification.priceBetween(request.getMinPrice(), request.getMaxPrice())); // Add price range filter
+                    .and(ProductSpecification.priceBetween(request.getMinPrice(), request.getMaxPrice()));
             return mapProducts(spec, request);
         } catch (Exception e) {
             log.error("An error occurred while fetching products : {}", e.getMessage());
@@ -371,10 +373,13 @@ public class ProductServiceImpl implements ProductService {
 
 
             Specification<Product> spec = Specification.where(
-                            ProductSpecification.nameEqual(request.getName()))
+                            ProductSpecification.nameLike(request.getName()))
+                    .and(ProductSpecification.shortDescriptionLike(request.getName()))
+                    .and(ProductSpecification.vendorNameLike(request.getName()))
                     .and(ProductSpecification.categoryIn(request.getCategories()))
                     .and(ProductSpecification.codeEqual(request.getCode()))
-                    .and(ProductSpecification.productIdEqual(request.getProductId()));
+                    .and(ProductSpecification.productIdEqual(request.getProductId()))
+                    .and(ProductSpecification.priceBetween(request.getMinPrice(), request.getMaxPrice()));
 
             Page<Product> products = productRepository.findAll(spec, PageRequest.of(request.getPage(), request.getSize(), Sort.by(Sort.Direction.DESC, "dateCreated")));
 
