@@ -310,7 +310,7 @@ public class ProductServiceImpl implements ProductService {
             UserEntity vendor = userRepository.findByEmailAddress(emailAddress)
                     .orElseThrow(() -> new ProductException("Vendor with Id: " + request.getVendorId() + " does not exist", 404));
             Specification<Product> spec = Specification.where(
-                            ProductSpecification.nameEqual(request.getName()))
+                            ProductSpecification.nameLike(request.getName()))
                     .and(ProductSpecification.categoryIn(request.getCategories()))
                     .and(ProductSpecification.codeEqual(request.getCode()))
                     .and(ProductSpecification.productIdEqual(request.getProductId()))
