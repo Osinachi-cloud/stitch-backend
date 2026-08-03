@@ -28,6 +28,9 @@ public class LoginResponse {
 
     public LoginResponse(CustomerDto customer, Token token) {
         this.customerId = customer.getUserId();
+        if (customer.getRole() != null && "VENDOR".equalsIgnoreCase(customer.getRole().getName())) {
+            this.vendorId = customer.getUserId();
+        }
         this.tier = customer.getTier();
         this.country = customer.getCountry();
         this.firstName = customer.getFirstName();
