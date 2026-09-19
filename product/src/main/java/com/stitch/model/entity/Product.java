@@ -80,6 +80,33 @@ public class Product extends BaseEntity {
     @Min(value = 0, message = "Value cannot be negative")
     private BigDecimal discount;
 
+    @Column(name = "expiry_date")
+    private String expiryDate;
+
+    @Column(name = "sleeves")
+    private String sleeves;
+
+    @Column(name = "embroidery")
+    private String embroidery;
+
+    @Column(name = "colour")
+    private String colour;
+
+    @Column(name = "style")
+    private String style;
+
+    @Column(name = "pattern")
+    private String pattern;
+
+    @Column(name = "gender")
+    private String gender;
+
+    @Column(name = "product_image_2")
+    private String productImage2;
+
+    @Column(name = "product_image_3")
+    private String productImage3;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id", referencedColumnName = "product_id")
     private List<ProductVariation> productVariation;

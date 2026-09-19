@@ -56,5 +56,23 @@ public class ProductDto {
 
     private UserDto vendor;
 
+    private String expiryDate;
+
+    private String sleeves;
+
+    private String embroidery;
+
+    private String colour;
+
+    private String style;
+
+    private String pattern;
+
+    private String gender;
+
+    private String productImage2;
+
+    private String productImage3;
+
     List<ProductVariationDto> productVariation;
 }

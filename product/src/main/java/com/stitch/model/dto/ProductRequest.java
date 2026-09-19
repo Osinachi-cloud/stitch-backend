@@ -42,5 +42,23 @@ public class ProductRequest {
 
     private String readyIn;
 
+    private String expiryDate;
+
+    private String sleeves;
+
+    private String embroidery;
+
+    private String colour;
+
+    private String style;
+
+    private String pattern;
+
+    private String gender;
+
+    private String productImage2;
+
+    private String productImage3;
+
     private List<ProductVariationDto> productVariation;
 }

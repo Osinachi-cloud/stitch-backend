@@ -52,7 +52,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 logger.error("Token authentication error: " + ex.getMessage());
                 SecurityContextHolder.clearContext();
                 httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());
-                throw new UserException("Token authentication error: " + ex.getMessage());
+                return;
             }
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);

@@ -38,6 +38,9 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 
+        // Add the role itself as an authority so @PreAuthorize("hasAuthority('VENDOR')") works
+        grantedAuthorities.add(new SimpleGrantedAuthority(customerDto.getRole().getName()));
+
         if(customerDto.getRole().getPermissionsDto() != null){
             for(PermissionDto permissionDto: customerDto.getRole().getPermissionsDto()){
                 grantedAuthorities.add(new SimpleGrantedAuthority(permissionDto.getName()));

@@ -146,6 +146,16 @@ public class ProductServiceImpl implements ProductService {
                 }
             }
 
+            product.setExpiryDate(productRequest.getExpiryDate());
+            product.setSleeves(productRequest.getSleeves());
+            product.setEmbroidery(productRequest.getEmbroidery());
+            product.setColour(productRequest.getColour());
+            product.setStyle(productRequest.getStyle());
+            product.setPattern(productRequest.getPattern());
+            product.setGender(productRequest.getGender());
+            product.setProductImage2(productRequest.getProductImage2());
+            product.setProductImage3(productRequest.getProductImage3());
+
             Product savedProduct = productRepository.save(product);
             log.info("saved Product : {}", savedProduct);
 
