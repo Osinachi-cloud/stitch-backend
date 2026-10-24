@@ -171,7 +171,7 @@ public class ProductServiceImpl implements ProductService {
             throw new ProductException(e.getMessage(), e.getCode());
         } catch (org.springframework.dao.DataIntegrityViolationException e) {
             String fullError = getFullExceptionMessage(e);
-            log.error("Data integrity violation while creating product: {}", fullError);
+            log.error("Data integrity violation while creating product: {}", fullError, e);
             if (containsProductPkeyError(fullError)) {
                 throw new ProductException(
                     "System error: Generated product ID already exists. Please try again in a moment.",
@@ -186,7 +186,9 @@ public class ProductServiceImpl implements ProductService {
                 );
             }
             throw new ProductException(
-                "A database conflict occurred while saving the product. Please try again in a moment.",
+                "A database conflict occurred while saving the product. " +
+                "Constraint: [" + extractConstraintName(fullError) + "]. " +
+                "Details: " + fullError,
                 HttpStatus.CONFLICT.value()
             );
         } catch (Exception e) {
@@ -208,7 +210,25 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private boolean containsProductPkeyError(String message) {
-        return message.contains("product_pkey") || message.contains("duplicate key value violates unique constraint");
+        return message.contains("product_pkey")
+                || message.contains("product_id")
+                || message.contains("productid")
+                || message.contains("duplicate key value violates unique constraint");
+    }
+
+    private String extractConstraintName(String message) {
+        if (message == null) {
+            return "unknown";
+        }
+        int idx = message.indexOf("constraint");
+        if (idx >= 0) {
+            return message.substring(idx);
+        }
+        idx = message.indexOf("unique");
+        if (idx >= 0) {
+            return message.substring(idx);
+        }
+        return message.length() > 200 ? message.substring(0, 200) : message;
     }
 
 
