@@ -93,7 +93,13 @@ public class ProductServiceImpl implements ProductService {
             UserEntity customer = customerExist.get();
 
             Product product = new Product();
+            // Generate a unique product id (retry on collision)
             String prodId = NumberUtils.generate(10);
+            int attempts = 1;
+            while (productRepository.findByProductId(prodId).isPresent() && attempts < 10) {
+                prodId = NumberUtils.generate(10);
+                attempts++;
+            }
             product.setProductId(prodId);
             product.setCategory(ProductCategory.valueOf(productRequest.getCategory()));
             product.setFixedPrice(productRequest.isFixedPrice());
@@ -168,14 +174,19 @@ public class ProductServiceImpl implements ProductService {
             log.error("Data integrity violation while creating product: {}", fullError);
             if (containsProductPkeyError(fullError)) {
                 throw new ProductException(
-                    "System error: The database ID sequence is out of sync. " +
-                    "Please contact support or try again in a moment.",
+                    "System error: Generated product ID already exists. Please try again in a moment.",
+                    HttpStatus.CONFLICT.value()
+                );
+            }
+            if (fullError.contains("product_code_uk") || fullError.contains("code")) {
+                throw new ProductException(
+                    "A product with code '" + productRequest.getCode() + "' already exists. " +
+                    "Please use a different product code and try again.",
                     HttpStatus.CONFLICT.value()
                 );
             }
             throw new ProductException(
-                "A product with code '" + productRequest.getCode() + "' already exists or conflicts with an existing record. " +
-                "Please use a unique product code and try again.",
+                "A database conflict occurred while saving the product. Please try again in a moment.",
                 HttpStatus.CONFLICT.value()
             );
         } catch (Exception e) {
