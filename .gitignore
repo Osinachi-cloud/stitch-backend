@@ -17,6 +17,7 @@ Order/target
 *.env
 *.jar
 logs.txt
+log.txt
 
 ### Eclipse ###
 .apt_generated

@@ -172,23 +172,21 @@ public class ProductServiceImpl implements ProductService {
         } catch (org.springframework.dao.DataIntegrityViolationException e) {
             String fullError = getFullExceptionMessage(e);
             log.error("Data integrity violation while creating product: {}", fullError, e);
+            e.printStackTrace();
             if (containsProductPkeyError(fullError)) {
                 throw new ProductException(
-                    "System error: Generated product ID already exists. Please try again in a moment.",
+                    "DB_CONFLICT_DEBUG_PKEY: " + fullError,
                     HttpStatus.CONFLICT.value()
                 );
             }
             if (fullError.contains("product_code_uk") || fullError.contains("code")) {
                 throw new ProductException(
-                    "A product with code '" + productRequest.getCode() + "' already exists. " +
-                    "Please use a different product code and try again.",
+                    "DB_CONFLICT_DEBUG_CODE: A product with code '" + productRequest.getCode() + "' already exists.",
                     HttpStatus.CONFLICT.value()
                 );
             }
             throw new ProductException(
-                "A database conflict occurred while saving the product. " +
-                "Constraint: [" + extractConstraintName(fullError) + "]. " +
-                "Details: " + fullError,
+                "DB_CONFLICT_DEBUG: [" + extractConstraintName(fullError) + "] " + fullError,
                 HttpStatus.CONFLICT.value()
             );
         } catch (Exception e) {
