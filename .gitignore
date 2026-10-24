@@ -16,6 +16,7 @@ Order/target
 *.ipr
 *.env
 *.jar
+logs.txt
 
 ### Eclipse ###
 .apt_generated
