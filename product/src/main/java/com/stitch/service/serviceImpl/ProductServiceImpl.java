@@ -130,6 +130,9 @@ public class ProductServiceImpl implements ProductService {
             log.info("productRequest.getProductVariationDtoList() : {}", productRequest.getProductVariation());
 
             List<ProductVariation> productVariationList = convertProductVariationDtoListToEntity(productRequest.getProductVariation());
+            for (ProductVariation variation : productVariationList) {
+                variation.setProductId(prodId);
+            }
             product.setProductVariation(productVariationList);
 
             product.setPublishStatus(PublishStatus.valueOf(productRequest.getPublishStatus()));
